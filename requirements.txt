@@ -1,0 +1,11 @@
+jupyter-book==1.0.0
+ghp-import
+openeo>=0.35
+earthengine-api
+pandas
+numpy
+matplotlib
+plotly
+geopandas
+shapely
+notebook

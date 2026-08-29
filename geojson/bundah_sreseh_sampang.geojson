@@ -1,0 +1,23 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Desa Bundah, Kecamatan Sreseh, Kabupaten Sampang (kotak sementara, silakan diperhalus di geojson.io)"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [113.0398429, -7.1931205],
+            [113.0698429, -7.1931205],
+            [113.0698429, -7.1631205],
+            [113.0398429, -7.1631205],
+            [113.0398429, -7.1931205]
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+format: jb-book
+root: intro
+chapters:
+- file: profil
+- file: 01_business_understanding
+- file: 02_data_understanding
+- file: 03_data_collection_dan_visualisasi

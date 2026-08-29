@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+materi/_build/
+.ipynb_checkpoints/
+*.pyc
+.env

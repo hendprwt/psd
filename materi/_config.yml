@@ -1,0 +1,18 @@
+title: "Kualitas Udara Desa Bundah, Kecamatan Sreseh, Kabupaten Sampang"
+author: "M. Hendrik Purwanto (240411100118)"
+logo: ""
+
+execute:
+  execute_notebooks: "off"   
+
+repository:
+  url: https://github.com/hendprw/psd
+  branch: main
+
+html:
+  use_repository_button: true
+  use_issues_button: true
+
+sphinx:
+  config:
+    html_theme: sphinx_book_theme
