@@ -1,7 +1,6 @@
 format: jb-book
-root: intro
+root: profil
 chapters:
-- file: profil
 - file: analisis_kualitas_udara
   sections:
   - file: 01_business_understanding
