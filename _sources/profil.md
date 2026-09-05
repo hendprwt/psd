@@ -1,17 +1,14 @@
 # 👋 Tentang Penulis
 
-<div align="center">
-
 <img src="https://avatars.githubusercontent.com/u/128204375?v=4" width="150" style="border-radius:50%" />
 
-# M. Hendrik Purwanto
+## M. Hendrik Purwanto
+
 **NIM 240411100118 · [@hendprw](https://github.com/hendprw)**
 
-![Typing SVG](https://readme-typing-svg.demolab.com/?font=Fira+Code&size=20&pause=1000&color=2E9EF7&center=true&vCenter=true&width=560&lines=Pengantar+Sains+Datah;Python+%7C+Data+Science+%7C+Remote+Sensing)
+![Typing SVG](https://readme-typing-svg.demolab.com/?font=Fira+Code&size=20&pause=1000&color=2E9EF7&center=true&vCenter=true&width=560&lines=Mahasiswa+Pengantar+Sains+Data;Memantau+Kualitas+Udara+Desa+Bundah;Python+%7C+Data+Science+%7C+Remote+Sensing)
 
-*"Imagination will often carry us to worlds that never were, but without it we go nowhere." — Carl Sagan*
-
-</div>
+> "Imagination will often carry us to worlds that never were, but without it we go nowhere." — Carl Sagan
 
 ---
 
@@ -40,14 +37,11 @@
 
 ## 📊 GitHub Stats
 
-<div align="center">
+![GitHub Stats](https://github-readme-stats.vercel.app/api?username=hendprw&show_icons=true&theme=tokyonight&hide_border=true)
 
-<img src="https://github-readme-stats.vercel.app/api?username=hendprw&show_icons=true&theme=tokyonight&hide_border=true" width="48%" />
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=hendprw&theme=tokyonight&hide_border=true" width="48%" />
+![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=hendprw&theme=tokyonight&hide_border=true)
 
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=hendprw&layout=compact&theme=tokyonight&hide_border=true" width="48%" />
-
-</div>
+![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=hendprw&layout=compact&theme=tokyonight&hide_border=true)
 
 ## 📫 Kontak
 
@@ -69,8 +63,4 @@ lewat Aiven PostgreSQL & KNIME.
 
 ---
 
-<div align="center">
-
 *Terakhir diperbarui: Agustus 2026*
-
-</div>
