@@ -2,6 +2,9 @@ format: jb-book
 root: intro
 chapters:
 - file: profil
-- file: 01_business_understanding
-- file: 02_data_understanding
-- file: 03_data_collection_dan_visualisasi
+- file: analisis_kualitas_udara
+  sections:
+  - file: 01_business_understanding
+  - file: 02_data_understanding
+  - file: 03_data_collection_dan_visualisasi
+- file: 04_migrasi_dan_statistik_knime
