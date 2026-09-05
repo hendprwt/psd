@@ -7,6 +7,12 @@ pemantau udara darat (ISPU/OpenAQ) di wilayah ini.
 
 Rentang data: **1 September 2025 – 31 Agustus 2026** (12 bulan terakhir).
 
+```{note}
+📌 Buku ini akan terus diperbarui dan ditambah kontennya setiap pertemuan
+perkuliahan. Navigasi di sebelah kiri dikelompokkan per pertemuan supaya
+mudah diikuti perkembangannya.
+```
+
 Isi laporan ini mengikuti alur singkat CRISP-DM:
 
 1. [Business Understanding](01_business_understanding.md) — tujuan & manfaat
