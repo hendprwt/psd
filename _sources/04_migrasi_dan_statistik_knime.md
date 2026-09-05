@@ -3,130 +3,133 @@
 ## 4.1 Ringkasan alur
 
 Data time series NO2 & CO yang sudah dihasilkan minggu lalu
-(`data/kualitas_udara_bundah_sreseh.csv`) dipindahkan ke database cloud
-**Aiven PostgreSQL**, lalu ditarik ke **KNIME Analytics Platform** untuk
-eksplorasi statistik lebih lanjut.
+(`data/kualitas_udara_bundah_sreseh.csv`, 362 hari) dipindahkan ke database
+cloud **Aiven PostgreSQL**, lalu ditarik ke **KNIME Analytics Platform**
+lewat workflow berikut:
+
+![Workflow KNIME dan hasil node Statistics](images/knime_workflow_dan_statistics.png)
+
+Alurnya: **PostgreSQL Connector → DB Table Selector → DB Reader →
+Statistics**.
 
 ```{note}
 🔒 Jangan taruh Service URI/host/password Aiven yang **asli** di halaman
-ini atau file manapun yang di-push ke repo publik. Contoh di bawah sengaja
-memakai placeholder.
+ini atau file manapun yang di-push ke repo publik.
 ```
-
-Alur singkatnya:
-
-1. Buat tabel di Aiven lewat PG Studio.
-2. Hubungkan Aiven ke DBeaver, import CSV ke tabel tersebut.
-3. Hubungkan Aiven ke KNIME (PostgreSQL Connector → DB Table Selector → DB
-   Reader).
-4. Tambahkan node **Statistics** untuk melihat ringkasan statistik semua
-   kolom numerik (`no2`, `co`) sekaligus.
 
 ## 4.2 Struktur tabel di Aiven
 
 ```sql
-CREATE TABLE kualitas_udara_bundah (
+CREATE TABLE data_csv (
     date TIMESTAMP,
     no2  NUMERIC,
     co   NUMERIC
 );
 ```
 
-Koneksi DBeaver/KNIME memakai parameter berikut (ganti dengan kredensial
-kamu sendiri dari dashboard Aiven, dan pastikan `sslmode=require`):
-
 | Parameter | Nilai |
 |---|---|
 | Host | `<host-aiven-kamu>.aivencloud.com` |
-| Port | `<port-aiven-kamu>` |
 | Database | `defaultdb` |
+| Schema | `public` |
+| Table name | `data_csv` |
 | User | `avnadmin` |
-| Password | *(ambil dari dashboard Aiven, jangan hardcode di file publik)* |
 | SSL mode | `require` |
 
-## 4.3 Node Statistics — penjelasan, rumus, dan contoh perhitungan
+## 4.3 Verifikasi data: DB Table Selector vs DB Reader
 
-Node **Statistics** di KNIME menghitung beberapa ringkasan sekaligus untuk
-setiap kolom numerik (`no2` dan `co`). Supaya perhitungannya mudah
-ditelusuri manual, contoh di bawah memakai **5 hari pertama** dari dataset
-asli (bukan keseluruhan 362 hari):
+Sebelum masuk ke node Statistics, ada dua hal menarik yang kelihatan dari
+node-node sebelumnya:
+
+![Preview DB Table Selector](images/knime_db_table_selector_preview.png)
+
+**DB Table Selector** menampilkan data dengan presisi penuh (notasi
+ilmiah), misalnya baris pertama `no2 = 1.43576189657324E-5` (artinya
+0.0000143576... ). Ini konsisten dengan CSV asli hasil crawling minggu
+lalu.
+
+![Preview DB Reader](images/knime_db_reader_preview.png)
+
+**DB Reader** menampilkan kolom `no2` sebagai `0` di semua baris. Ini
+**bukan berarti datanya jadi nol** — itu cuma pembulatan tampilan
+default KNIME (kolom NO2 nilainya di orde 0.00001, sedangkan tampilan
+tabel default cuma menunjukkan beberapa desimal). Bisa dicek/diubah lewat
+klik kanan kolom → **Number Format** kalau mau lihat desimal lebih
+banyak. Simbol **`?`** di beberapa baris kolom `co` (mis. baris ke-6 dan
+ke-8) menandakan **nilai kosong (missing/NULL)** — konsisten dengan
+temuan minggu lalu bahwa banyak hari tidak punya data valid akibat
+tutupan awan.
+
+## 4.4 Node Statistics — penjelasan, rumus, dan contoh perhitungan
+
+Node **Statistics** menghitung ringkasan untuk setiap kolom numerik
+(`no2` dan `co`) sekaligus. Supaya perhitungannya bisa ditelusuri manual,
+contoh di bawah memakai **5 hari pertama** — angkanya diambil persis dari
+tampilan presisi penuh di DB Table Selector di atas:
 
 | No | Tanggal | NO2 (mol/m²) | CO (mol/m²) |
 |---|---|---|---|
-| 1 | 2025-09-01 | 0.000014 | 0.028432 |
-| 2 | 2025-09-02 | 0.000016 | 0.023283 |
-| 3 | 2025-09-03 | 0.000011 | 0.024006 |
-| 4 | 2025-09-04 | 0.000033 | 0.029112 |
-| 5 | 2025-09-05 | 0.000019 | 0.031187 |
+| 1 | 2025-09-01 | 0.0000144 | 0.028432 |
+| 2 | 2025-09-02 | 0.0000163 | 0.023283 |
+| 3 | 2025-09-03 | 0.0000112 | 0.024006 |
+| 4 | 2025-09-04 | 0.0000329 | 0.029112 |
+| 5 | 2025-09-05 | 0.0000192 | 0.031187 |
 
-Contoh perhitungan di bawah pakai kolom **CO** (n = 5), karena angkanya
+Contoh perhitungan di bawah pakai kolom **CO** (n = 5) karena angkanya
 lebih mudah dibaca manual. Cara yang sama berlaku persis untuk NO2.
 
 ---
 
-### a. Row Count (jumlah baris)
+### a. Row Count
 
-Jumlah total baris/observasi yang dibaca node DB Reader.
+$$n = \text{jumlah baris} = 5 \text{ (contoh)}, \quad n = 362 \text{ (dataset penuh)}$$
 
-$$n = \\text{jumlah baris pada tabel}$$
+### b. No. Missings
 
-**Contoh:** dari 5 baris contoh di atas, $n = 5$. Untuk dataset penuh
-(1 Sep 2025 – 31 Agu 2026), $n = 362$ hari.
+$$\text{Missing} = \sum_{i=1}^{n} \mathbb{1}(x_i = \text{NULL})$$
 
-### b. Missing Value (nilai kosong)
+**Hasil nyata dari node Statistics kamu:** NO2 = **172** hari kosong,
+CO = **190** hari kosong (dari 362 hari total).
 
-Jumlah baris di mana nilai kolom tersebut `NULL`/kosong — biasanya karena
-hari itu tertutup awan sehingga satelit tidak menghasilkan pembacaan valid.
+### c. Min & Max
 
-$$\\text{Missing} = \\sum_{i=1}^{n} \\mathbb{1}(x_i = \\text{NULL})$$
+$$\text{Min} = \min(x_1,...,x_n) \qquad \text{Max} = \max(x_1,...,x_n)$$
 
-**Contoh:** pada 5 baris contoh di atas, missing = 0 (semua terisi).
-Tapi untuk dataset penuh, hasil eksplorasi minggu lalu menunjukkan CO
-kosong di **190 dari 362 hari** (± 52,5%) — karena tutupan awan musim
-hujan.
+**Contoh (CO, 5 data):** Min = 0.023283, Max = 0.031187
+**Hasil nyata (172 data valid):** Min = 0.015, Max = 0.039 (dibulatkan 3
+desimal oleh KNIME)
 
-### c. Minimum & Maximum
+### d. Overall Sum
 
-Nilai terkecil dan terbesar dalam kolom — dipakai untuk mendeteksi nilai
-tak wajar (outlier).
+$$\text{Sum} = \sum_{i=1}^{n} x_i$$
 
-$$\\text{Min} = \\min(x_1, x_2, ..., x_n) \\qquad \\text{Max} = \\max(x_1, x_2, ..., x_n)$$
+**Contoh (CO):** $0.028432+0.023283+0.024006+0.029112+0.031187 = 0.136020$
 
-**Contoh (CO):**
-$$\\text{Min} = 0.023283 \\qquad \\text{Max} = 0.031187$$
+**Hasil nyata:** Overall sum CO = **4.936**, NO2 = **0.004** (NO2 tampak
+kecil karena satuannya memang orde 0.00001 dan cuma 190 data valid).
 
-### d. Sum (jumlah total)
+### e. Mean
 
-$$\\text{Sum} = \\sum_{i=1}^{n} x_i$$
+$$\bar{x} = \frac{\text{Sum}}{n}$$
 
-**Contoh (CO):**
-$$0.028432 + 0.023283 + 0.024006 + 0.029112 + 0.031187 = 0.136020$$
+**Contoh (CO):** $\bar{x} = 0.136020/5 = 0.027204$
+**Hasil nyata:** Mean CO = **0.029**, Mean NO2 tampil **0** di tabel
+(dibulatkan; nilai aslinya sekitar 0.000021 — lihat catatan pembulatan di
+bagian 4.3).
 
-### e. Mean (rata-rata)
+### f. Median
 
-$$\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_i = \\frac{\\text{Sum}}{n}$$
+Urutkan data, ambil nilai tengah. **Contoh (CO):** terurut →
+`0.023283, 0.024006, 0.028432, 0.029112, 0.031187` → median = **0.028432**
+(node Statistics kamu tidak mengaktifkan opsi "Calculate median values",
+jadi kolom ini tidak muncul di tabel — bisa dicentang kalau mau
+ditampilkan).
 
-**Contoh (CO):**
-$$\\bar{x} = \\frac{0.136020}{5} = 0.027204 \\text{ mol/m}^2$$
+### g. Variance
 
-### f. Median (nilai tengah)
+$$s^2 = \frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2$$
 
-Urutkan data dari kecil ke besar, ambil nilai di tengah (kalau $n$ genap,
-rata-rata dua nilai tengah).
-
-**Contoh (CO):** data diurutkan → `0.023283, 0.024006, 0.028432, 0.029112, 0.031187`
-Karena $n=5$ (ganjil), median = nilai ke-3 = **0.028432**.
-
-### g. Variance (ragam)
-
-Mengukur seberapa jauh nilai-nilai menyebar dari rata-ratanya. KNIME
-memakai **sample variance** (pembagi $n-1$):
-
-$$s^2 = \\frac{1}{n-1}\\sum_{i=1}^{n} (x_i - \\bar{x})^2$$
-
-**Contoh (CO)**, dengan $\\bar{x} = 0.027204$:
-
-| $x_i$ | $x_i - \\bar{x}$ | $(x_i-\\bar{x})^2$ |
+| $x_i$ | $x_i-\bar x$ | $(x_i-\bar x)^2$ |
 |---|---|---|
 | 0.028432 | 0.001228 | 0.0000015 |
 | 0.023283 | -0.003921 | 0.0000154 |
@@ -134,47 +137,104 @@ $$s^2 = \\frac{1}{n-1}\\sum_{i=1}^{n} (x_i - \\bar{x})^2$$
 | 0.029112 | 0.001908 | 0.0000036 |
 | 0.031187 | 0.003983 | 0.0000159 |
 
-Jumlah $(x_i-\\bar{x})^2 = 0.0000466$
+$$s^2 = \frac{0.0000466}{5-1} = 0.00001165$$
 
-$$s^2 = \\frac{0.0000466}{5-1} = 0.00001165$$
+**Hasil nyata:** Variance CO ditampilkan **0** (nilai aslinya sangat
+kecil, ≈0.0000134, hilang karena pembulatan 3 desimal).
 
-### h. Standard Deviation (simpangan baku)
+### h. Standard Deviation
 
-Akar dari variance — dalam satuan yang sama dengan data aslinya, jadi
-lebih mudah diinterpretasi daripada variance.
+$$s = \sqrt{s^2}$$
 
-$$s = \\sqrt{s^2}$$
+**Contoh (CO):** $s = \sqrt{0.00001165} \approx 0.003414$
+**Hasil nyata:** Std deviation CO = **0.004**, NO2 = **0** (tampilan;
+nilai asli NO2 ≈ 0.000011, sudah dikonfirmasi juga lewat notebook Python
+minggu lalu).
 
-**Contoh (CO):**
-$$s = \\sqrt{0.00001165} \\approx 0.003414 \\text{ mol/m}^2$$
+### i. Skewness (kemencengan distribusi)
 
-Ini sejalan dengan hasil `describe()` di notebook Data Understanding untuk
-seluruh dataset (172 hari valid), yang menunjukkan std CO ≈ 0.003667 —
-nilainya masuk akal karena contoh kecil ini cuma memakai 5 dari 362 hari.
+Mengukur apakah distribusi condong ke kiri (skewness negatif) atau ke
+kanan (skewness positif) dibanding distribusi normal yang simetris
+(skewness = 0).
+
+$$\text{Skewness} = \frac{\frac{1}{n}\sum (x_i-\bar x)^3}{s_{pop}^3}, \quad s_{pop}=\sqrt{\frac{1}{n}\sum(x_i-\bar x)^2}$$
+
+**Contoh (CO, 5 data):** $s_{pop} = \sqrt{0.00000932} = 0.003053$,
+jumlah $(x_i-\bar x)^3 = -0.0000000210$, sehingga
+
+$$\text{Skewness} = \frac{-0.0000000210/5}{0.003053^3} = \frac{-0.0000000042}{0.0000000285} \approx -0.148$$
+
+**Hasil nyata (172 data):** Skewness CO = **0.023**, NO2 = **-0.064** —
+keduanya sangat dekat 0, artinya distribusi **relatif simetris**. Nilai
+contoh manual (-0.148) beda karena cuma pakai 5 data — statistik orde
+tinggi seperti skewness butuh data lebih banyak baru stabil.
+
+### j. Kurtosis (keruncingan distribusi)
+
+Mengukur apakah distribusi lebih "runcing dan berekor tebal" (kurtosis
+positif) atau lebih "datar" (kurtosis negatif) dibanding distribusi
+normal (kurtosis = 0, konvensi *excess kurtosis* yang dipakai KNIME).
+
+$$\text{Kurtosis} = \frac{\frac{1}{n}\sum (x_i-\bar x)^4}{s_{pop}^4} - 3$$
+
+**Contoh (CO, 5 data):** jumlah $(x_i-\bar x)^4 = 6.08\times10^{-10}$,
+$s_{pop}^4 = 8.69\times10^{-11}$, sehingga
+
+$$\text{Kurtosis} = \frac{6.08\times10^{-10}/5}{8.69\times10^{-11}} - 3 \approx -1.60$$
+
+**Hasil nyata (172 data):** Kurtosis CO = **0.408**, NO2 = **0.877** —
+keduanya positif tapi kecil (sedikit lebih "runcing" dari distribusi
+normal, tidak ekstrem). Lagi-lagi contoh manual (n=5) menghasilkan angka
+sangat berbeda (-1.60) karena sampelnya terlalu kecil untuk mengukur
+bentuk ekor distribusi dengan andal.
 
 ---
 
-### Ringkasan tabel Statistics (interpretasi untuk dataset penuh)
+### Ringkasan hasil node Statistics (data asli, 362 hari)
 
-| Statistik | NO2 (362 hari, 190 valid) | CO (362 hari, 172 valid) | Arti |
-|---|---|---|---|
-| Missing | 172 hari (47,5%) | 190 hari (52,5%) | Hari tertutup awan/tanpa data valid |
-| Min | -0.000022 | 0.014774 | Nilai NO2 negatif = derau retrieval, bukan emisi negatif |
-| Max | 0.000052 | 0.038664 | Kemungkinan lonjakan pembakaran lahan |
-| Mean | 0.000021 | 0.028697 | Tingkat dasar konsentrasi polutan |
-| Median | 0.000020 | 0.028716 | Mirip dengan mean → distribusi relatif simetris |
-| Std. Dev | 0.000011 | 0.003667 | Sebaran data relatif kecil, cukup stabil |
+| Statistik | NO2 | CO |
+|---|---|---|
+| Min | -0 *(≈ -0.000022)* | 0.015 |
+| Max | 0 *(≈ 0.000052)* | 0.039 |
+| Mean | 0 *(≈ 0.000021)* | 0.029 |
+| Std. deviation | 0 *(≈ 0.000011)* | 0.004 |
+| Variance | 0 *(≈ 0.00000000012)* | 0 *(≈ 0.0000134)* |
+| Skewness | -0.064 | 0.023 |
+| Kurtosis | 0.877 | 0.408 |
+| Overall sum | 0.004 | 4.936 |
+| No. missings | 172 | 190 |
 
-## 4.4 Pra-pemrosesan lanjutan di KNIME
+*(Angka dalam kurung miring adalah nilai asli sebelum dibulatkan tampilan
+KNIME — dikonfirmasi silang dengan hasil `describe()` di notebook Python
+minggu lalu, hasilnya cocok.)*
 
-Setelah node Statistics, alur pra-pemrosesan yang sama seperti time series
-pada umumnya:
+## 4.5 Pra-pemrosesan lanjutan di KNIME
 
 - **String to Date&Time**: memastikan kolom `date` dikenali sebagai
   format waktu, bukan teks.
-- **Missing Value**: mengisi hari-hari kosong (akibat tutupan awan) dengan
+- **Missing Value**: mengisi hari-hari kosong (simbol `?`) dengan
   interpolasi linear, supaya time series tidak terputus untuk keperluan
   visualisasi/pemodelan lanjutan.
 - **GroupBy / Time Series Aggregation**: merangkum data harian menjadi
   rata-rata mingguan/bulanan untuk melihat tren jangka panjang lebih
   jelas (sudah dicoba sebelumnya di notebook 03 versi Python).
+
+## 4.6 Kesimpulan
+
+- **NO2 bernilai sangat kecil (orde 0.00001)**, sehingga di tampilan
+  default KNIME angkanya kelihatan "0" di banyak kolom (Min, Max, Mean,
+  Std, Variance) — ini murni pembulatan tampilan, bukan data yang rusak
+  atau salah crawl. Nilai aslinya sudah dikonfirmasi lewat DB Table
+  Selector dan notebook Python.
+- **Missing value CO (190 hari) lebih banyak dari NO2 (172 hari)**,
+  konsisten dengan temuan minggu lalu — kemungkinan karena algoritma
+  retrieval CO Sentinel-5P butuh syarat kualitas citra yang sedikit lebih
+  ketat dibanding NO2.
+- **Skewness NO2 (-0.064) dan CO (0.023) sama-sama mendekati 0** →
+  distribusi kedua polutan relatif simetris, tidak didominasi outlier
+  ekstrem di salah satu sisi.
+- **Kurtosis NO2 (0.877) dan CO (0.408) sama-sama positif tapi kecil** →
+  distribusi sedikit lebih "runcing"/berekor tebal dibanding distribusi
+  normal, tapi masih dalam batas wajar, bukan indikasi anomali serius.
+- Data sudah **siap untuk tahap pemodelan/forecasting** lanjutan setelah
+  penanganan missing value (interpolasi) di KNIME.

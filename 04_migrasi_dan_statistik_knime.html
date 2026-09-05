@@ -422,19 +422,23 @@
                 <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-alur">4.1 Ringkasan alur</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#struktur-tabel-di-aiven">4.2 Struktur tabel di Aiven</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#node-statistics-penjelasan-rumus-dan-contoh-perhitungan">4.3 Node Statistics — penjelasan, rumus, dan contoh perhitungan</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-row-count-jumlah-baris">a. Row Count (jumlah baris)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-missing-value-nilai-kosong">b. Missing Value (nilai kosong)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-minimum-maximum">c. Minimum &amp; Maximum</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-sum-jumlah-total">d. Sum (jumlah total)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-mean-rata-rata">e. Mean (rata-rata)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-median-nilai-tengah">f. Median (nilai tengah)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#g-variance-ragam">g. Variance (ragam)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h-standard-deviation-simpangan-baku">h. Standard Deviation (simpangan baku)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-tabel-statistics-interpretasi-untuk-dataset-penuh">Ringkasan tabel Statistics (interpretasi untuk dataset penuh)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verifikasi-data-db-table-selector-vs-db-reader">4.3 Verifikasi data: DB Table Selector vs DB Reader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#node-statistics-penjelasan-rumus-dan-contoh-perhitungan">4.4 Node Statistics — penjelasan, rumus, dan contoh perhitungan</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-row-count">a. Row Count</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-no-missings">b. No. Missings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-min-max">c. Min &amp; Max</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-overall-sum">d. Overall Sum</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-mean">e. Mean</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-median">f. Median</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#g-variance">g. Variance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h-standard-deviation">h. Standard Deviation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-skewness-kemencengan-distribusi">i. Skewness (kemencengan distribusi)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#j-kurtosis-keruncingan-distribusi">j. Kurtosis (keruncingan distribusi)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-hasil-node-statistics-data-asli-362-hari">Ringkasan hasil node Statistics (data asli, 362 hari)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pra-pemrosesan-lanjutan-di-knime">4.4 Pra-pemrosesan lanjutan di KNIME</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pra-pemrosesan-lanjutan-di-knime">4.5 Pra-pemrosesan lanjutan di KNIME</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan">4.6 Kesimpulan</a></li>
 </ul>
             </nav>
         </div>
@@ -451,36 +455,27 @@
 <section id="ringkasan-alur">
 <h2>4.1 Ringkasan alur<a class="headerlink" href="#ringkasan-alur" title="Link to this heading">#</a></h2>
 <p>Data time series NO2 &amp; CO yang sudah dihasilkan minggu lalu
-(<code class="docutils literal notranslate"><span class="pre">data/kualitas_udara_bundah_sreseh.csv</span></code>) dipindahkan ke database cloud
-<strong>Aiven PostgreSQL</strong>, lalu ditarik ke <strong>KNIME Analytics Platform</strong> untuk
-eksplorasi statistik lebih lanjut.</p>
+(<code class="docutils literal notranslate"><span class="pre">data/kualitas_udara_bundah_sreseh.csv</span></code>, 362 hari) dipindahkan ke database
+cloud <strong>Aiven PostgreSQL</strong>, lalu ditarik ke <strong>KNIME Analytics Platform</strong>
+lewat workflow berikut:</p>
+<p><img alt="Workflow KNIME dan hasil node Statistics" src="_images/knime_workflow_dan_statistics.png" /></p>
+<p>Alurnya: <strong>PostgreSQL Connector → DB Table Selector → DB Reader →
+Statistics</strong>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>🔒 Jangan taruh Service URI/host/password Aiven yang <strong>asli</strong> di halaman
-ini atau file manapun yang di-push ke repo publik. Contoh di bawah sengaja
-memakai placeholder.</p>
+ini atau file manapun yang di-push ke repo publik.</p>
 </div>
-<p>Alur singkatnya:</p>
-<ol class="arabic simple">
-<li><p>Buat tabel di Aiven lewat PG Studio.</p></li>
-<li><p>Hubungkan Aiven ke DBeaver, import CSV ke tabel tersebut.</p></li>
-<li><p>Hubungkan Aiven ke KNIME (PostgreSQL Connector → DB Table Selector → DB
-Reader).</p></li>
-<li><p>Tambahkan node <strong>Statistics</strong> untuk melihat ringkasan statistik semua
-kolom numerik (<code class="docutils literal notranslate"><span class="pre">no2</span></code>, <code class="docutils literal notranslate"><span class="pre">co</span></code>) sekaligus.</p></li>
-</ol>
 </section>
 <section id="struktur-tabel-di-aiven">
 <h2>4.2 Struktur tabel di Aiven<a class="headerlink" href="#struktur-tabel-di-aiven" title="Link to this heading">#</a></h2>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">kualitas_udara_bundah</span><span class="w"> </span><span class="p">(</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">data_csv</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="nb">date</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="p">,</span>
 <span class="w">    </span><span class="n">no2</span><span class="w">  </span><span class="nb">NUMERIC</span><span class="p">,</span>
 <span class="w">    </span><span class="n">co</span><span class="w">   </span><span class="nb">NUMERIC</span>
 <span class="p">);</span>
 </pre></div>
 </div>
-<p>Koneksi DBeaver/KNIME memakai parameter berikut (ganti dengan kredensial
-kamu sendiri dari dashboard Aiven, dan pastikan <code class="docutils literal notranslate"><span class="pre">sslmode=require</span></code>):</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameter</p></th>
@@ -491,17 +486,17 @@ kamu sendiri dari dashboard Aiven, dan pastikan <code class="docutils literal no
 <tr class="row-even"><td><p>Host</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&lt;host-aiven-kamu&gt;.aivencloud.com</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Port</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">&lt;port-aiven-kamu&gt;</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p>Database</p></td>
+<tr class="row-odd"><td><p>Database</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">defaultdb</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>User</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">avnadmin</span></code></p></td>
+<tr class="row-even"><td><p>Schema</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">public</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Password</p></td>
-<td><p><em>(ambil dari dashboard Aiven, jangan hardcode di file publik)</em></p></td>
+<tr class="row-odd"><td><p>Table name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">data_csv</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>User</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">avnadmin</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>SSL mode</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">require</span></code></p></td>
@@ -510,12 +505,32 @@ kamu sendiri dari dashboard Aiven, dan pastikan <code class="docutils literal no
 </table>
 </div>
 </section>
+<section id="verifikasi-data-db-table-selector-vs-db-reader">
+<h2>4.3 Verifikasi data: DB Table Selector vs DB Reader<a class="headerlink" href="#verifikasi-data-db-table-selector-vs-db-reader" title="Link to this heading">#</a></h2>
+<p>Sebelum masuk ke node Statistics, ada dua hal menarik yang kelihatan dari
+node-node sebelumnya:</p>
+<p><img alt="Preview DB Table Selector" src="_images/knime_db_table_selector_preview.png" /></p>
+<p><strong>DB Table Selector</strong> menampilkan data dengan presisi penuh (notasi
+ilmiah), misalnya baris pertama <code class="docutils literal notranslate"><span class="pre">no2</span> <span class="pre">=</span> <span class="pre">1.43576189657324E-5</span></code> (artinya
+0.0000143576… ). Ini konsisten dengan CSV asli hasil crawling minggu
+lalu.</p>
+<p><img alt="Preview DB Reader" src="_images/knime_db_reader_preview.png" /></p>
+<p><strong>DB Reader</strong> menampilkan kolom <code class="docutils literal notranslate"><span class="pre">no2</span></code> sebagai <code class="docutils literal notranslate"><span class="pre">0</span></code> di semua baris. Ini
+<strong>bukan berarti datanya jadi nol</strong> — itu cuma pembulatan tampilan
+default KNIME (kolom NO2 nilainya di orde 0.00001, sedangkan tampilan
+tabel default cuma menunjukkan beberapa desimal). Bisa dicek/diubah lewat
+klik kanan kolom → <strong>Number Format</strong> kalau mau lihat desimal lebih
+banyak. Simbol <strong><code class="docutils literal notranslate"><span class="pre">?</span></code></strong> di beberapa baris kolom <code class="docutils literal notranslate"><span class="pre">co</span></code> (mis. baris ke-6 dan
+ke-8) menandakan <strong>nilai kosong (missing/NULL)</strong> — konsisten dengan
+temuan minggu lalu bahwa banyak hari tidak punya data valid akibat
+tutupan awan.</p>
+</section>
 <section id="node-statistics-penjelasan-rumus-dan-contoh-perhitungan">
-<h2>4.3 Node Statistics — penjelasan, rumus, dan contoh perhitungan<a class="headerlink" href="#node-statistics-penjelasan-rumus-dan-contoh-perhitungan" title="Link to this heading">#</a></h2>
-<p>Node <strong>Statistics</strong> di KNIME menghitung beberapa ringkasan sekaligus untuk
-setiap kolom numerik (<code class="docutils literal notranslate"><span class="pre">no2</span></code> dan <code class="docutils literal notranslate"><span class="pre">co</span></code>). Supaya perhitungannya mudah
-ditelusuri manual, contoh di bawah memakai <strong>5 hari pertama</strong> dari dataset
-asli (bukan keseluruhan 362 hari):</p>
+<h2>4.4 Node Statistics — penjelasan, rumus, dan contoh perhitungan<a class="headerlink" href="#node-statistics-penjelasan-rumus-dan-contoh-perhitungan" title="Link to this heading">#</a></h2>
+<p>Node <strong>Statistics</strong> menghitung ringkasan untuk setiap kolom numerik
+(<code class="docutils literal notranslate"><span class="pre">no2</span></code> dan <code class="docutils literal notranslate"><span class="pre">co</span></code>) sekaligus. Supaya perhitungannya bisa ditelusuri manual,
+contoh di bawah memakai <strong>5 hari pertama</strong> — angkanya diambil persis dari
+tampilan presisi penuh di DB Table Selector di atas:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>No</p></th>
@@ -527,96 +542,89 @@ asli (bukan keseluruhan 362 hari):</p>
 <tbody>
 <tr class="row-even"><td><p>1</p></td>
 <td><p>2025-09-01</p></td>
-<td><p>0.000014</p></td>
+<td><p>0.0000144</p></td>
 <td><p>0.028432</p></td>
 </tr>
 <tr class="row-odd"><td><p>2</p></td>
 <td><p>2025-09-02</p></td>
-<td><p>0.000016</p></td>
+<td><p>0.0000163</p></td>
 <td><p>0.023283</p></td>
 </tr>
 <tr class="row-even"><td><p>3</p></td>
 <td><p>2025-09-03</p></td>
-<td><p>0.000011</p></td>
+<td><p>0.0000112</p></td>
 <td><p>0.024006</p></td>
 </tr>
 <tr class="row-odd"><td><p>4</p></td>
 <td><p>2025-09-04</p></td>
-<td><p>0.000033</p></td>
+<td><p>0.0000329</p></td>
 <td><p>0.029112</p></td>
 </tr>
 <tr class="row-even"><td><p>5</p></td>
 <td><p>2025-09-05</p></td>
-<td><p>0.000019</p></td>
+<td><p>0.0000192</p></td>
 <td><p>0.031187</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Contoh perhitungan di bawah pakai kolom <strong>CO</strong> (n = 5), karena angkanya
+<p>Contoh perhitungan di bawah pakai kolom <strong>CO</strong> (n = 5) karena angkanya
 lebih mudah dibaca manual. Cara yang sama berlaku persis untuk NO2.</p>
 <hr class="docutils" />
-<section id="a-row-count-jumlah-baris">
-<h3>a. Row Count (jumlah baris)<a class="headerlink" href="#a-row-count-jumlah-baris" title="Link to this heading">#</a></h3>
-<p>Jumlah total baris/observasi yang dibaca node DB Reader.</p>
+<section id="a-row-count">
+<h3>a. Row Count<a class="headerlink" href="#a-row-count" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
-\[\begin{split}n = \\text{jumlah baris pada tabel}\end{split}\]</div>
-<p><strong>Contoh:</strong> dari 5 baris contoh di atas, <span class="math notranslate nohighlight">\(n = 5\)</span>. Untuk dataset penuh
-(1 Sep 2025 – 31 Agu 2026), <span class="math notranslate nohighlight">\(n = 362\)</span> hari.</p>
+\[n = \text{jumlah baris} = 5 \text{ (contoh)}, \quad n = 362 \text{ (dataset penuh)}\]</div>
 </section>
-<section id="b-missing-value-nilai-kosong">
-<h3>b. Missing Value (nilai kosong)<a class="headerlink" href="#b-missing-value-nilai-kosong" title="Link to this heading">#</a></h3>
-<p>Jumlah baris di mana nilai kolom tersebut <code class="docutils literal notranslate"><span class="pre">NULL</span></code>/kosong — biasanya karena
-hari itu tertutup awan sehingga satelit tidak menghasilkan pembacaan valid.</p>
+<section id="b-no-missings">
+<h3>b. No. Missings<a class="headerlink" href="#b-no-missings" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
-\[\begin{split}\\text{Missing} = \\sum_{i=1}^{n} \\mathbb{1}(x_i = \\text{NULL})\end{split}\]</div>
-<p><strong>Contoh:</strong> pada 5 baris contoh di atas, missing = 0 (semua terisi).
-Tapi untuk dataset penuh, hasil eksplorasi minggu lalu menunjukkan CO
-kosong di <strong>190 dari 362 hari</strong> (± 52,5%) — karena tutupan awan musim
-hujan.</p>
+\[\text{Missing} = \sum_{i=1}^{n} \mathbb{1}(x_i = \text{NULL})\]</div>
+<p><strong>Hasil nyata dari node Statistics kamu:</strong> NO2 = <strong>172</strong> hari kosong,
+CO = <strong>190</strong> hari kosong (dari 362 hari total).</p>
 </section>
-<section id="c-minimum-maximum">
-<h3>c. Minimum &amp; Maximum<a class="headerlink" href="#c-minimum-maximum" title="Link to this heading">#</a></h3>
-<p>Nilai terkecil dan terbesar dalam kolom — dipakai untuk mendeteksi nilai
-tak wajar (outlier).</p>
+<section id="c-min-max">
+<h3>c. Min &amp; Max<a class="headerlink" href="#c-min-max" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
-\[\begin{split}\\text{Min} = \\min(x_1, x_2, ..., x_n) \\qquad \\text{Max} = \\max(x_1, x_2, ..., x_n)\end{split}\]</div>
-<p><strong>Contoh (CO):</strong>
-$<span class="math notranslate nohighlight">\(\\text{Min} = 0.023283 \\qquad \\text{Max} = 0.031187\)</span>$</p>
+\[\text{Min} = \min(x_1,...,x_n) \qquad \text{Max} = \max(x_1,...,x_n)\]</div>
+<p><strong>Contoh (CO, 5 data):</strong> Min = 0.023283, Max = 0.031187
+<strong>Hasil nyata (172 data valid):</strong> Min = 0.015, Max = 0.039 (dibulatkan 3
+desimal oleh KNIME)</p>
 </section>
-<section id="d-sum-jumlah-total">
-<h3>d. Sum (jumlah total)<a class="headerlink" href="#d-sum-jumlah-total" title="Link to this heading">#</a></h3>
+<section id="d-overall-sum">
+<h3>d. Overall Sum<a class="headerlink" href="#d-overall-sum" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
-\[\begin{split}\\text{Sum} = \\sum_{i=1}^{n} x_i\end{split}\]</div>
-<p><strong>Contoh (CO):</strong>
-$<span class="math notranslate nohighlight">\(0.028432 + 0.023283 + 0.024006 + 0.029112 + 0.031187 = 0.136020\)</span>$</p>
+\[\text{Sum} = \sum_{i=1}^{n} x_i\]</div>
+<p><strong>Contoh (CO):</strong> <span class="math notranslate nohighlight">\(0.028432+0.023283+0.024006+0.029112+0.031187 = 0.136020\)</span></p>
+<p><strong>Hasil nyata:</strong> Overall sum CO = <strong>4.936</strong>, NO2 = <strong>0.004</strong> (NO2 tampak
+kecil karena satuannya memang orde 0.00001 dan cuma 190 data valid).</p>
 </section>
-<section id="e-mean-rata-rata">
-<h3>e. Mean (rata-rata)<a class="headerlink" href="#e-mean-rata-rata" title="Link to this heading">#</a></h3>
+<section id="e-mean">
+<h3>e. Mean<a class="headerlink" href="#e-mean" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
-\[\begin{split}\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_i = \\frac{\\text{Sum}}{n}\end{split}\]</div>
-<p><strong>Contoh (CO):</strong>
-$<span class="math notranslate nohighlight">\(\\bar{x} = \\frac{0.136020}{5} = 0.027204 \\text{ mol/m}^2\)</span>$</p>
+\[\bar{x} = \frac{\text{Sum}}{n}\]</div>
+<p><strong>Contoh (CO):</strong> <span class="math notranslate nohighlight">\(\bar{x} = 0.136020/5 = 0.027204\)</span>
+<strong>Hasil nyata:</strong> Mean CO = <strong>0.029</strong>, Mean NO2 tampil <strong>0</strong> di tabel
+(dibulatkan; nilai aslinya sekitar 0.000021 — lihat catatan pembulatan di
+bagian 4.3).</p>
 </section>
-<section id="f-median-nilai-tengah">
-<h3>f. Median (nilai tengah)<a class="headerlink" href="#f-median-nilai-tengah" title="Link to this heading">#</a></h3>
-<p>Urutkan data dari kecil ke besar, ambil nilai di tengah (kalau <span class="math notranslate nohighlight">\(n\)</span> genap,
-rata-rata dua nilai tengah).</p>
-<p><strong>Contoh (CO):</strong> data diurutkan → <code class="docutils literal notranslate"><span class="pre">0.023283,</span> <span class="pre">0.024006,</span> <span class="pre">0.028432,</span> <span class="pre">0.029112,</span> <span class="pre">0.031187</span></code>
-Karena <span class="math notranslate nohighlight">\(n=5\)</span> (ganjil), median = nilai ke-3 = <strong>0.028432</strong>.</p>
+<section id="f-median">
+<h3>f. Median<a class="headerlink" href="#f-median" title="Link to this heading">#</a></h3>
+<p>Urutkan data, ambil nilai tengah. <strong>Contoh (CO):</strong> terurut →
+<code class="docutils literal notranslate"><span class="pre">0.023283,</span> <span class="pre">0.024006,</span> <span class="pre">0.028432,</span> <span class="pre">0.029112,</span> <span class="pre">0.031187</span></code> → median = <strong>0.028432</strong>
+(node Statistics kamu tidak mengaktifkan opsi “Calculate median values”,
+jadi kolom ini tidak muncul di tabel — bisa dicentang kalau mau
+ditampilkan).</p>
 </section>
-<section id="g-variance-ragam">
-<h3>g. Variance (ragam)<a class="headerlink" href="#g-variance-ragam" title="Link to this heading">#</a></h3>
-<p>Mengukur seberapa jauh nilai-nilai menyebar dari rata-ratanya. KNIME
-memakai <strong>sample variance</strong> (pembagi <span class="math notranslate nohighlight">\(n-1\)</span>):</p>
+<section id="g-variance">
+<h3>g. Variance<a class="headerlink" href="#g-variance" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
-\[\begin{split}s^2 = \\frac{1}{n-1}\\sum_{i=1}^{n} (x_i - \\bar{x})^2\end{split}\]</div>
-<p><strong>Contoh (CO)</strong>, dengan <span class="math notranslate nohighlight">\(\\bar{x} = 0.027204\)</span>:</p>
+\[s^2 = \frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2\]</div>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(x_i\)</span></p></th>
-<th class="head"><p><span class="math notranslate nohighlight">\(x_i - \\bar{x}\)</span></p></th>
-<th class="head"><p><span class="math notranslate nohighlight">\((x_i-\\bar{x})^2\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(x_i-\bar x\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\((x_i-\bar x)^2\)</span></p></th>
 </tr>
 </thead>
 <tbody>
@@ -643,82 +651,141 @@ memakai <strong>sample variance</strong> (pembagi <span class="math notranslate 
 </tbody>
 </table>
 </div>
-<p>Jumlah <span class="math notranslate nohighlight">\((x_i-\\bar{x})^2 = 0.0000466\)</span></p>
 <div class="math notranslate nohighlight">
-\[\begin{split}s^2 = \\frac{0.0000466}{5-1} = 0.00001165\end{split}\]</div>
+\[s^2 = \frac{0.0000466}{5-1} = 0.00001165\]</div>
+<p><strong>Hasil nyata:</strong> Variance CO ditampilkan <strong>0</strong> (nilai aslinya sangat
+kecil, ≈0.0000134, hilang karena pembulatan 3 desimal).</p>
 </section>
-<section id="h-standard-deviation-simpangan-baku">
-<h3>h. Standard Deviation (simpangan baku)<a class="headerlink" href="#h-standard-deviation-simpangan-baku" title="Link to this heading">#</a></h3>
-<p>Akar dari variance — dalam satuan yang sama dengan data aslinya, jadi
-lebih mudah diinterpretasi daripada variance.</p>
+<section id="h-standard-deviation">
+<h3>h. Standard Deviation<a class="headerlink" href="#h-standard-deviation" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
-\[\begin{split}s = \\sqrt{s^2}\end{split}\]</div>
-<p><strong>Contoh (CO):</strong>
-$<span class="math notranslate nohighlight">\(s = \\sqrt{0.00001165} \\approx 0.003414 \\text{ mol/m}^2\)</span>$</p>
-<p>Ini sejalan dengan hasil <code class="docutils literal notranslate"><span class="pre">describe()</span></code> di notebook Data Understanding untuk
-seluruh dataset (172 hari valid), yang menunjukkan std CO ≈ 0.003667 —
-nilainya masuk akal karena contoh kecil ini cuma memakai 5 dari 362 hari.</p>
+\[s = \sqrt{s^2}\]</div>
+<p><strong>Contoh (CO):</strong> <span class="math notranslate nohighlight">\(s = \sqrt{0.00001165} \approx 0.003414\)</span>
+<strong>Hasil nyata:</strong> Std deviation CO = <strong>0.004</strong>, NO2 = <strong>0</strong> (tampilan;
+nilai asli NO2 ≈ 0.000011, sudah dikonfirmasi juga lewat notebook Python
+minggu lalu).</p>
+</section>
+<section id="i-skewness-kemencengan-distribusi">
+<h3>i. Skewness (kemencengan distribusi)<a class="headerlink" href="#i-skewness-kemencengan-distribusi" title="Link to this heading">#</a></h3>
+<p>Mengukur apakah distribusi condong ke kiri (skewness negatif) atau ke
+kanan (skewness positif) dibanding distribusi normal yang simetris
+(skewness = 0).</p>
+<div class="math notranslate nohighlight">
+\[\text{Skewness} = \frac{\frac{1}{n}\sum (x_i-\bar x)^3}{s_{pop}^3}, \quad s_{pop}=\sqrt{\frac{1}{n}\sum(x_i-\bar x)^2}\]</div>
+<p><strong>Contoh (CO, 5 data):</strong> <span class="math notranslate nohighlight">\(s_{pop} = \sqrt{0.00000932} = 0.003053\)</span>,
+jumlah <span class="math notranslate nohighlight">\((x_i-\bar x)^3 = -0.0000000210\)</span>, sehingga</p>
+<div class="math notranslate nohighlight">
+\[\text{Skewness} = \frac{-0.0000000210/5}{0.003053^3} = \frac{-0.0000000042}{0.0000000285} \approx -0.148\]</div>
+<p><strong>Hasil nyata (172 data):</strong> Skewness CO = <strong>0.023</strong>, NO2 = <strong>-0.064</strong> —
+keduanya sangat dekat 0, artinya distribusi <strong>relatif simetris</strong>. Nilai
+contoh manual (-0.148) beda karena cuma pakai 5 data — statistik orde
+tinggi seperti skewness butuh data lebih banyak baru stabil.</p>
+</section>
+<section id="j-kurtosis-keruncingan-distribusi">
+<h3>j. Kurtosis (keruncingan distribusi)<a class="headerlink" href="#j-kurtosis-keruncingan-distribusi" title="Link to this heading">#</a></h3>
+<p>Mengukur apakah distribusi lebih “runcing dan berekor tebal” (kurtosis
+positif) atau lebih “datar” (kurtosis negatif) dibanding distribusi
+normal (kurtosis = 0, konvensi <em>excess kurtosis</em> yang dipakai KNIME).</p>
+<div class="math notranslate nohighlight">
+\[\text{Kurtosis} = \frac{\frac{1}{n}\sum (x_i-\bar x)^4}{s_{pop}^4} - 3\]</div>
+<p><strong>Contoh (CO, 5 data):</strong> jumlah <span class="math notranslate nohighlight">\((x_i-\bar x)^4 = 6.08\times10^{-10}\)</span>,
+<span class="math notranslate nohighlight">\(s_{pop}^4 = 8.69\times10^{-11}\)</span>, sehingga</p>
+<div class="math notranslate nohighlight">
+\[\text{Kurtosis} = \frac{6.08\times10^{-10}/5}{8.69\times10^{-11}} - 3 \approx -1.60\]</div>
+<p><strong>Hasil nyata (172 data):</strong> Kurtosis CO = <strong>0.408</strong>, NO2 = <strong>0.877</strong> —
+keduanya positif tapi kecil (sedikit lebih “runcing” dari distribusi
+normal, tidak ekstrem). Lagi-lagi contoh manual (n=5) menghasilkan angka
+sangat berbeda (-1.60) karena sampelnya terlalu kecil untuk mengukur
+bentuk ekor distribusi dengan andal.</p>
 </section>
 <hr class="docutils" />
-<section id="ringkasan-tabel-statistics-interpretasi-untuk-dataset-penuh">
-<h3>Ringkasan tabel Statistics (interpretasi untuk dataset penuh)<a class="headerlink" href="#ringkasan-tabel-statistics-interpretasi-untuk-dataset-penuh" title="Link to this heading">#</a></h3>
+<section id="ringkasan-hasil-node-statistics-data-asli-362-hari">
+<h3>Ringkasan hasil node Statistics (data asli, 362 hari)<a class="headerlink" href="#ringkasan-hasil-node-statistics-data-asli-362-hari" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Statistik</p></th>
-<th class="head"><p>NO2 (362 hari, 190 valid)</p></th>
-<th class="head"><p>CO (362 hari, 172 valid)</p></th>
-<th class="head"><p>Arti</p></th>
+<th class="head"><p>NO2</p></th>
+<th class="head"><p>CO</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Missing</p></td>
-<td><p>172 hari (47,5%)</p></td>
-<td><p>190 hari (52,5%)</p></td>
-<td><p>Hari tertutup awan/tanpa data valid</p></td>
+<tr class="row-even"><td><p>Min</p></td>
+<td><p>-0 <em>(≈ -0.000022)</em></p></td>
+<td><p>0.015</p></td>
 </tr>
-<tr class="row-odd"><td><p>Min</p></td>
-<td><p>-0.000022</p></td>
-<td><p>0.014774</p></td>
-<td><p>Nilai NO2 negatif = derau retrieval, bukan emisi negatif</p></td>
+<tr class="row-odd"><td><p>Max</p></td>
+<td><p>0 <em>(≈ 0.000052)</em></p></td>
+<td><p>0.039</p></td>
 </tr>
-<tr class="row-even"><td><p>Max</p></td>
-<td><p>0.000052</p></td>
-<td><p>0.038664</p></td>
-<td><p>Kemungkinan lonjakan pembakaran lahan</p></td>
+<tr class="row-even"><td><p>Mean</p></td>
+<td><p>0 <em>(≈ 0.000021)</em></p></td>
+<td><p>0.029</p></td>
 </tr>
-<tr class="row-odd"><td><p>Mean</p></td>
-<td><p>0.000021</p></td>
-<td><p>0.028697</p></td>
-<td><p>Tingkat dasar konsentrasi polutan</p></td>
+<tr class="row-odd"><td><p>Std. deviation</p></td>
+<td><p>0 <em>(≈ 0.000011)</em></p></td>
+<td><p>0.004</p></td>
 </tr>
-<tr class="row-even"><td><p>Median</p></td>
-<td><p>0.000020</p></td>
-<td><p>0.028716</p></td>
-<td><p>Mirip dengan mean → distribusi relatif simetris</p></td>
+<tr class="row-even"><td><p>Variance</p></td>
+<td><p>0 <em>(≈ 0.00000000012)</em></p></td>
+<td><p>0 <em>(≈ 0.0000134)</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>Std. Dev</p></td>
-<td><p>0.000011</p></td>
-<td><p>0.003667</p></td>
-<td><p>Sebaran data relatif kecil, cukup stabil</p></td>
+<tr class="row-odd"><td><p>Skewness</p></td>
+<td><p>-0.064</p></td>
+<td><p>0.023</p></td>
+</tr>
+<tr class="row-even"><td><p>Kurtosis</p></td>
+<td><p>0.877</p></td>
+<td><p>0.408</p></td>
+</tr>
+<tr class="row-odd"><td><p>Overall sum</p></td>
+<td><p>0.004</p></td>
+<td><p>4.936</p></td>
+</tr>
+<tr class="row-even"><td><p>No. missings</p></td>
+<td><p>172</p></td>
+<td><p>190</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p><em>(Angka dalam kurung miring adalah nilai asli sebelum dibulatkan tampilan
+KNIME — dikonfirmasi silang dengan hasil <code class="docutils literal notranslate"><span class="pre">describe()</span></code> di notebook Python
+minggu lalu, hasilnya cocok.)</em></p>
 </section>
 </section>
 <section id="pra-pemrosesan-lanjutan-di-knime">
-<h2>4.4 Pra-pemrosesan lanjutan di KNIME<a class="headerlink" href="#pra-pemrosesan-lanjutan-di-knime" title="Link to this heading">#</a></h2>
-<p>Setelah node Statistics, alur pra-pemrosesan yang sama seperti time series
-pada umumnya:</p>
+<h2>4.5 Pra-pemrosesan lanjutan di KNIME<a class="headerlink" href="#pra-pemrosesan-lanjutan-di-knime" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><strong>String to Date&amp;Time</strong>: memastikan kolom <code class="docutils literal notranslate"><span class="pre">date</span></code> dikenali sebagai
 format waktu, bukan teks.</p></li>
-<li><p><strong>Missing Value</strong>: mengisi hari-hari kosong (akibat tutupan awan) dengan
+<li><p><strong>Missing Value</strong>: mengisi hari-hari kosong (simbol <code class="docutils literal notranslate"><span class="pre">?</span></code>) dengan
 interpolasi linear, supaya time series tidak terputus untuk keperluan
 visualisasi/pemodelan lanjutan.</p></li>
 <li><p><strong>GroupBy / Time Series Aggregation</strong>: merangkum data harian menjadi
 rata-rata mingguan/bulanan untuk melihat tren jangka panjang lebih
 jelas (sudah dicoba sebelumnya di notebook 03 versi Python).</p></li>
+</ul>
+</section>
+<section id="kesimpulan">
+<h2>4.6 Kesimpulan<a class="headerlink" href="#kesimpulan" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>NO2 bernilai sangat kecil (orde 0.00001)</strong>, sehingga di tampilan
+default KNIME angkanya kelihatan “0” di banyak kolom (Min, Max, Mean,
+Std, Variance) — ini murni pembulatan tampilan, bukan data yang rusak
+atau salah crawl. Nilai aslinya sudah dikonfirmasi lewat DB Table
+Selector dan notebook Python.</p></li>
+<li><p><strong>Missing value CO (190 hari) lebih banyak dari NO2 (172 hari)</strong>,
+konsisten dengan temuan minggu lalu — kemungkinan karena algoritma
+retrieval CO Sentinel-5P butuh syarat kualitas citra yang sedikit lebih
+ketat dibanding NO2.</p></li>
+<li><p><strong>Skewness NO2 (-0.064) dan CO (0.023) sama-sama mendekati 0</strong> →
+distribusi kedua polutan relatif simetris, tidak didominasi outlier
+ekstrem di salah satu sisi.</p></li>
+<li><p><strong>Kurtosis NO2 (0.877) dan CO (0.408) sama-sama positif tapi kecil</strong> →
+distribusi sedikit lebih “runcing”/berekor tebal dibanding distribusi
+normal, tapi masih dalam batas wajar, bukan indikasi anomali serius.</p></li>
+<li><p>Data sudah <strong>siap untuk tahap pemodelan/forecasting</strong> lanjutan setelah
+penanganan missing value (interpolasi) di KNIME.</p></li>
 </ul>
 </section>
 </section>
@@ -782,19 +849,23 @@ jelas (sudah dicoba sebelumnya di notebook 03 versi Python).</p></li>
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-alur">4.1 Ringkasan alur</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#struktur-tabel-di-aiven">4.2 Struktur tabel di Aiven</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#node-statistics-penjelasan-rumus-dan-contoh-perhitungan">4.3 Node Statistics — penjelasan, rumus, dan contoh perhitungan</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-row-count-jumlah-baris">a. Row Count (jumlah baris)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-missing-value-nilai-kosong">b. Missing Value (nilai kosong)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-minimum-maximum">c. Minimum &amp; Maximum</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-sum-jumlah-total">d. Sum (jumlah total)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-mean-rata-rata">e. Mean (rata-rata)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-median-nilai-tengah">f. Median (nilai tengah)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#g-variance-ragam">g. Variance (ragam)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h-standard-deviation-simpangan-baku">h. Standard Deviation (simpangan baku)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-tabel-statistics-interpretasi-untuk-dataset-penuh">Ringkasan tabel Statistics (interpretasi untuk dataset penuh)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verifikasi-data-db-table-selector-vs-db-reader">4.3 Verifikasi data: DB Table Selector vs DB Reader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#node-statistics-penjelasan-rumus-dan-contoh-perhitungan">4.4 Node Statistics — penjelasan, rumus, dan contoh perhitungan</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-row-count">a. Row Count</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-no-missings">b. No. Missings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-min-max">c. Min &amp; Max</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-overall-sum">d. Overall Sum</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-mean">e. Mean</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-median">f. Median</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#g-variance">g. Variance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h-standard-deviation">h. Standard Deviation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-skewness-kemencengan-distribusi">i. Skewness (kemencengan distribusi)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#j-kurtosis-keruncingan-distribusi">j. Kurtosis (keruncingan distribusi)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-hasil-node-statistics-data-asli-362-hari">Ringkasan hasil node Statistics (data asli, 362 hari)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pra-pemrosesan-lanjutan-di-knime">4.4 Pra-pemrosesan lanjutan di KNIME</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pra-pemrosesan-lanjutan-di-knime">4.5 Pra-pemrosesan lanjutan di KNIME</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan">4.6 Kesimpulan</a></li>
 </ul>
   </nav></div>
 
