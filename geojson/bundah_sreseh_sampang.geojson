@@ -4,17 +4,32 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Desa Bundah, Kecamatan Sreseh, Kabupaten Sampang (kotak sementara, silakan diperhalus di geojson.io)"
+        "name": "Montong, Kabupaten Tuban, Jawa Timur"
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
-            [113.0398429, -7.1931205],
-            [113.0698429, -7.1931205],
-            [113.0698429, -7.1631205],
-            [113.0398429, -7.1631205],
-            [113.0398429, -7.1931205]
+            [
+              111.80075,
+              -7.033921
+            ],
+            [
+              111.96733,
+              -7.033921
+            ],
+            [
+              111.96733,
+              -6.915008
+            ],
+            [
+              111.80075,
+              -6.915008
+            ],
+            [
+              111.80075,
+              -7.033921
+            ]
           ]
         ]
       }

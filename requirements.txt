@@ -9,3 +9,4 @@ plotly
 geopandas
 shapely
 notebook
+tsfel
