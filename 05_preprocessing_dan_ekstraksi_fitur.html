@@ -637,45 +637,70 @@ Semua data sudah terisi penuh, siap untuk ekstraksi fitur.
 </section>
 <section id="ekstraksi-fitur-dengan-tsfel">
 <h2>5.3 Ekstraksi Fitur dengan TSFEL<a class="headerlink" href="#ekstraksi-fitur-dengan-tsfel" title="Link to this heading">#</a></h2>
-<p>TSFEL menyediakan lebih dari 65 fitur otomatis dari domain <strong>statistical</strong>,
-<strong>temporal</strong>, <strong>spectral</strong>, dan <strong>fractal</strong>. Karena tugas ini cuma minta 3
-domain (statistical, temporal, spectral), konfigurasinya digabung manual
-supaya domain fractal tidak ikut.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">fs=1</span></code> di bawah artinya diasumsikan 1 sampel per hari (data harian) —
-dipakai sebagai basis perhitungan fitur domain spectral (berbasis FFT).</p>
-</div>
+<p>Website kelas (<code class="docutils literal notranslate"><span class="pre">psd.basisdata2-c.my.id</span></code>) memvalidasi kolom CSV secara
+ketat — nama kolomnya harus <strong>persis</strong> nama fungsi Python TSFEL
+(snake_case, contoh <code class="docutils literal notranslate"><span class="pre">abs_energy</span></code>, <code class="docutils literal notranslate"><span class="pre">autocorr</span></code>, <code class="docutils literal notranslate"><span class="pre">kurtosis</span></code>), bukan nama
+“cantik” seperti <code class="docutils literal notranslate"><span class="pre">Absolute</span> <span class="pre">energy</span></code> yang dihasilkan wrapper
+<code class="docutils literal notranslate"><span class="pre">tsfel.get_features_by_domain()</span></code> + <code class="docutils literal notranslate"><span class="pre">time_series_features_extractor()</span></code>.</p>
+<p>Solusinya: panggil tiap fungsi fitur TSFEL <strong>langsung</strong> dari modul
+<code class="docutils literal notranslate"><span class="pre">tsfel.feature_extraction.features</span></code>, satu per satu, sesuai daftar 65
+fitur yang diminta. Ini juga sekalian menghindari bug <code class="docutils literal notranslate"><span class="pre">duplicate</span> <span class="pre">labels</span></code>
+yang muncul di wrapper sebelumnya.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tsfel</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.features</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tsfel_features</span>
 
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">get_features_by_domain</span><span class="p">()</span>
-<span class="n">no2_signal</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s2">"no2"</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">FEATURE_LIST</span> <span class="o">=</span> <span class="s2">"""abs_energy auc autocorr average_power calc_centroid calc_max calc_mean</span>
+<span class="s2">calc_median calc_min calc_std calc_var dfa distance ecdf ecdf_percentile ecdf_percentile_count</span>
+<span class="s2">ecdf_slope entropy fundamental_frequency higuchi_fractal_dimension hist_mode human_range_energy</span>
+<span class="s2">hurst_exponent interq_range kurtosis lempel_ziv lpcc max_frequency max_power_spectrum</span>
+<span class="s2">maximum_fractal_length mean_abs_deviation mean_abs_diff mean_diff median_abs_deviation</span>
+<span class="s2">median_abs_diff median_diff median_frequency mfcc mse negative_turning neighbourhood_peaks</span>
+<span class="s2">petrosian_fractal_dimension pk_pk_distance positive_turning power_bandwidth rms skewness slope</span>
+<span class="s2">spectral_centroid spectral_decrease spectral_distance spectral_entropy spectral_kurtosis</span>
+<span class="s2">spectral_positive_turning spectral_roll_off spectral_roll_on spectral_skewness spectral_slope</span>
+<span class="s2">spectral_spread spectral_variation spectrogram_mean_coeff sum_abs_diff wavelet_abs_mean</span>
+<span class="s2">wavelet_energy wavelet_entropy wavelet_std wavelet_var zero_cross"""</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 
-<span class="c1"># --- PATCH: panggil calc_window_features langsung, hindari .reindex() buggy ---</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.calc_features</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_window_features</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah fitur yang diminta:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">FEATURE_LIST</span><span class="p">))</span>
 
-<span class="n">X_raw</span> <span class="o">=</span> <span class="n">calc_window_features</span><span class="p">(</span>
-    <span class="n">cfg</span><span class="p">,</span>
-    <span class="n">no2_signal</span><span class="p">,</span>
-    <span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">window_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">no2_signal</span><span class="p">),</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">signal_1d</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s2">"no2"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
 
-<span class="c1"># Buang kolom duplikat (jika ada), lalu sort</span>
-<span class="n">X_all</span> <span class="o">=</span> <span class="n">X_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="o">~</span><span class="n">X_raw</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()]</span>
-<span class="n">X_all</span> <span class="o">=</span> <span class="n">X_all</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">X_all</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah fitur total:"</span><span class="p">,</span> <span class="n">X_all</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">X_all</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">to_scalar</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"values"</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">"values"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_one</span><span class="p">(</span><span class="n">fn_name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tsfel_features</span><span class="p">,</span> <span class="n">fn_name</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span>
+    <span class="k">if</span> <span class="s2">"fs"</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">to_scalar</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+
+<span class="n">row</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">fn_name</span> <span class="ow">in</span> <span class="n">FEATURE_LIST</span><span class="p">:</span>
+    <span class="n">row</span><span class="p">[</span><span class="n">fn_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract_one</span><span class="p">(</span><span class="n">fn_name</span><span class="p">,</span> <span class="n">signal_1d</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">row</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Berhasil! Jumlah fitur yang dihasilkan untuk NO2:"</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah fitur total: 148
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah fitur yang diminta: 68
+Berhasil! Jumlah fitur yang dihasilkan untuk NO2: 68
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -696,27 +721,27 @@ dipakai sebagai basis perhitungan fitur domain spectral (berbasis FFT).</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>0_Absolute energy</th>
-      <th>0_Area under the curve</th>
-      <th>0_Autocorrelation</th>
-      <th>0_Average power</th>
-      <th>0_Centroid</th>
-      <th>0_ECDF Percentile Count_0</th>
-      <th>0_ECDF Percentile Count_1</th>
-      <th>0_ECDF Percentile_0</th>
-      <th>0_ECDF Percentile_1</th>
-      <th>0_ECDF_0</th>
+      <th>abs_energy</th>
+      <th>auc</th>
+      <th>autocorr</th>
+      <th>average_power</th>
+      <th>calc_centroid</th>
+      <th>calc_max</th>
+      <th>calc_mean</th>
+      <th>calc_median</th>
+      <th>calc_min</th>
+      <th>calc_std</th>
       <th>...</th>
-      <th>0_Wavelet standard deviation_0.12Hz</th>
-      <th>0_Wavelet standard deviation_0.25Hz</th>
-      <th>0_Wavelet variance_0.03Hz</th>
-      <th>0_Wavelet variance_0.04Hz</th>
-      <th>0_Wavelet variance_0.05Hz</th>
-      <th>0_Wavelet variance_0.06Hz</th>
-      <th>0_Wavelet variance_0.08Hz</th>
-      <th>0_Wavelet variance_0.12Hz</th>
-      <th>0_Wavelet variance_0.25Hz</th>
-      <th>0_Zero crossing rate</th>
+      <th>spectral_spread</th>
+      <th>spectral_variation</th>
+      <th>spectrogram_mean_coeff</th>
+      <th>sum_abs_diff</th>
+      <th>wavelet_abs_mean</th>
+      <th>wavelet_energy</th>
+      <th>wavelet_entropy</th>
+      <th>wavelet_std</th>
+      <th>wavelet_var</th>
+      <th>zero_cross</th>
     </tr>
   </thead>
   <tbody>
@@ -727,163 +752,71 @@ dipakai sebagai basis perhitungan fitur domain spectral (berbasis FFT).</p>
       <td>9.0</td>
       <td>6.752861e-10</td>
       <td>163.948262</td>
-      <td>72.0</td>
-      <td>289.0</td>
-      <td>0.000015</td>
-      <td>0.000033</td>
-      <td>0.002762</td>
+      <td>0.000048</td>
+      <td>0.000024</td>
+      <td>0.000024</td>
+      <td>-0.000008</td>
+      <td>0.00001</td>
       <td>...</td>
-      <td>0.000009</td>
-      <td>0.000007</td>
-      <td>3.226975e-10</td>
-      <td>2.565726e-10</td>
-      <td>1.992515e-10</td>
-      <td>1.394366e-10</td>
-      <td>9.489029e-11</td>
-      <td>7.672306e-11</td>
-      <td>4.446014e-11</td>
+      <td>0.156583</td>
+      <td>0.333931</td>
+      <td>1.262586e-10</td>
+      <td>0.00198</td>
+      <td>0.000001</td>
+      <td>0.000013</td>
+      <td>2.132146</td>
+      <td>0.000013</td>
+      <td>1.971502e-10</td>
       <td>10.0</td>
     </tr>
   </tbody>
 </table>
-<p>1 rows × 148 columns</p>
+<p>1 rows × 68 columns</p>
 </div></div></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Kalau masih error <code class="docutils literal notranslate"><span class="pre">ValueError:</span> <span class="pre">cannot</span> <span class="pre">reindex</span> <span class="pre">on</span> <span class="pre">an</span> <span class="pre">axis</span> <span class="pre">with</span> <span class="pre">duplicate</span> <span class="pre">labels</span></code>
-setelah pakai <code class="docutils literal notranslate"><span class="pre">window_size</span></code> eksplisit di atas, coba langkah berikut secara
-berurutan:</p>
-<ol class="arabic simple">
-<li><p>Update TSFEL ke versi terbaru: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">tsfel</span></code>, lalu Restart
-Kernel dan Run All lagi.</p></li>
-<li><p>Kalau masih gagal, cek versi pandas: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">show</span> <span class="pre">pandas</span></code>. Kalau versinya 2.x
-ke atas, coba turunkan sedikit: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;pandas&lt;2.0&quot;</span></code> lalu restart
-kernel (beberapa versi TSFEL lama belum kompatibel penuh dengan pandas 2.x).</p></li>
-</ol>
-<p>Kalau nama fungsi <code class="docutils literal notranslate"><span class="pre">time_series_features_extractor</span></code> error <code class="docutils literal notranslate"><span class="pre">AttributeError</span></code>,
-coba <code class="docutils literal notranslate"><span class="pre">tsfel.time_series_feature_extractor(...)</span></code> (tanpa huruf “s” di
-“series_feature”) — beda penamaan tergantung versi TSFEL kamu.</p>
+<p>Kalau salah satu fungsi error <code class="docutils literal notranslate"><span class="pre">AttributeError</span></code> (nama fungsi tidak
+ditemukan di <code class="docutils literal notranslate"><span class="pre">tsfel.feature_extraction.features</span></code>), kemungkinan nama fitur
+itu berubah di versi TSFEL kamu — cek daftar fungsi yang tersedia dengan
+<code class="docutils literal notranslate"><span class="pre">dir(tsfel_features)</span></code> dan sesuaikan <code class="docutils literal notranslate"><span class="pre">FEATURE_LIST</span></code> di atas.</p>
 </div>
 </section>
 <section id="kelompokkan-fitur-per-domain">
 <h2>5.4 Kelompokkan Fitur per Domain<a class="headerlink" href="#kelompokkan-fitur-per-domain" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">domain_lookup</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tsfel</span>
+
+<span class="c1"># Ambil metadata domain resmi dari TSFEL (statistical/temporal/spectral),</span>
+<span class="c1"># lalu cocokkan ke nama fungsi snake_case yang kita pakai di FEATURE_LIST</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">get_features_by_domain</span><span class="p">()</span>
+
+<span class="n">func_to_domain</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">domain</span><span class="p">,</span> <span class="n">feats</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">feat_name</span> <span class="ow">in</span> <span class="n">feats</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="n">feat_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
-        <span class="n">domain_lookup</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">domain</span>
+    <span class="k">for</span> <span class="n">feat_key</span><span class="p">,</span> <span class="n">meta</span> <span class="ow">in</span> <span class="n">feats</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">func_path</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"function"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="n">func_name</span> <span class="o">=</span> <span class="n">func_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">func_to_domain</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">domain</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">get_domain</span><span class="p">(</span><span class="n">col_name</span><span class="p">):</span>
-    <span class="n">suffix</span> <span class="o">=</span> <span class="n">col_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="s2">"_"</span> <span class="ow">in</span> <span class="n">col_name</span> <span class="k">else</span> <span class="n">col_name</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">domain_lookup</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">)</span>
-
-<span class="n">feature_domain_map</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">get_domain</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">X_all</span><span class="o">.</span><span class="n">columns</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">"domain"</span><span class="p">)</span>
+<span class="n">feature_domain_map</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+    <span class="p">{</span><span class="n">fn</span><span class="p">:</span> <span class="n">func_to_domain</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">)</span> <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">FEATURE_LIST</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">"domain"</span>
+<span class="p">)</span>
 <span class="n">feature_domain_map</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>domain
-unknown        98
-spectral       19
-statistical    17
-temporal       14
+spectral       26
+statistical    20
+temporal       15
+fractal         6
+unknown         1
 Name: count, dtype: int64
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sesuai tugas: cuma pakai domain statistical, temporal, spectral (buang fractal)</span>
-<span class="n">kolom_dipakai</span> <span class="o">=</span> <span class="n">feature_domain_map</span><span class="p">[</span>
-    <span class="n">feature_domain_map</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">"statistical"</span><span class="p">,</span> <span class="s2">"temporal"</span><span class="p">,</span> <span class="s2">"spectral"</span><span class="p">])</span>
-<span class="p">]</span><span class="o">.</span><span class="n">index</span>
-
-<span class="n">X</span> <span class="o">=</span> <span class="n">X_all</span><span class="p">[</span><span class="n">kolom_dipakai</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah fitur setelah difilter ke 3 domain:"</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah fitur setelah difilter ke 3 domain: 50
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>0_Absolute energy</th>
-      <th>0_Area under the curve</th>
-      <th>0_Autocorrelation</th>
-      <th>0_Average power</th>
-      <th>0_Centroid</th>
-      <th>0_Entropy</th>
-      <th>0_Fundamental frequency</th>
-      <th>0_Histogram mode</th>
-      <th>0_Human range energy</th>
-      <th>0_Interquartile range</th>
-      <th>...</th>
-      <th>0_Spectral roll-on</th>
-      <th>0_Spectral skewness</th>
-      <th>0_Spectral slope</th>
-      <th>0_Spectral spread</th>
-      <th>0_Spectral variation</th>
-      <th>0_Standard deviation</th>
-      <th>0_Sum absolute diff</th>
-      <th>0_Variance</th>
-      <th>0_Wavelet entropy</th>
-      <th>0_Zero crossing rate</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2.437783e-07</td>
-      <td>0.008625</td>
-      <td>9.0</td>
-      <td>6.752861e-10</td>
-      <td>163.948262</td>
-      <td>1.0</td>
-      <td>0.002762</td>
-      <td>0.000023</td>
-      <td>0.0</td>
-      <td>0.000015</td>
-      <td>...</td>
-      <td>0.0</td>
-      <td>0.758966</td>
-      <td>-0.027213</td>
-      <td>0.156583</td>
-      <td>0.333931</td>
-      <td>0.00001</td>
-      <td>0.00198</td>
-      <td>1.038955e-10</td>
-      <td>2.132146</td>
-      <td>10.0</td>
-    </tr>
-  </tbody>
-</table>
-<p>1 rows × 50 columns</p>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -896,17 +829,17 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== STATISTICAL (17 fitur) ===
-['0_Absolute energy', '0_Average power', '0_Entropy', '0_Histogram mode', '0_Interquartile range', '0_Kurtosis', '0_Max', '0_Mean', '0_Mean absolute deviation', '0_Median', '0_Median absolute deviation', '0_Min', '0_Peak to peak distance', '0_Root mean square', '0_Skewness', '0_Standard deviation', '0_Variance']
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== STATISTICAL (20 fitur) ===
+['abs_energy', 'average_power', 'calc_max', 'calc_mean', 'calc_median', 'calc_min', 'calc_std', 'calc_var', 'ecdf', 'ecdf_percentile', 'ecdf_percentile_count', 'entropy', 'hist_mode', 'interq_range', 'kurtosis', 'mean_abs_deviation', 'median_abs_deviation', 'pk_pk_distance', 'rms', 'skewness']
 
-=== TEMPORAL (14 fitur) ===
-['0_Area under the curve', '0_Autocorrelation', '0_Centroid', '0_Mean absolute diff', '0_Mean diff', '0_Median absolute diff', '0_Median diff', '0_Negative turning points', '0_Neighbourhood peaks', '0_Positive turning points', '0_Signal distance', '0_Slope', '0_Sum absolute diff', '0_Zero crossing rate']
+=== TEMPORAL (15 fitur) ===
+['auc', 'autocorr', 'calc_centroid', 'distance', 'lempel_ziv', 'mean_abs_diff', 'mean_diff', 'median_abs_diff', 'median_diff', 'negative_turning', 'neighbourhood_peaks', 'positive_turning', 'slope', 'sum_abs_diff', 'zero_cross']
 
-=== SPECTRAL (19 fitur) ===
-['0_Fundamental frequency', '0_Human range energy', '0_Max power spectrum', '0_Maximum frequency', '0_Median frequency', '0_Power bandwidth', '0_Spectral centroid', '0_Spectral decrease', '0_Spectral distance', '0_Spectral entropy', '0_Spectral kurtosis', '0_Spectral positive turning points', '0_Spectral roll-off', '0_Spectral roll-on', '0_Spectral skewness', '0_Spectral slope', '0_Spectral spread', '0_Spectral variation', '0_Wavelet entropy']
+=== SPECTRAL (26 fitur) ===
+['fundamental_frequency', 'human_range_energy', 'lpcc', 'max_frequency', 'max_power_spectrum', 'median_frequency', 'mfcc', 'power_bandwidth', 'spectral_centroid', 'spectral_decrease', 'spectral_distance', 'spectral_entropy', 'spectral_kurtosis', 'spectral_positive_turning', 'spectral_roll_off', 'spectral_roll_on', 'spectral_skewness', 'spectral_slope', 'spectral_spread', 'spectral_variation', 'spectrogram_mean_coeff', 'wavelet_abs_mean', 'wavelet_energy', 'wavelet_entropy', 'wavelet_std', 'wavelet_var']
 
-=== UNKNOWN (98 fitur) ===
-['0_ECDF Percentile Count_0', '0_ECDF Percentile Count_1', '0_ECDF Percentile_0', '0_ECDF Percentile_1', '0_ECDF_0', '0_ECDF_1', '0_ECDF_2', '0_ECDF_3', '0_ECDF_4', '0_ECDF_5', '0_ECDF_6', '0_ECDF_7', '0_ECDF_8', '0_ECDF_9', '0_LPCC_0', '0_LPCC_1', '0_LPCC_10', '0_LPCC_11', '0_LPCC_2', '0_LPCC_3', '0_LPCC_4', '0_LPCC_5', '0_LPCC_6', '0_LPCC_7', '0_LPCC_8', '0_LPCC_9', '0_MFCC_0', '0_MFCC_1', '0_MFCC_10', '0_MFCC_11', '0_MFCC_2', '0_MFCC_3', '0_MFCC_4', '0_MFCC_5', '0_MFCC_6', '0_MFCC_7', '0_MFCC_8', '0_MFCC_9', '0_Spectrogram mean coefficient_0.02Hz', '0_Spectrogram mean coefficient_0.03Hz', '0_Spectrogram mean coefficient_0.05Hz', '0_Spectrogram mean coefficient_0.06Hz', '0_Spectrogram mean coefficient_0.08Hz', '0_Spectrogram mean coefficient_0.0Hz', '0_Spectrogram mean coefficient_0.11Hz', '0_Spectrogram mean coefficient_0.13Hz', '0_Spectrogram mean coefficient_0.15Hz', '0_Spectrogram mean coefficient_0.16Hz', '0_Spectrogram mean coefficient_0.18Hz', '0_Spectrogram mean coefficient_0.19Hz', '0_Spectrogram mean coefficient_0.1Hz', '0_Spectrogram mean coefficient_0.21Hz', '0_Spectrogram mean coefficient_0.23Hz', '0_Spectrogram mean coefficient_0.24Hz', '0_Spectrogram mean coefficient_0.26Hz', '0_Spectrogram mean coefficient_0.27Hz', '0_Spectrogram mean coefficient_0.29Hz', '0_Spectrogram mean coefficient_0.31Hz', '0_Spectrogram mean coefficient_0.32Hz', '0_Spectrogram mean coefficient_0.34Hz', '0_Spectrogram mean coefficient_0.35Hz', '0_Spectrogram mean coefficient_0.37Hz', '0_Spectrogram mean coefficient_0.39Hz', '0_Spectrogram mean coefficient_0.42Hz', '0_Spectrogram mean coefficient_0.44Hz', '0_Spectrogram mean coefficient_0.45Hz', '0_Spectrogram mean coefficient_0.47Hz', '0_Spectrogram mean coefficient_0.48Hz', '0_Spectrogram mean coefficient_0.4Hz', '0_Spectrogram mean coefficient_0.5Hz', '0_Wavelet absolute mean_0.03Hz', '0_Wavelet absolute mean_0.04Hz', '0_Wavelet absolute mean_0.05Hz', '0_Wavelet absolute mean_0.06Hz', '0_Wavelet absolute mean_0.08Hz', '0_Wavelet absolute mean_0.12Hz', '0_Wavelet absolute mean_0.25Hz', '0_Wavelet energy_0.03Hz', '0_Wavelet energy_0.04Hz', '0_Wavelet energy_0.05Hz', '0_Wavelet energy_0.06Hz', '0_Wavelet energy_0.08Hz', '0_Wavelet energy_0.12Hz', '0_Wavelet energy_0.25Hz', '0_Wavelet standard deviation_0.03Hz', '0_Wavelet standard deviation_0.04Hz', '0_Wavelet standard deviation_0.05Hz', '0_Wavelet standard deviation_0.06Hz', '0_Wavelet standard deviation_0.08Hz', '0_Wavelet standard deviation_0.12Hz', '0_Wavelet standard deviation_0.25Hz', '0_Wavelet variance_0.03Hz', '0_Wavelet variance_0.04Hz', '0_Wavelet variance_0.05Hz', '0_Wavelet variance_0.06Hz', '0_Wavelet variance_0.08Hz', '0_Wavelet variance_0.12Hz', '0_Wavelet variance_0.25Hz']
+=== UNKNOWN (1 fitur) ===
+['ecdf_slope']
 </pre></div>
 </div>
 </div>
