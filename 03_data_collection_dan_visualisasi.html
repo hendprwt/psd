@@ -186,7 +186,7 @@
     
   
 
-<a class="navbar-brand logo" href="profil.html">
+<a class="navbar-brand logo" href="intro.html">
   
   
   
@@ -214,12 +214,13 @@
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
-                <a class="reference internal" href="profil.html">
-                    👋 Tentang Penulis
+                <a class="reference internal" href="intro.html">
+                    Kualitas Udara Desa Bundah, Kecamatan Sreseh, Kabupaten Sampang
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="profil.html">👋 Tentang Penulis</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="analisis_kualitas_udara.html">Analisis Kualitas Udara</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="01_business_understanding.html">1. Business Understanding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02_data_understanding.html">2. Data Understanding</a></li>
@@ -227,6 +228,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="04_migrasi_dan_statistik_knime.html">4. Migrasi Data ke Cloud (Aiven) &amp; Statistik di KNIME</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_preprocessing_dan_ekstraksi_fitur.html">5. Preprocessing &amp; Ekstraksi Fitur (TSFEL)</a></li>
 </ul>
 
     </div>
@@ -470,19 +472,6 @@ sementara sebagai contoh, ganti dengan polygon yang lebih akurat).</p></li>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'type': 'FeatureCollection',
- 'features': [{'type': 'Feature',
-   'properties': {'name': 'Desa Bundah, Kecamatan Sreseh, Kabupaten Sampang (kotak sementara, silakan diperhalus di geojson.io)'},
-   'geometry': {'type': 'Polygon',
-    'coordinates': [[[113.0398429, -7.1931205],
-      [113.0698429, -7.1931205],
-      [113.0698429, -7.1631205],
-      [113.0398429, -7.1631205],
-      [113.0398429, -7.1931205]]]}}]}
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="cdse-openeo">
@@ -493,14 +482,6 @@ sementara sebagai contoh, ganti dengan polygon yang lebih akurat).</p></li>
 
 <span class="n">connection</span> <span class="o">=</span> <span class="n">openeo</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"openeofed.dataspace.copernicus.eu"</span><span class="p">)</span>
 <span class="n">connection</span><span class="o">.</span><span class="n">authenticate_oidc</span><span class="p">()</span>  <span class="c1"># ikuti link login yang muncul di output</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html">Visit <a href="https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=FRHO-FCTT" title="Authenticate at https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=FRHO-FCTT" target="_blank" rel="noopener noreferrer">https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=FRHO-FCTT</a> <a href="#" onclick="navigator.clipboard.writeText('https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=FRHO-FCTT');return false;" title="Copy authentication URL to clipboard">&#128203;</a> to authenticate.</div><div class="output text_html">✅ Authorized successfully</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Authenticated using device code flow.
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Connection to 'https://openeofed.dataspace.copernicus.eu/openeo/1.2/' with OidcBearerAuth&gt;
 </pre></div>
 </div>
 </div>
@@ -547,45 +528,6 @@ sementara sebagai contoh, ganti dengan polygon yang lebih akurat).</p></li>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:00 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': send 'start'
-0:00:03 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': queued (progress 0%)
-0:00:08 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': queued (progress 0%)
-0:00:15 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': queued (progress 0%)
-0:00:24 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': queued (progress 0%)
-0:00:34 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': queued (progress 0%)
-0:00:46 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': queued (progress 0%)
-0:01:02 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': queued (progress 0%)
-0:01:22 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': running (progress N/A)
-0:01:46 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': running (progress N/A)
-0:02:16 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': running (progress N/A)
-0:02:54 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': running (progress N/A)
-0:03:41 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': running (progress N/A)
-0:04:40 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': running (progress N/A)
-0:05:41 Job 'cdse-j-26082916190147e08a5a02af1cc0205c': finished (progress 100%)
-0:00:00 Job 'cdse-j-26082916245348a7add22e369ae3449d': send 'start'
-0:00:02 Job 'cdse-j-26082916245348a7add22e369ae3449d': created (progress 0%)
-0:00:08 Job 'cdse-j-26082916245348a7add22e369ae3449d': queued (progress 0%)
-0:00:15 Job 'cdse-j-26082916245348a7add22e369ae3449d': queued (progress 0%)
-0:00:24 Job 'cdse-j-26082916245348a7add22e369ae3449d': queued (progress 0%)
-0:00:34 Job 'cdse-j-26082916245348a7add22e369ae3449d': queued (progress 0%)
-0:00:47 Job 'cdse-j-26082916245348a7add22e369ae3449d': queued (progress 0%)
-0:01:02 Job 'cdse-j-26082916245348a7add22e369ae3449d': queued (progress 0%)
-0:01:22 Job 'cdse-j-26082916245348a7add22e369ae3449d': queued (progress 0%)
-0:01:46 Job 'cdse-j-26082916245348a7add22e369ae3449d': queued (progress 0%)
-0:02:16 Job 'cdse-j-26082916245348a7add22e369ae3449d': queued (progress 0%)
-0:02:54 Job 'cdse-j-26082916245348a7add22e369ae3449d': running (progress N/A)
-0:03:40 Job 'cdse-j-26082916245348a7add22e369ae3449d': running (progress N/A)
-0:04:39 Job 'cdse-j-26082916245348a7add22e369ae3449d': running (progress N/A)
-0:05:40 Job 'cdse-j-26082916245348a7add22e369ae3449d': running (progress N/A)
-0:06:40 Job 'cdse-j-26082916245348a7add22e369ae3449d': running (progress N/A)
-0:07:41 Job 'cdse-j-26082916245348a7add22e369ae3449d': finished (progress 100%)
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WindowsPath('../data/co_raw.json')
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -610,64 +552,6 @@ sementara sebagai contoh, ganti dengan polygon yang lebih akurat).</p></li>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>date</th>
-      <th>no2</th>
-      <th>co</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2025-09-01</td>
-      <td>0.000014</td>
-      <td>0.028432</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2025-09-02</td>
-      <td>0.000016</td>
-      <td>0.023283</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2025-09-03</td>
-      <td>0.000011</td>
-      <td>0.024006</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2025-09-04</td>
-      <td>0.000033</td>
-      <td>0.029112</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2025-09-05</td>
-      <td>0.000019</td>
-      <td>0.031187</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 </section>
 <section id="simpan-ke-csv">
@@ -681,64 +565,6 @@ sementara sebagai contoh, ganti dengan polygon yang lebih akurat).</p></li>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>date</th>
-      <th>no2</th>
-      <th>co</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>357</th>
-      <td>2026-08-25</td>
-      <td>0.000015</td>
-      <td>0.027892</td>
-    </tr>
-    <tr>
-      <th>358</th>
-      <td>2026-08-26</td>
-      <td>0.000023</td>
-      <td>0.030445</td>
-    </tr>
-    <tr>
-      <th>359</th>
-      <td>2026-08-27</td>
-      <td>0.000017</td>
-      <td>0.031040</td>
-    </tr>
-    <tr>
-      <th>360</th>
-      <td>2026-08-28</td>
-      <td>0.000026</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>361</th>
-      <td>2026-08-29</td>
-      <td>0.000023</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 </section>
 <section id="grafik-time-series">
@@ -762,9 +588,6 @@ sementara sebagai contoh, ganti dengan polygon yang lebih akurat).</p></li>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/5758ade6817f38cc7cf0bc0347adb6fe7016b41d0eee9fa96931b0c0b497a7b6.png" src="_images/5758ade6817f38cc7cf0bc0347adb6fe7016b41d0eee9fa96931b0c0b497a7b6.png" />
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -783,9 +606,6 @@ sementara sebagai contoh, ganti dengan polygon yang lebih akurat).</p></li>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/7994053bbc93b76d4598d7bd69e19df4f256712eb72967017012a342261ebca3.png" src="_images/7994053bbc93b76d4598d7bd69e19df4f256712eb72967017012a342261ebca3.png" />
 </div>
 </div>
 </section>

@@ -1,0 +1,1071 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5. Preprocessing &amp; Ekstraksi Fitur (TSFEL) &#8212; Hendrik - PSD</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '05_preprocessing_dan_ekstraksi_fitur';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="4. Migrasi Data ke Cloud (Aiven) &amp; Statistik di KNIME" href="04_migrasi_dan_statistik_knime.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/avatar.jpeg" class="logo__image only-light" alt="Hendrik - PSD - Home"/>
+    <img src="_static/avatar.jpeg" class="logo__image only-dark pst-js-only" alt="Hendrik - PSD - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Kualitas Udara Desa Bundah, Kecamatan Sreseh, Kabupaten Sampang
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="profil.html">👋 Tentang Penulis</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="analisis_kualitas_udara.html">Analisis Kualitas Udara</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="01_business_understanding.html">1. Business Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_data_understanding.html">2. Data Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_data_collection_dan_visualisasi.html">3. Data Collection &amp; Time Series</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="04_migrasi_dan_statistik_knime.html">4. Migrasi Data ke Cloud (Aiven) &amp; Statistik di KNIME</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5. Preprocessing &amp; Ekstraksi Fitur (TSFEL)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hendprw/psd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hendprw/psd/issues/new?title=Issue%20on%20page%20%2F05_preprocessing_dan_ekstraksi_fitur.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/05_preprocessing_dan_ekstraksi_fitur.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>5. Preprocessing & Ekstraksi Fitur (TSFEL)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier-metode-iqr">5.1 Deteksi Outlier (metode IQR)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#treatment-outlier-imputasi-missing-value">5.2 Treatment Outlier + Imputasi Missing Value</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-dengan-tsfel">5.3 Ekstraksi Fitur dengan TSFEL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kelompokkan-fitur-per-domain">5.4 Kelompokkan Fitur per Domain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simpan-hasil-untuk-di-upload">5.5 Simpan Hasil (untuk di-upload)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan">5.6 Kesimpulan</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="preprocessing-ekstraksi-fitur-tsfel">
+<h1>5. Preprocessing &amp; Ekstraksi Fitur (TSFEL)<a class="headerlink" href="#preprocessing-ekstraksi-fitur-tsfel" title="Link to this heading">#</a></h1>
+<p>Tugas minggu ini: sebelum data dipakai untuk ekstraksi fitur, data harus
+<strong>bersih dari outlier</strong> dan <strong>tidak ada nilai kosong sama sekali</strong>. Setelah
+itu, sinyal NO2 diekstrak jadi fitur numerik pakai
+<a class="reference external" href="https://tsfel.readthedocs.io/">TSFEL</a> (Time Series Feature Extraction
+Library), dikelompokkan menurut domain <strong>statistical</strong>, <strong>temporal</strong>, dan
+<strong>spectral</strong>.</p>
+<p>Wilayah: <strong>Desa Bundah, Kecamatan Sreseh, Kabupaten Sampang</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Install dulu library yang dibutuhkan (sekali saja di venv kamu):
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">tsfel</span></code></p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/kualitas_udara_bundah_sreseh.csv"</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">"date"</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"date"</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>no2</th>
+      <th>co</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2025-09-01</th>
+      <td>0.000014</td>
+      <td>0.028432</td>
+    </tr>
+    <tr>
+      <th>2025-09-02</th>
+      <td>0.000016</td>
+      <td>0.023283</td>
+    </tr>
+    <tr>
+      <th>2025-09-03</th>
+      <td>0.000011</td>
+      <td>0.024006</td>
+    </tr>
+    <tr>
+      <th>2025-09-04</th>
+      <td>0.000033</td>
+      <td>0.029112</td>
+    </tr>
+    <tr>
+      <th>2025-09-05</th>
+      <td>0.000019</td>
+      <td>0.031187</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="deteksi-outlier-metode-iqr">
+<h2>5.1 Deteksi Outlier (metode IQR)<a class="headerlink" href="#deteksi-outlier-metode-iqr" title="Link to this heading">#</a></h2>
+<p>Nilai dianggap outlier kalau berada di luar rentang
+<span class="math notranslate nohighlight">\([Q1 - 1.5 \times IQR,\ Q3 + 1.5 \times IQR]\)</span>, dengan <span class="math notranslate nohighlight">\(IQR = Q3 - Q1\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">detect_outliers_iqr</span><span class="p">(</span><span class="n">series</span><span class="p">):</span>
+    <span class="n">q1</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">q3</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">iqr</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">-</span> <span class="n">q1</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="n">q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">series</span> <span class="o">&lt;</span> <span class="n">lower</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">series</span> <span class="o">&gt;</span> <span class="n">upper</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mask</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span>
+
+<span class="n">outlier_mask</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"no2"</span><span class="p">,</span> <span class="s2">"co"</span><span class="p">]:</span>
+    <span class="n">mask</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">detect_outliers_iqr</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+    <span class="n">outlier_mask</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">: batas normal [</span><span class="si">{</span><span class="n">lower</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">upper</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">] -&gt; </span><span class="si">{</span><span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> outlier terdeteksi"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>no2: batas normal [-0.000008, 0.000050] -&gt; 3 outlier terdeteksi
+co: batas normal [0.018035, 0.038864] -&gt; 1 outlier terdeteksi
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">df</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="s2">"no2"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="s2">"co"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ed653981810fb85eec56ca703fc46de7c89664a7b1a86166e61f79ae966eb5db.png" src="_images/ed653981810fb85eec56ca703fc46de7c89664a7b1a86166e61f79ae966eb5db.png" />
+</div>
+</div>
+</section>
+<section id="treatment-outlier-imputasi-missing-value">
+<h2>5.2 Treatment Outlier + Imputasi Missing Value<a class="headerlink" href="#treatment-outlier-imputasi-missing-value" title="Link to this heading">#</a></h2>
+<p>Outlier yang terdeteksi ditandai sebagai nilai kosong (NaN) terlebih
+dahulu, digabung dengan missing value yang memang sudah ada sejak
+crawling (akibat tutupan awan), lalu <strong>semuanya diisi sekaligus</strong> pakai
+interpolasi linear berbasis waktu — supaya time series terisi penuh tanpa
+ada NaN tersisa.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"no2"</span><span class="p">,</span> <span class="s2">"co"</span><span class="p">]:</span>
+    <span class="n">df_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">outlier_mask</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Total NaN sebelum imputasi (missing asli + outlier yang di-NaN-kan):"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[[</span><span class="s2">"no2"</span><span class="p">,</span> <span class="s2">"co"</span><span class="p">]]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total NaN sebelum imputasi (missing asli + outlier yang di-NaN-kan):
+no2    175
+co     191
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_clean</span><span class="p">[[</span><span class="s2">"no2"</span><span class="p">,</span> <span class="s2">"co"</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[[</span><span class="s2">"no2"</span><span class="p">,</span> <span class="s2">"co"</span><span class="p">]]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">"time"</span><span class="p">,</span> <span class="n">limit_direction</span><span class="o">=</span><span class="s2">"both"</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Total NaN setelah imputasi:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[[</span><span class="s2">"no2"</span><span class="p">,</span> <span class="s2">"co"</span><span class="p">]]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+<span class="k">assert</span> <span class="n">df_clean</span><span class="p">[[</span><span class="s2">"no2"</span><span class="p">,</span> <span class="s2">"co"</span><span class="p">]]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"Masih ada NaN, cek lagi!"</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Semua data sudah terisi penuh, siap untuk ekstraksi fitur."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total NaN setelah imputasi:
+no2    0
+co     0
+dtype: int64
+Semua data sudah terisi penuh, siap untuk ekstraksi fitur.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s2">"no2"</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"tab:red"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"NO2 setelah outlier treatment &amp; imputasi (bebas NaN)"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"NO2 (mol/m2)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6f2519018764ad8a2e54fa836be04743da7e4a997968c99f609b5ed03317441f.png" src="_images/6f2519018764ad8a2e54fa836be04743da7e4a997968c99f609b5ed03317441f.png" />
+</div>
+</div>
+</section>
+<section id="ekstraksi-fitur-dengan-tsfel">
+<h2>5.3 Ekstraksi Fitur dengan TSFEL<a class="headerlink" href="#ekstraksi-fitur-dengan-tsfel" title="Link to this heading">#</a></h2>
+<p>TSFEL menyediakan lebih dari 65 fitur otomatis dari domain <strong>statistical</strong>,
+<strong>temporal</strong>, <strong>spectral</strong>, dan <strong>fractal</strong>. Karena tugas ini cuma minta 3
+domain (statistical, temporal, spectral), konfigurasinya digabung manual
+supaya domain fractal tidak ikut.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">fs=1</span></code> di bawah artinya diasumsikan 1 sampel per hari (data harian) —
+dipakai sebagai basis perhitungan fitur domain spectral (berbasis FFT).</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tsfel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">get_features_by_domain</span><span class="p">()</span>
+<span class="n">no2_signal</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s2">"no2"</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># --- PATCH: panggil calc_window_features langsung, hindari .reindex() buggy ---</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.calc_features</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_window_features</span>
+
+<span class="n">X_raw</span> <span class="o">=</span> <span class="n">calc_window_features</span><span class="p">(</span>
+    <span class="n">cfg</span><span class="p">,</span>
+    <span class="n">no2_signal</span><span class="p">,</span>
+    <span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">window_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">no2_signal</span><span class="p">),</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Buang kolom duplikat (jika ada), lalu sort</span>
+<span class="n">X_all</span> <span class="o">=</span> <span class="n">X_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="o">~</span><span class="n">X_raw</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()]</span>
+<span class="n">X_all</span> <span class="o">=</span> <span class="n">X_all</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">X_all</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah fitur total:"</span><span class="p">,</span> <span class="n">X_all</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">X_all</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah fitur total: 148
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0_Absolute energy</th>
+      <th>0_Area under the curve</th>
+      <th>0_Autocorrelation</th>
+      <th>0_Average power</th>
+      <th>0_Centroid</th>
+      <th>0_ECDF Percentile Count_0</th>
+      <th>0_ECDF Percentile Count_1</th>
+      <th>0_ECDF Percentile_0</th>
+      <th>0_ECDF Percentile_1</th>
+      <th>0_ECDF_0</th>
+      <th>...</th>
+      <th>0_Wavelet standard deviation_0.12Hz</th>
+      <th>0_Wavelet standard deviation_0.25Hz</th>
+      <th>0_Wavelet variance_0.03Hz</th>
+      <th>0_Wavelet variance_0.04Hz</th>
+      <th>0_Wavelet variance_0.05Hz</th>
+      <th>0_Wavelet variance_0.06Hz</th>
+      <th>0_Wavelet variance_0.08Hz</th>
+      <th>0_Wavelet variance_0.12Hz</th>
+      <th>0_Wavelet variance_0.25Hz</th>
+      <th>0_Zero crossing rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2.437783e-07</td>
+      <td>0.008625</td>
+      <td>9.0</td>
+      <td>6.752861e-10</td>
+      <td>163.948262</td>
+      <td>72.0</td>
+      <td>289.0</td>
+      <td>0.000015</td>
+      <td>0.000033</td>
+      <td>0.002762</td>
+      <td>...</td>
+      <td>0.000009</td>
+      <td>0.000007</td>
+      <td>3.226975e-10</td>
+      <td>2.565726e-10</td>
+      <td>1.992515e-10</td>
+      <td>1.394366e-10</td>
+      <td>9.489029e-11</td>
+      <td>7.672306e-11</td>
+      <td>4.446014e-11</td>
+      <td>10.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 148 columns</p>
+</div></div></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Kalau masih error <code class="docutils literal notranslate"><span class="pre">ValueError:</span> <span class="pre">cannot</span> <span class="pre">reindex</span> <span class="pre">on</span> <span class="pre">an</span> <span class="pre">axis</span> <span class="pre">with</span> <span class="pre">duplicate</span> <span class="pre">labels</span></code>
+setelah pakai <code class="docutils literal notranslate"><span class="pre">window_size</span></code> eksplisit di atas, coba langkah berikut secara
+berurutan:</p>
+<ol class="arabic simple">
+<li><p>Update TSFEL ke versi terbaru: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">tsfel</span></code>, lalu Restart
+Kernel dan Run All lagi.</p></li>
+<li><p>Kalau masih gagal, cek versi pandas: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">show</span> <span class="pre">pandas</span></code>. Kalau versinya 2.x
+ke atas, coba turunkan sedikit: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;pandas&lt;2.0&quot;</span></code> lalu restart
+kernel (beberapa versi TSFEL lama belum kompatibel penuh dengan pandas 2.x).</p></li>
+</ol>
+<p>Kalau nama fungsi <code class="docutils literal notranslate"><span class="pre">time_series_features_extractor</span></code> error <code class="docutils literal notranslate"><span class="pre">AttributeError</span></code>,
+coba <code class="docutils literal notranslate"><span class="pre">tsfel.time_series_feature_extractor(...)</span></code> (tanpa huruf “s” di
+“series_feature”) — beda penamaan tergantung versi TSFEL kamu.</p>
+</div>
+</section>
+<section id="kelompokkan-fitur-per-domain">
+<h2>5.4 Kelompokkan Fitur per Domain<a class="headerlink" href="#kelompokkan-fitur-per-domain" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">domain_lookup</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">domain</span><span class="p">,</span> <span class="n">feats</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">feat_name</span> <span class="ow">in</span> <span class="n">feats</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">feat_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="n">domain_lookup</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">domain</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_domain</span><span class="p">(</span><span class="n">col_name</span><span class="p">):</span>
+    <span class="n">suffix</span> <span class="o">=</span> <span class="n">col_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="s2">"_"</span> <span class="ow">in</span> <span class="n">col_name</span> <span class="k">else</span> <span class="n">col_name</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">domain_lookup</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">)</span>
+
+<span class="n">feature_domain_map</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">get_domain</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">X_all</span><span class="o">.</span><span class="n">columns</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">"domain"</span><span class="p">)</span>
+<span class="n">feature_domain_map</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>domain
+unknown        98
+spectral       19
+statistical    17
+temporal       14
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sesuai tugas: cuma pakai domain statistical, temporal, spectral (buang fractal)</span>
+<span class="n">kolom_dipakai</span> <span class="o">=</span> <span class="n">feature_domain_map</span><span class="p">[</span>
+    <span class="n">feature_domain_map</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">"statistical"</span><span class="p">,</span> <span class="s2">"temporal"</span><span class="p">,</span> <span class="s2">"spectral"</span><span class="p">])</span>
+<span class="p">]</span><span class="o">.</span><span class="n">index</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">X_all</span><span class="p">[</span><span class="n">kolom_dipakai</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah fitur setelah difilter ke 3 domain:"</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah fitur setelah difilter ke 3 domain: 50
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0_Absolute energy</th>
+      <th>0_Area under the curve</th>
+      <th>0_Autocorrelation</th>
+      <th>0_Average power</th>
+      <th>0_Centroid</th>
+      <th>0_Entropy</th>
+      <th>0_Fundamental frequency</th>
+      <th>0_Histogram mode</th>
+      <th>0_Human range energy</th>
+      <th>0_Interquartile range</th>
+      <th>...</th>
+      <th>0_Spectral roll-on</th>
+      <th>0_Spectral skewness</th>
+      <th>0_Spectral slope</th>
+      <th>0_Spectral spread</th>
+      <th>0_Spectral variation</th>
+      <th>0_Standard deviation</th>
+      <th>0_Sum absolute diff</th>
+      <th>0_Variance</th>
+      <th>0_Wavelet entropy</th>
+      <th>0_Zero crossing rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2.437783e-07</td>
+      <td>0.008625</td>
+      <td>9.0</td>
+      <td>6.752861e-10</td>
+      <td>163.948262</td>
+      <td>1.0</td>
+      <td>0.002762</td>
+      <td>0.000023</td>
+      <td>0.0</td>
+      <td>0.000015</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.758966</td>
+      <td>-0.027213</td>
+      <td>0.156583</td>
+      <td>0.333931</td>
+      <td>0.00001</td>
+      <td>0.00198</td>
+      <td>1.038955e-10</td>
+      <td>2.132146</td>
+      <td>10.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 50 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Daftar lengkap fitur per domain (untuk dokumentasi laporan)</span>
+<span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"statistical"</span><span class="p">,</span> <span class="s2">"temporal"</span><span class="p">,</span> <span class="s2">"spectral"</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">]:</span>
+    <span class="n">kolom</span> <span class="o">=</span> <span class="n">feature_domain_map</span><span class="p">[</span><span class="n">feature_domain_map</span> <span class="o">==</span> <span class="n">domain</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== </span><span class="si">{</span><span class="n">domain</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">kolom</span><span class="p">)</span><span class="si">}</span><span class="s2"> fitur) ==="</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">kolom</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== STATISTICAL (17 fitur) ===
+['0_Absolute energy', '0_Average power', '0_Entropy', '0_Histogram mode', '0_Interquartile range', '0_Kurtosis', '0_Max', '0_Mean', '0_Mean absolute deviation', '0_Median', '0_Median absolute deviation', '0_Min', '0_Peak to peak distance', '0_Root mean square', '0_Skewness', '0_Standard deviation', '0_Variance']
+
+=== TEMPORAL (14 fitur) ===
+['0_Area under the curve', '0_Autocorrelation', '0_Centroid', '0_Mean absolute diff', '0_Mean diff', '0_Median absolute diff', '0_Median diff', '0_Negative turning points', '0_Neighbourhood peaks', '0_Positive turning points', '0_Signal distance', '0_Slope', '0_Sum absolute diff', '0_Zero crossing rate']
+
+=== SPECTRAL (19 fitur) ===
+['0_Fundamental frequency', '0_Human range energy', '0_Max power spectrum', '0_Maximum frequency', '0_Median frequency', '0_Power bandwidth', '0_Spectral centroid', '0_Spectral decrease', '0_Spectral distance', '0_Spectral entropy', '0_Spectral kurtosis', '0_Spectral positive turning points', '0_Spectral roll-off', '0_Spectral roll-on', '0_Spectral skewness', '0_Spectral slope', '0_Spectral spread', '0_Spectral variation', '0_Wavelet entropy']
+
+=== UNKNOWN (98 fitur) ===
+['0_ECDF Percentile Count_0', '0_ECDF Percentile Count_1', '0_ECDF Percentile_0', '0_ECDF Percentile_1', '0_ECDF_0', '0_ECDF_1', '0_ECDF_2', '0_ECDF_3', '0_ECDF_4', '0_ECDF_5', '0_ECDF_6', '0_ECDF_7', '0_ECDF_8', '0_ECDF_9', '0_LPCC_0', '0_LPCC_1', '0_LPCC_10', '0_LPCC_11', '0_LPCC_2', '0_LPCC_3', '0_LPCC_4', '0_LPCC_5', '0_LPCC_6', '0_LPCC_7', '0_LPCC_8', '0_LPCC_9', '0_MFCC_0', '0_MFCC_1', '0_MFCC_10', '0_MFCC_11', '0_MFCC_2', '0_MFCC_3', '0_MFCC_4', '0_MFCC_5', '0_MFCC_6', '0_MFCC_7', '0_MFCC_8', '0_MFCC_9', '0_Spectrogram mean coefficient_0.02Hz', '0_Spectrogram mean coefficient_0.03Hz', '0_Spectrogram mean coefficient_0.05Hz', '0_Spectrogram mean coefficient_0.06Hz', '0_Spectrogram mean coefficient_0.08Hz', '0_Spectrogram mean coefficient_0.0Hz', '0_Spectrogram mean coefficient_0.11Hz', '0_Spectrogram mean coefficient_0.13Hz', '0_Spectrogram mean coefficient_0.15Hz', '0_Spectrogram mean coefficient_0.16Hz', '0_Spectrogram mean coefficient_0.18Hz', '0_Spectrogram mean coefficient_0.19Hz', '0_Spectrogram mean coefficient_0.1Hz', '0_Spectrogram mean coefficient_0.21Hz', '0_Spectrogram mean coefficient_0.23Hz', '0_Spectrogram mean coefficient_0.24Hz', '0_Spectrogram mean coefficient_0.26Hz', '0_Spectrogram mean coefficient_0.27Hz', '0_Spectrogram mean coefficient_0.29Hz', '0_Spectrogram mean coefficient_0.31Hz', '0_Spectrogram mean coefficient_0.32Hz', '0_Spectrogram mean coefficient_0.34Hz', '0_Spectrogram mean coefficient_0.35Hz', '0_Spectrogram mean coefficient_0.37Hz', '0_Spectrogram mean coefficient_0.39Hz', '0_Spectrogram mean coefficient_0.42Hz', '0_Spectrogram mean coefficient_0.44Hz', '0_Spectrogram mean coefficient_0.45Hz', '0_Spectrogram mean coefficient_0.47Hz', '0_Spectrogram mean coefficient_0.48Hz', '0_Spectrogram mean coefficient_0.4Hz', '0_Spectrogram mean coefficient_0.5Hz', '0_Wavelet absolute mean_0.03Hz', '0_Wavelet absolute mean_0.04Hz', '0_Wavelet absolute mean_0.05Hz', '0_Wavelet absolute mean_0.06Hz', '0_Wavelet absolute mean_0.08Hz', '0_Wavelet absolute mean_0.12Hz', '0_Wavelet absolute mean_0.25Hz', '0_Wavelet energy_0.03Hz', '0_Wavelet energy_0.04Hz', '0_Wavelet energy_0.05Hz', '0_Wavelet energy_0.06Hz', '0_Wavelet energy_0.08Hz', '0_Wavelet energy_0.12Hz', '0_Wavelet energy_0.25Hz', '0_Wavelet standard deviation_0.03Hz', '0_Wavelet standard deviation_0.04Hz', '0_Wavelet standard deviation_0.05Hz', '0_Wavelet standard deviation_0.06Hz', '0_Wavelet standard deviation_0.08Hz', '0_Wavelet standard deviation_0.12Hz', '0_Wavelet standard deviation_0.25Hz', '0_Wavelet variance_0.03Hz', '0_Wavelet variance_0.04Hz', '0_Wavelet variance_0.05Hz', '0_Wavelet variance_0.06Hz', '0_Wavelet variance_0.08Hz', '0_Wavelet variance_0.12Hz', '0_Wavelet variance_0.25Hz']
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="simpan-hasil-untuk-di-upload">
+<h2>5.5 Simpan Hasil (untuk di-upload)<a class="headerlink" href="#simpan-hasil-untuk-di-upload" title="Link to this heading">#</a></h2>
+<p>File CSV di bawah ini adalah hasil akhir yang akan di-upload <strong>tanpa
+diubah sedikit pun</strong> ke <a class="reference external" href="https://psd.basisdata2-c.my.id/upload.php">https://psd.basisdata2-c.my.id/upload.php</a>,
+dengan Nama dan Daerah (Sreseh, Kabupaten Sampang) diisi sesuai identitas
+masing-masing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"../data/fitur_no2_bundah_sreseh.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Tersimpan di ../data/fitur_no2_bundah_sreseh.csv"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tersimpan di ../data/fitur_no2_bundah_sreseh.csv
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="kesimpulan">
+<h2>5.6 Kesimpulan<a class="headerlink" href="#kesimpulan" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Outlier pada NO2 dan CO dideteksi memakai metode IQR, ditandai sebagai
+NaN, lalu digabung dengan missing value asli (akibat tutupan awan) dan
+diisi sekaligus lewat interpolasi waktu — hasilnya time series NO2 &amp; CO
+yang sudah bebas nilai kosong.</p></li>
+<li><p>Sinyal NO2 yang sudah bersih diekstrak jadi fitur numerik dengan TSFEL,
+mencakup domain statistical (mis. mean, variance, skewness), temporal
+(mis. autocorrelation, slope, zero crossing rate), dan spectral (mis.
+spectral entropy, spectral centroid) — semuanya berbasis FFT dengan
+asumsi 1 sampel per hari.</p></li>
+<li><p>File fitur inilah yang jadi representasi numerik ringkas dari setahun
+data NO2 Desa Bundah, siap dipakai untuk analisis lanjutan (klasifikasi,
+clustering, dsb) dan sudah diupload ke basis data kelas.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04_migrasi_dan_statistik_knime.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">4. Migrasi Data ke Cloud (Aiven) &amp; Statistik di KNIME</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier-metode-iqr">5.1 Deteksi Outlier (metode IQR)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#treatment-outlier-imputasi-missing-value">5.2 Treatment Outlier + Imputasi Missing Value</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-dengan-tsfel">5.3 Ekstraksi Fitur dengan TSFEL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kelompokkan-fitur-per-domain">5.4 Kelompokkan Fitur per Domain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simpan-hasil-untuk-di-upload">5.5 Simpan Hasil (untuk di-upload)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan">5.6 Kesimpulan</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By M. Hendrik Purwanto (240411100118)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
