@@ -9,3 +9,4 @@ chapters:
   - file: 03_data_collection_dan_visualisasi
 - file: 04_migrasi_dan_statistik_knime
 - file: 05_preprocessing_dan_ekstraksi_fitur
+- file: 06_ekstraksi_fitur_co_so2
