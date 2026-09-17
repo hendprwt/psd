@@ -1,0 +1,1168 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6. Ekstraksi Fitur CO &amp; SO2 (TSFEL) &#8212; Hendrik - PSD</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '06_ekstraksi_fitur_co_so2';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="5. Preprocessing &amp; Ekstraksi Fitur (TSFEL)" href="05_preprocessing_dan_ekstraksi_fitur.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/avatar.jpeg" class="logo__image only-light" alt="Hendrik - PSD - Home"/>
+    <img src="_static/avatar.jpeg" class="logo__image only-dark pst-js-only" alt="Hendrik - PSD - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Kualitas Udara Desa Bundah, Kecamatan Sreseh, Kabupaten Sampang
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="profil.html">👋 Tentang Penulis</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="analisis_kualitas_udara.html">Analisis Kualitas Udara</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="01_business_understanding.html">1. Business Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_data_understanding.html">2. Data Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_data_collection_dan_visualisasi.html">3. Data Collection &amp; Time Series</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="04_migrasi_dan_statistik_knime.html">4. Migrasi Data ke Cloud (Aiven) &amp; Statistik di KNIME</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_preprocessing_dan_ekstraksi_fitur.html">5. Preprocessing &amp; Ekstraksi Fitur (TSFEL)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Ekstraksi Fitur CO &amp; SO2 (TSFEL)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hendprw/psd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hendprw/psd/issues/new?title=Issue%20on%20page%20%2F06_ekstraksi_fitur_co_so2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/06_ekstraksi_fitur_co_so2.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>6. Ekstraksi Fitur CO & SO2 (TSFEL)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-co">6.1 Ekstraksi Fitur CO</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-2-deteksi-outliers-dengan-metode-iqr-co">Tahap 2: Deteksi Outliers dengan Metode IQR - CO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-3-imputasi-missing-value-co">Tahap 3: Imputasi Missing Value - CO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-4-persiapan-data-untuk-tsfel-co">Tahap 4: Persiapan Data untuk TSFEL - CO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-5-eksekusi-tsfel-dan-penyimpanan-hasil-co">Tahap 5: Eksekusi TSFEL dan Penyimpanan Hasil - CO</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-so2">6.2 Ekstraksi Fitur SO2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pengambilan-data-so2-dari-openeo-sentinel-5p">Pengambilan Data SO2 dari openEO (Sentinel-5P)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parsing-dan-penggabungan-data-so2-ke-dataset">Parsing dan Penggabungan Data SO2 ke Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-2-deteksi-outliers-dengan-metode-iqr-so2">Tahap 2: Deteksi Outliers dengan Metode IQR - SO2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-3-imputasi-missing-value-so2">Tahap 3: Imputasi Missing Value - SO2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-4-persiapan-data-untuk-tsfel-so2">Tahap 4: Persiapan Data untuk TSFEL - SO2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-5-eksekusi-tsfel-dan-penyimpanan-hasil-so2">Tahap 5: Eksekusi TSFEL dan Penyimpanan Hasil - SO2</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pengelompokan-fitur-berdasarkan-domain">6.3 Pengelompokan Fitur Berdasarkan Domain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan">6.4 Kesimpulan</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ekstraksi-fitur-co-so2-tsfel">
+<h1>6. Ekstraksi Fitur CO &amp; SO2 (TSFEL)<a class="headerlink" href="#ekstraksi-fitur-co-so2-tsfel" title="Link to this heading">#</a></h1>
+<p>Setelah data berhasil dikumpulkan dan divisualisasikan pada tahapan sebelumnya,
+langkah berikutnya adalah melakukan <strong>ekstraksi fitur</strong> terhadap sinyal deret waktu
+polutan CO dan SO2. Ekstraksi fitur dilakukan menggunakan pustaka
+<a class="reference external" href="https://tsfel.readthedocs.io/">TSFEL</a> (Time Series Feature Extraction Library)
+untuk mengekstraksi karakteristik sinyal pada domain <strong>statistical</strong>, <strong>temporal</strong>, dan <strong>spectral</strong>.</p>
+<p>Data yang digunakan merupakan data harian hasil pengumpulan dari Sentinel-5P melalui openEO,
+periode <strong>September 2025 s.d. Agustus 2026</strong> di wilayah
+<strong>Desa Bundah, Kecamatan Sreseh, Kabupaten Sampang</strong> (total 362 baris data).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Library yang digunakan:
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">tsfel</span></code></p>
+</div>
+<section id="ekstraksi-fitur-co">
+<h2>6.1 Ekstraksi Fitur CO<a class="headerlink" href="#ekstraksi-fitur-co" title="Link to this heading">#</a></h2>
+<p>Tahapan analisis fitur CO dimulai dari pembacaan data, pembersihan nilai outlier,
+imputasi data hilang (missing value), hingga pemrosesan ekstraksi fitur dengan TSFEL.</p>
+<p>Pada tahap awal, kolom <code class="docutils literal notranslate"><span class="pre">co</span></code> dipastikan bertipe numerik dengan <code class="docutils literal notranslate"><span class="pre">pd.to_numeric(...,</span> <span class="pre">errors='coerce')</span></code>
+agar nilai teks/error dikonversi menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code>. Data juga diurutkan berdasarkan tanggal
+untuk memastikan urutan kronologis yang konsisten.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.features</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tsfel_features</span>
+
+<span class="c1"># ---------- 1. Muat dan bersihkan data ----------</span>
+<span class="c1"># Membaca data polutan CO</span>
+<span class="n">df_co</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/kualitas_udara_bundah_sreseh.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Kolom dataset:'</span><span class="p">,</span> <span class="n">df_co</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">df_co</span> <span class="o">=</span> <span class="n">df_co</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">target_co</span> <span class="o">=</span> <span class="s1">'co'</span>
+<span class="c1"># Memastikan kolom target bertipe numerik, error menjadi NaN</span>
+<span class="n">df_co</span><span class="p">[</span><span class="n">target_co</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df_co</span><span class="p">[</span><span class="n">target_co</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">'coerce'</span><span class="p">)</span>
+<span class="n">n_missing_before_co</span> <span class="o">=</span> <span class="n">df_co</span><span class="p">[</span><span class="n">target_co</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah nilai non-numerik/kosong awal yang dikonversi jadi NaN (CO): </span><span class="si">{</span><span class="n">n_missing_before_co</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index(['date', 'no2', 'co'], dtype='object')
+Jumlah nilai non-numerik/kosong awal yang dikonversi jadi NaN (CO): 190
+</pre></div>
+</div>
+</div>
+</div>
+<section id="tahap-2-deteksi-outliers-dengan-metode-iqr-co">
+<h3>Tahap 2: Deteksi Outliers dengan Metode IQR - CO<a class="headerlink" href="#tahap-2-deteksi-outliers-dengan-metode-iqr-co" title="Link to this heading">#</a></h3>
+<p>Deteksi nilai pencilan (outlier) dilakukan menggunakan pendekatan statistik <strong>Interquartile Range (IQR)</strong>.
+Nilai dianggap outlier jika berada di luar batas <span class="math notranslate nohighlight">\([Q1 - 1{,}5 \times IQR,\ Q3 + 1{,}5 \times IQR]\)</span>.</p>
+<p>Berdasarkan distribusi data CO:</p>
+<ul class="simple">
+<li><p><strong>Batas Bawah IQR</strong>: 0,0180</p></li>
+<li><p><strong>Batas Atas IQR</strong>: 0,0389</p></li>
+<li><p><strong>Jumlah Outlier</strong>: 1 data terdeteksi melampaui batas</p></li>
+</ul>
+<p>Nilai outlier tersebut diubah menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code> agar nantinya dapat diisi kembali secara proporsional
+bersama data kosong lainnya pada tahap imputasi.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ---------- 2. Deteksi dan Penghapusan Outliers (Pencilan) - CO ----------</span>
+<span class="c1"># Menghitung Kuartil 1 (Q1) dan Kuartil 3 (Q3)</span>
+<span class="n">Q1_co</span> <span class="o">=</span> <span class="n">df_co</span><span class="p">[</span><span class="n">target_co</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">Q3_co</span> <span class="o">=</span> <span class="n">df_co</span><span class="p">[</span><span class="n">target_co</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="c1"># Menghitung Interquartile Range (IQR)</span>
+<span class="n">IQR_co</span> <span class="o">=</span> <span class="n">Q3_co</span> <span class="o">-</span> <span class="n">Q1_co</span>
+<span class="c1"># Menentukan batas kewajaran data</span>
+<span class="n">lower_bound_co</span> <span class="o">=</span> <span class="n">Q1_co</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR_co</span>
+<span class="n">upper_bound_co</span> <span class="o">=</span> <span class="n">Q3_co</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR_co</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Batas Bawah IQR (CO): </span><span class="si">{</span><span class="n">lower_bound_co</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | Batas Atas IQR (CO): </span><span class="si">{</span><span class="n">upper_bound_co</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="c1"># Menghapus nilai yang melanggar batas (diubah menjadi NaN)</span>
+<span class="n">outliers_co</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_co</span><span class="p">[</span><span class="n">target_co</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound_co</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df_co</span><span class="p">[</span><span class="n">target_co</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound_co</span><span class="p">)</span>
+<span class="n">df_co</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">outliers_co</span><span class="p">,</span> <span class="n">target_co</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah outliers yang terdeteksi dan dikosongkan (CO): </span><span class="si">{</span><span class="n">outliers_co</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Batas Bawah IQR (CO): 0.0180 | Batas Atas IQR (CO): 0.0389
+Jumlah outliers yang terdeteksi dan dikosongkan (CO): 1
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tahap-3-imputasi-missing-value-co">
+<h3>Tahap 3: Imputasi Missing Value - CO<a class="headerlink" href="#tahap-3-imputasi-missing-value-co" title="Link to this heading">#</a></h3>
+<p>Data rekaman satelit Sentinel-5P sering memiliki kekosongan nilai akibat tutupan awan.
+Sebelum imputasi, terdapat total <strong>191 nilai kosong</strong> (190 missing value awal + 1 outlier yang dikosongkan).</p>
+<p>Imputasi dilakukan menggunakan <strong>interpolasi berbasis waktu</strong> (<code class="docutils literal notranslate"><span class="pre">interpolate(method='time')</span></code>)
+yang menghubungkan titik sebelum dan sesudah data kosong secara linear berdasarkan jarak tanggal.
+Selanjutnya diterapkan <code class="docutils literal notranslate"><span class="pre">ffill()</span></code> dan <code class="docutils literal notranslate"><span class="pre">bfill()</span></code> untuk memastikan tidak ada celah di ujung deret.</p>
+<p>Hasil akhirnya: <strong>sisa missing value = 0</strong> (data 100% terisi penuh, memenuhi syarat batas maksimal missing value).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ---------- 3. Imputasi Missing Value - CO ----------</span>
+<span class="c1"># Jadikan kolom tanggal sebagai index sementara untuk interpolasi</span>
+<span class="n">df_co_clean</span> <span class="o">=</span> <span class="n">df_co</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span>
+<span class="c1"># Melakukan interpolasi berbasis waktu</span>
+<span class="n">df_co_clean</span> <span class="o">=</span> <span class="n">df_co_clean</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'time'</span><span class="p">)</span>
+<span class="c1"># Menambal celah di awal atau akhir data jika interpolasi tidak menjangkau</span>
+<span class="n">df_co_clean</span> <span class="o">=</span> <span class="n">df_co_clean</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sisa missing value setelah proses imputasi (CO): </span><span class="si">{</span><span class="n">df_co_clean</span><span class="p">[</span><span class="n">target_co</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sisa missing value setelah proses imputasi (CO): 0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tahap-4-persiapan-data-untuk-tsfel-co">
+<h3>Tahap 4: Persiapan Data untuk TSFEL - CO<a class="headerlink" href="#tahap-4-persiapan-data-untuk-tsfel-co" title="Link to this heading">#</a></h3>
+<p>Data CO yang sudah bersih diubah ke bentuk array NumPy 1 dimensi (<code class="docutils literal notranslate"><span class="pre">signal_co</span></code>).
+Parameter frekuensi sampling ditentukan <code class="docutils literal notranslate"><span class="pre">fs</span> <span class="pre">=</span> <span class="pre">1</span></code> (1 data per hari).</p>
+<p>Disiapkan daftar <strong>68 fitur</strong> TSFEL yang mencakup:</p>
+<ul class="simple">
+<li><p><strong>Domain Statistical</strong> (20 fitur): mean, variance, standard deviation, skewness, kurtosis, entropy, dsb.</p></li>
+<li><p><strong>Domain Temporal</strong> (15 fitur): autocorrelation, slope, zero crossing rate, mean absolute difference, dsb.</p></li>
+<li><p><strong>Domain Spectral</strong> (26 fitur): spectral entropy, spectral centroid, MFCC, wavelet energy/entropy, dsb.</p></li>
+<li><p><strong>Domain Fractal</strong> (6 fitur) &amp; <strong>Domain Lainnya</strong> (1 fitur).</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fs</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">signal_co</span> <span class="o">=</span> <span class="n">df_co_clean</span><span class="p">[</span><span class="n">target_co</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># Daftar PERSIS fitur (68 Fitur)</span>
+<span class="n">FEATURE_LIST</span> <span class="o">=</span> <span class="s2">"""abs_energy auc autocorr average_power calc_centroid calc_max calc_mean calc_median calc_min calc_std calc_var dfa distance ecdf ecdf_percentile ecdf_percentile_count ecdf_slope entropy fundamental_frequency higuchi_fractal_dimension hist_mode human_range_energy hurst_exponent interq_range kurtosis lempel_ziv lpcc max_frequency max_power_spectrum maximum_fractal_length mean_abs_deviation mean_abs_diff mean_diff median_abs_deviation median_abs_diff median_diff median_frequency mfcc mse negative_turning neighbourhood_peaks petrosian_fractal_dimension pk_pk_distance positive_turning power_bandwidth rms skewness slope spectral_centroid spectral_decrease spectral_distance spectral_entropy spectral_kurtosis spectral_positive_turning spectral_roll_off spectral_roll_on spectral_skewness spectral_slope spectral_spread spectral_variation spectrogram_mean_coeff sum_abs_diff wavelet_abs_mean wavelet_energy wavelet_entropy wavelet_std wavelet_var zero_cross"""</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah fitur yang disiapkan untuk diekstrak:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">FEATURE_LIST</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah fitur yang disiapkan untuk diekstrak: 68
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tahap-5-eksekusi-tsfel-dan-penyimpanan-hasil-co">
+<h3>Tahap 5: Eksekusi TSFEL dan Penyimpanan Hasil - CO<a class="headerlink" href="#tahap-5-eksekusi-tsfel-dan-penyimpanan-hasil-co" title="Link to this heading">#</a></h3>
+<p>Ekstraksi ke-68 fitur dijalankan secara dinamis dengan bantuan fungsi:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">to_scalar</span></code>: memastikan setiap hasil fitur berupa nilai skalar numerik tunggal (mengambil rata-rata jika output berbentuk array).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">extract_one</span></code>: memanggil fungsi dari modul <code class="docutils literal notranslate"><span class="pre">tsfel.feature_extraction.features</span></code> sesuai parameter yang dibutuhkan (<code class="docutils literal notranslate"><span class="pre">fs</span></code> atau hanya sinyal).</p></li>
+</ul>
+<p>Seluruh hasil dirangkum menjadi DataFrame berukuran 1 baris x 68 kolom dan disimpan ke file <code class="docutils literal notranslate"><span class="pre">fitur_co_bundah_sreseh.csv</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ---------- 5. Proses Ekstraksi Fitur - CO ----------</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_scalar</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="c1"># Mengubah hasil dictionary dari TSFEL menjadi nilai mentah</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"values"</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">"values"</span><span class="p">]</span>
+    <span class="c1"># Jika hasil berupa array atau list panjang, kita ambil rata-ratanya</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+    <span class="c1"># Jika sudah skalar, ubah jadi float standar</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_one</span><span class="p">(</span><span class="n">fn_name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+    <span class="c1"># Memanggil fungsi TSFEL secara dinamis berdasarkan nama fiturnya</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tsfel_features</span><span class="p">,</span> <span class="n">fn_name</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span>
+    <span class="c1"># Memeriksa apakah fungsi tersebut butuh parameter 'fs'</span>
+    <span class="k">if</span> <span class="s2">"fs"</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">to_scalar</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="c1"># Menjalankan iterasi untuk setiap fitur pada sinyal CO</span>
+<span class="n">row_co</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">fn_name</span> <span class="ow">in</span> <span class="n">FEATURE_LIST</span><span class="p">:</span>
+    <span class="n">row_co</span><span class="p">[</span><span class="n">fn_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract_one</span><span class="p">(</span><span class="n">fn_name</span><span class="p">,</span> <span class="n">signal_co</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+
+<span class="n">extracted_co</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">row_co</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Berhasil! Ekstraksi CO menghasilkan </span><span class="si">{</span><span class="n">extracted_co</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> fitur."</span><span class="p">)</span>
+
+<span class="c1"># Menyimpan hasil ke dalam format CSV</span>
+<span class="n">output_co</span> <span class="o">=</span> <span class="s1">'../data/fitur_co_bundah_sreseh.csv'</span>
+<span class="n">extracted_co</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_co</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"File berhasil disimpan sebagai: </span><span class="si">{</span><span class="n">output_co</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil! Ekstraksi CO menghasilkan 68 fitur.
+File berhasil disimpan sebagai: ../data/fitur_co_bundah_sreseh.csv
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="ekstraksi-fitur-so2">
+<h2>6.2 Ekstraksi Fitur SO2<a class="headerlink" href="#ekstraksi-fitur-so2" title="Link to this heading">#</a></h2>
+<p>Tahapan pada polutan SO2 mengikuti metodologi dan urutan yang sama dengan CO.
+Data SO2 diperoleh melalui crawling dari Sentinel-5P via openEO pada sel di bawah ini,
+kemudian digabungkan ke file dataset utama <code class="docutils literal notranslate"><span class="pre">kualitas_udara_bundah_sreseh.csv</span></code>.</p>
+<p>Setelah kolom SO2 tersedia, proses dilanjutkan ke deteksi outlier, imputasi, dan ekstraksi 68 fitur TSFEL.</p>
+<section id="pengambilan-data-so2-dari-openeo-sentinel-5p">
+<h3>Pengambilan Data SO2 dari openEO (Sentinel-5P)<a class="headerlink" href="#pengambilan-data-so2-dari-openeo-sentinel-5p" title="Link to this heading">#</a></h3>
+<p>Pengambilan data SO2 menggunakan koleksi <strong>SENTINEL_5P_L2</strong> band <code class="docutils literal notranslate"><span class="pre">SO2</span></code> melalui koneksi openEO
+Copernicus Data Space Ecosystem (CDSE) dengan batasan spasial poligon Desa Bundah
+dan rentang waktu September 2025 s.d. Agustus 2026.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pengambilan data SO2 via openEO CDSE</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openeo</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'../geojson/bundah_sreseh_sampang.geojson'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">aoi</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">START_DATE</span> <span class="o">=</span> <span class="s1">'2025-09-01'</span>
+<span class="n">END_DATE</span>   <span class="o">=</span> <span class="s1">'2026-08-31'</span>
+
+<span class="n">connection</span> <span class="o">=</span> <span class="n">openeo</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">'openeofed.dataspace.copernicus.eu'</span><span class="p">)</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">authenticate_oidc</span><span class="p">()</span>
+
+<span class="n">cube_so2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
+    <span class="s1">'SENTINEL_5P_L2'</span><span class="p">,</span>
+    <span class="n">spatial_extent</span><span class="o">=</span><span class="n">aoi</span><span class="p">,</span>
+    <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="n">START_DATE</span><span class="p">,</span> <span class="n">END_DATE</span><span class="p">],</span>
+    <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">so2_ts</span> <span class="o">=</span> <span class="n">cube_so2</span><span class="o">.</span><span class="n">aggregate_spatial</span><span class="p">(</span><span class="n">geometries</span><span class="o">=</span><span class="n">aoi</span><span class="p">,</span> <span class="n">reducer</span><span class="o">=</span><span class="s1">'mean'</span><span class="p">)</span>
+
+<span class="n">so2_job</span> <span class="o">=</span> <span class="n">so2_ts</span><span class="o">.</span><span class="n">create_job</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'so2_bundah_sreseh_1thn'</span><span class="p">,</span> <span class="n">out_format</span><span class="o">=</span><span class="s1">'JSON'</span><span class="p">)</span>
+<span class="n">so2_job</span><span class="o">.</span><span class="n">start_and_wait</span><span class="p">()</span>
+<span class="n">so2_job</span><span class="o">.</span><span class="n">get_results</span><span class="p">()</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="s1">'../data/so2_raw.json'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'so2_raw.json berhasil diunduh!'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Authenticated using refresh token.
+0:00:00 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': send 'start'
+0:00:06 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': queued (progress 0%)
+0:00:11 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': queued (progress 0%)
+0:00:18 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': queued (progress 0%)
+0:00:26 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': queued (progress 0%)
+0:00:37 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': queued (progress 0%)
+0:00:49 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': running (progress N/A)
+0:01:05 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': running (progress N/A)
+0:01:24 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': running (progress N/A)
+0:01:49 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': running (progress N/A)
+0:02:19 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': running (progress N/A)
+0:02:57 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': running (progress N/A)
+0:03:44 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': running (progress N/A)
+0:04:43 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': running (progress N/A)
+0:05:44 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': running (progress N/A)
+0:06:44 Job 'cdse-j-2609171611334dd4b36f82385d0ebc0d': finished (progress 100%)
+so2_raw.json berhasil diunduh!
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="parsing-dan-penggabungan-data-so2-ke-dataset">
+<h3>Parsing dan Penggabungan Data SO2 ke Dataset<a class="headerlink" href="#parsing-dan-penggabungan-data-so2-ke-dataset" title="Link to this heading">#</a></h3>
+<p>Hasil unduhan <code class="docutils literal notranslate"><span class="pre">so2_raw.json</span></code> di-parse menjadi deret waktu bertanggal,
+lalu digabungkan dengan file <code class="docutils literal notranslate"><span class="pre">kualitas_udara_bundah_sreseh.csv</span></code> berdasarkan kolom <code class="docutils literal notranslate"><span class="pre">date</span></code>.
+Dengan demikian dataset memiliki kolom lengkap: <code class="docutils literal notranslate"><span class="pre">date</span></code>, <code class="docutils literal notranslate"><span class="pre">no2</span></code>, <code class="docutils literal notranslate"><span class="pre">co</span></code>, dan <code class="docutils literal notranslate"><span class="pre">so2</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Parse so2_raw.json</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_openeo_timeseries</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">colname</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ts</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">raw</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">values</span> <span class="ow">and</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">'date'</span><span class="p">:</span> <span class="n">ts</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">colname</span><span class="p">:</span> <span class="n">v</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+
+<span class="n">df_so2_raw</span> <span class="o">=</span> <span class="n">load_openeo_timeseries</span><span class="p">(</span><span class="s1">'../data/so2_raw.json'</span><span class="p">,</span> <span class="s1">'so2'</span><span class="p">)</span>
+<span class="n">df_so2_raw</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_so2_raw</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
+<span class="n">df_so2_raw</span> <span class="o">=</span> <span class="n">df_so2_raw</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Data SO2 dari openEO:'</span><span class="p">,</span> <span class="n">df_so2_raw</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_so2_raw</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="c1"># Gabungkan ke CSV utama</span>
+<span class="n">df_main</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/kualitas_udara_bundah_sreseh.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
+<span class="k">if</span> <span class="s1">'so2'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_main</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">df_main</span> <span class="o">=</span> <span class="n">df_main</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_so2_raw</span><span class="p">[[</span><span class="s1">'date'</span><span class="p">,</span> <span class="s1">'so2'</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+    <span class="n">df_main</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'../data/kualitas_udara_bundah_sreseh.csv'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Kolom so2 berhasil ditambahkan ke CSV!'</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Kolom so2 sudah ada di CSV, tidak perlu diperbarui.'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Kolom CSV sekarang:'</span><span class="p">,</span> <span class="n">df_main</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data SO2 dari openEO: (350, 2)
+        date       so2
+0 2025-09-01  0.000200
+1 2025-09-02       NaN
+2 2025-09-03 -0.000045
+3 2025-09-04 -0.000011
+4 2025-09-05 -0.000127
+Kolom so2 berhasil ditambahkan ke CSV!
+Kolom CSV sekarang: ['date', 'no2', 'co', 'so2']
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ---------- 1. Muat dan bersihkan data - SO2 ----------</span>
+<span class="c1"># Membaca data polutan SO2</span>
+<span class="n">df_so2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/kualitas_udara_bundah_sreseh.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Kolom dataset:'</span><span class="p">,</span> <span class="n">df_so2</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">df_so2</span> <span class="o">=</span> <span class="n">df_so2</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">target_so2</span> <span class="o">=</span> <span class="s1">'so2'</span>
+<span class="c1"># Memastikan kolom target bertipe numerik, error menjadi NaN</span>
+<span class="n">df_so2</span><span class="p">[</span><span class="n">target_so2</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df_so2</span><span class="p">[</span><span class="n">target_so2</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">'coerce'</span><span class="p">)</span>
+<span class="n">n_missing_before_so2</span> <span class="o">=</span> <span class="n">df_so2</span><span class="p">[</span><span class="n">target_so2</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah nilai non-numerik/kosong awal yang dikonversi jadi NaN (SO2): </span><span class="si">{</span><span class="n">n_missing_before_so2</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index(['date', 'no2', 'co', 'so2'], dtype='object')
+Jumlah nilai non-numerik/kosong awal yang dikonversi jadi NaN (SO2): 124
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tahap-2-deteksi-outliers-dengan-metode-iqr-so2">
+<h3>Tahap 2: Deteksi Outliers dengan Metode IQR - SO2<a class="headerlink" href="#tahap-2-deteksi-outliers-dengan-metode-iqr-so2" title="Link to this heading">#</a></h3>
+<p>Metode IQR diterapkan pada kolom <code class="docutils literal notranslate"><span class="pre">so2</span></code> untuk menemukan lonjakan nilai abnormal:</p>
+<ul class="simple">
+<li><p><strong>Batas Bawah IQR</strong>: -0,0003</p></li>
+<li><p><strong>Batas Atas IQR</strong>: 0,0003</p></li>
+<li><p><strong>Jumlah Outlier</strong>: 11 data terdeteksi dan dikosongkan (diubah menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code>)</p></li>
+</ul>
+<p>Rentang yang rapat ini mengindikasikan bahwa sebagian besar nilai konsentrasi SO2 berkumpul di sekitar nol,
+sehingga anomali akibat gangguan sensor atau tutupan awan dapat teridentifikasi dengan baik.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ---------- 2. Deteksi dan Penghapusan Outliers (Pencilan) - SO2 ----------</span>
+<span class="c1"># Menghitung Kuartil 1 (Q1) dan Kuartil 3 (Q3)</span>
+<span class="n">Q1_so2</span> <span class="o">=</span> <span class="n">df_so2</span><span class="p">[</span><span class="n">target_so2</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">Q3_so2</span> <span class="o">=</span> <span class="n">df_so2</span><span class="p">[</span><span class="n">target_so2</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="c1"># Menghitung Interquartile Range (IQR)</span>
+<span class="n">IQR_so2</span> <span class="o">=</span> <span class="n">Q3_so2</span> <span class="o">-</span> <span class="n">Q1_so2</span>
+<span class="c1"># Menentukan batas kewajaran data</span>
+<span class="n">lower_bound_so2</span> <span class="o">=</span> <span class="n">Q1_so2</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR_so2</span>
+<span class="n">upper_bound_so2</span> <span class="o">=</span> <span class="n">Q3_so2</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR_so2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Batas Bawah IQR (SO2): </span><span class="si">{</span><span class="n">lower_bound_so2</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | Batas Atas IQR (SO2): </span><span class="si">{</span><span class="n">upper_bound_so2</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="c1"># Menghapus nilai yang melanggar batas (diubah menjadi NaN)</span>
+<span class="n">outliers_so2</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_so2</span><span class="p">[</span><span class="n">target_so2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound_so2</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df_so2</span><span class="p">[</span><span class="n">target_so2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound_so2</span><span class="p">)</span>
+<span class="n">df_so2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">outliers_so2</span><span class="p">,</span> <span class="n">target_so2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah outliers yang terdeteksi dan dikosongkan (SO2): </span><span class="si">{</span><span class="n">outliers_so2</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Batas Bawah IQR (SO2): -0.0003 | Batas Atas IQR (SO2): 0.0003
+Jumlah outliers yang terdeteksi dan dikosongkan (SO2): 11
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tahap-3-imputasi-missing-value-so2">
+<h3>Tahap 3: Imputasi Missing Value - SO2<a class="headerlink" href="#tahap-3-imputasi-missing-value-so2" title="Link to this heading">#</a></h3>
+<p>Pada data SO2, terdapat <strong>124 nilai kosong awal</strong> dan <strong>11 outlier</strong>, menghasilkan total <strong>135 NaN</strong> yang harus diisi.</p>
+<p>Menggunakan metode interpolasi waktu (<code class="docutils literal notranslate"><span class="pre">interpolate(method='time')</span></code>) beserta <code class="docutils literal notranslate"><span class="pre">ffill()</span></code> dan <code class="docutils literal notranslate"><span class="pre">bfill()</span></code>,
+seluruh data berhasil diisi sehingga <strong>sisa missing value = 0</strong>.
+Data kini siap diekstraksi tanpa kendala celah kosong.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ---------- 3. Imputasi Missing Value - SO2 ----------</span>
+<span class="c1"># Jadikan kolom tanggal sebagai index sementara untuk interpolasi</span>
+<span class="n">df_so2_clean</span> <span class="o">=</span> <span class="n">df_so2</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span>
+<span class="c1"># Melakukan interpolasi berbasis waktu</span>
+<span class="n">df_so2_clean</span> <span class="o">=</span> <span class="n">df_so2_clean</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'time'</span><span class="p">)</span>
+<span class="c1"># Menambal celah di awal atau akhir data jika interpolasi tidak menjangkau</span>
+<span class="n">df_so2_clean</span> <span class="o">=</span> <span class="n">df_so2_clean</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sisa missing value setelah proses imputasi (SO2): </span><span class="si">{</span><span class="n">df_so2_clean</span><span class="p">[</span><span class="n">target_so2</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sisa missing value setelah proses imputasi (SO2): 0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tahap-4-persiapan-data-untuk-tsfel-so2">
+<h3>Tahap 4: Persiapan Data untuk TSFEL - SO2<a class="headerlink" href="#tahap-4-persiapan-data-untuk-tsfel-so2" title="Link to this heading">#</a></h3>
+<p>Sinyal SO2 bersih dikonversi ke array 1 dimensi (<code class="docutils literal notranslate"><span class="pre">signal_so2</span></code>) dengan parameter <span class="math notranslate nohighlight">\(fs = 1\)</span>.
+Daftar 68 fitur (<code class="docutils literal notranslate"><span class="pre">FEATURE_LIST</span></code>) yang digunakan sama persis dengan ekstraksi CO sebelumnya.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">signal_so2</span> <span class="o">=</span> <span class="n">df_so2_clean</span><span class="p">[</span><span class="n">target_so2</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah fitur yang disiapkan untuk diekstrak:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">FEATURE_LIST</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah fitur yang disiapkan untuk diekstrak: 68
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tahap-5-eksekusi-tsfel-dan-penyimpanan-hasil-so2">
+<h3>Tahap 5: Eksekusi TSFEL dan Penyimpanan Hasil - SO2<a class="headerlink" href="#tahap-5-eksekusi-tsfel-dan-penyimpanan-hasil-so2" title="Link to this heading">#</a></h3>
+<p>Ekstraksi fitur dijalankan menggunakan fungsi <code class="docutils literal notranslate"><span class="pre">to_scalar</span></code> dan <code class="docutils literal notranslate"><span class="pre">extract_one</span></code> pada sinyal SO2.
+Hasil akhir berupa 1 baris x 68 fitur numerik disimpan ke file <code class="docutils literal notranslate"><span class="pre">fitur_so2_bundah_sreseh.csv</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ---------- 5. Proses Ekstraksi Fitur - SO2 ----------</span>
+<span class="c1"># Menjalankan iterasi untuk setiap fitur pada sinyal SO2</span>
+<span class="n">row_so2</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">fn_name</span> <span class="ow">in</span> <span class="n">FEATURE_LIST</span><span class="p">:</span>
+    <span class="n">row_so2</span><span class="p">[</span><span class="n">fn_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract_one</span><span class="p">(</span><span class="n">fn_name</span><span class="p">,</span> <span class="n">signal_so2</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+
+<span class="n">extracted_so2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">row_so2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Berhasil! Ekstraksi SO2 menghasilkan </span><span class="si">{</span><span class="n">extracted_so2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> fitur."</span><span class="p">)</span>
+
+<span class="c1"># Menyimpan hasil ke dalam format CSV</span>
+<span class="n">output_so2</span> <span class="o">=</span> <span class="s1">'../data/fitur_so2_bundah_sreseh.csv'</span>
+<span class="n">extracted_so2</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_so2</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"File berhasil disimpan sebagai: </span><span class="si">{</span><span class="n">output_so2</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil! Ekstraksi SO2 menghasilkan 68 fitur.
+File berhasil disimpan sebagai: ../data/fitur_so2_bundah_sreseh.csv
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="pengelompokan-fitur-berdasarkan-domain">
+<h2>6.3 Pengelompokan Fitur Berdasarkan Domain<a class="headerlink" href="#pengelompokan-fitur-berdasarkan-domain" title="Link to this heading">#</a></h2>
+<p>Berikut adalah rekapitulasi ke-68 fitur yang berhasil diekstrak berdasarkan domain resminya di TSFEL:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Domain</p></th>
+<th class="head text-center"><p>Jumlah Fitur</p></th>
+<th class="head"><p>Deskripsi Singkat</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Spectral</strong></p></td>
+<td class="text-center"><p>26</p></td>
+<td><p>Karakteristik frekuensi sinyal (FFT, spectral centroid, spectral entropy, wavelet)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Statistical</strong></p></td>
+<td class="text-center"><p>20</p></td>
+<td><p>Ukuran pemusatan dan penyebaran data (mean, median, std, variance, skewness, kurtosis)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Temporal</strong></p></td>
+<td class="text-center"><p>15</p></td>
+<td><p>Pola perubahan terhadap waktu (autocorrelation, slope, zero crossing rate, diff)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Fractal</strong></p></td>
+<td class="text-center"><p>6</p></td>
+<td><p>Kompleksitas dan dimensi fraktal deret waktu (Higuchi, Petrosian, DFA, Hurst)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Unknown / Lainnya</strong></p></td>
+<td class="text-center"><p>1</p></td>
+<td><p>Fitur turunan ECDF slope</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Total</strong></p></td>
+<td class="text-center"><p><strong>68</strong></p></td>
+<td><p>Fitur lengkap siap untuk pemodelan machine learning</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tsfel</span>
+
+<span class="c1"># Ambil metadata domain resmi dari TSFEL (statistical/temporal/spectral),</span>
+<span class="c1"># lalu cocokkan ke nama fungsi snake_case yang kita pakai di FEATURE_LIST</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">get_features_by_domain</span><span class="p">()</span>
+
+<span class="n">func_to_domain</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">domain</span><span class="p">,</span> <span class="n">feats</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">feat_key</span><span class="p">,</span> <span class="n">meta</span> <span class="ow">in</span> <span class="n">feats</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">func_path</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"function"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="n">func_name</span> <span class="o">=</span> <span class="n">func_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">func_to_domain</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">domain</span>
+
+<span class="n">feature_domain_map</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+    <span class="p">{</span><span class="n">fn</span><span class="p">:</span> <span class="n">func_to_domain</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">)</span> <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">FEATURE_LIST</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">"domain"</span>
+<span class="p">)</span>
+<span class="n">feature_domain_map</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>domain
+spectral       26
+statistical    20
+temporal       15
+fractal         6
+unknown         1
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Daftar lengkap fitur per domain (untuk dokumentasi laporan)</span>
+<span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"statistical"</span><span class="p">,</span> <span class="s2">"temporal"</span><span class="p">,</span> <span class="s2">"spectral"</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">]:</span>
+    <span class="n">kolom</span> <span class="o">=</span> <span class="n">feature_domain_map</span><span class="p">[</span><span class="n">feature_domain_map</span> <span class="o">==</span> <span class="n">domain</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== </span><span class="si">{</span><span class="n">domain</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">kolom</span><span class="p">)</span><span class="si">}</span><span class="s2"> fitur) ==="</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">kolom</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== STATISTICAL (20 fitur) ===
+['abs_energy', 'average_power', 'calc_max', 'calc_mean', 'calc_median', 'calc_min', 'calc_std', 'calc_var', 'ecdf', 'ecdf_percentile', 'ecdf_percentile_count', 'entropy', 'hist_mode', 'interq_range', 'kurtosis', 'mean_abs_deviation', 'median_abs_deviation', 'pk_pk_distance', 'rms', 'skewness']
+
+=== TEMPORAL (15 fitur) ===
+['auc', 'autocorr', 'calc_centroid', 'distance', 'lempel_ziv', 'mean_abs_diff', 'mean_diff', 'median_abs_diff', 'median_diff', 'negative_turning', 'neighbourhood_peaks', 'positive_turning', 'slope', 'sum_abs_diff', 'zero_cross']
+
+=== SPECTRAL (26 fitur) ===
+['fundamental_frequency', 'human_range_energy', 'lpcc', 'max_frequency', 'max_power_spectrum', 'median_frequency', 'mfcc', 'power_bandwidth', 'spectral_centroid', 'spectral_decrease', 'spectral_distance', 'spectral_entropy', 'spectral_kurtosis', 'spectral_positive_turning', 'spectral_roll_off', 'spectral_roll_on', 'spectral_skewness', 'spectral_slope', 'spectral_spread', 'spectral_variation', 'spectrogram_mean_coeff', 'wavelet_abs_mean', 'wavelet_energy', 'wavelet_entropy', 'wavelet_std', 'wavelet_var']
+
+=== UNKNOWN (1 fitur) ===
+['ecdf_slope']
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="kesimpulan">
+<h2>6.4 Kesimpulan<a class="headerlink" href="#kesimpulan" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Pembersihan Data &amp; Imputasi</strong>:</p>
+<ul class="simple">
+<li><p>Sinyal CO memiliki 1 outlier (batas normal [0,0180; 0,0389]) dan total 191 data kosong sebelum imputasi.</p></li>
+<li><p>Sinyal SO2 memiliki 11 outlier (batas normal [-0,0003; 0,0003]) dan total 135 data kosong sebelum imputasi.</p></li>
+<li><p>Metode interpolasi waktu berhasil mengisi seluruh data kosong sehingga <strong>sisa missing value = 0</strong> (0%), memenuhi batas toleransi kualitas data.</p></li>
+</ul>
+</li>
+<li><p><strong>Ekstraksi Fitur TSFEL</strong>:</p>
+<ul class="simple">
+<li><p>Sebanyak <strong>68 fitur numerik</strong> berhasil diekstraksi untuk masing-masing polutan (CO dan SO2).</p></li>
+<li><p>Fitur terdistribusi ke domain spectral (26), statistical (20), temporal (15), fractal (6), dan turunan lainnya (1).</p></li>
+</ul>
+</li>
+<li><p><strong>Penyimpanan Hasil</strong>:</p>
+<ul class="simple">
+<li><p>Fitur CO tersimpan di <code class="docutils literal notranslate"><span class="pre">../data/fitur_co_bundah_sreseh.csv</span></code>.</p></li>
+<li><p>Fitur SO2 tersimpan di <code class="docutils literal notranslate"><span class="pre">../data/fitur_so2_bundah_sreseh.csv</span></code>.</p></li>
+<li><p>Dataset terintegrasi tersimpan di <code class="docutils literal notranslate"><span class="pre">../data/kualitas_udara_bundah_sreseh.csv</span></code> lengkap dengan kolom NO2, CO, dan SO2.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="05_preprocessing_dan_ekstraksi_fitur.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">5. Preprocessing &amp; Ekstraksi Fitur (TSFEL)</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-co">6.1 Ekstraksi Fitur CO</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-2-deteksi-outliers-dengan-metode-iqr-co">Tahap 2: Deteksi Outliers dengan Metode IQR - CO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-3-imputasi-missing-value-co">Tahap 3: Imputasi Missing Value - CO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-4-persiapan-data-untuk-tsfel-co">Tahap 4: Persiapan Data untuk TSFEL - CO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-5-eksekusi-tsfel-dan-penyimpanan-hasil-co">Tahap 5: Eksekusi TSFEL dan Penyimpanan Hasil - CO</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-so2">6.2 Ekstraksi Fitur SO2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pengambilan-data-so2-dari-openeo-sentinel-5p">Pengambilan Data SO2 dari openEO (Sentinel-5P)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parsing-dan-penggabungan-data-so2-ke-dataset">Parsing dan Penggabungan Data SO2 ke Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-2-deteksi-outliers-dengan-metode-iqr-so2">Tahap 2: Deteksi Outliers dengan Metode IQR - SO2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-3-imputasi-missing-value-so2">Tahap 3: Imputasi Missing Value - SO2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-4-persiapan-data-untuk-tsfel-so2">Tahap 4: Persiapan Data untuk TSFEL - SO2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tahap-5-eksekusi-tsfel-dan-penyimpanan-hasil-so2">Tahap 5: Eksekusi TSFEL dan Penyimpanan Hasil - SO2</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pengelompokan-fitur-berdasarkan-domain">6.3 Pengelompokan Fitur Berdasarkan Domain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan">6.4 Kesimpulan</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By M. Hendrik Purwanto (240411100118)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
