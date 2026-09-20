@@ -561,7 +561,7 @@ $<span class="math notranslate nohighlight">\(\log_2(K) = \log_2(4) = 2{,}000000
 $<span class="math notranslate nohighlight">\(H = \frac{1{,}310656}{2{,}000000} = \mathbf{0{,}655328}\)</span>$</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Verifikasi Fitur 1 menggunakan pustaka TSFEL</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Verifikasi Fitur 1 menggunakan pustaka TSFEL</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.features</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
 
@@ -572,6 +572,13 @@ $<span class="math notranslate nohighlight">\(H = \frac{1{,}310656}{2{,}000000} 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Hasil Perhitungan Manual : 0.655328"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Hasil Fungsi TSFEL       : </span><span class="si">{</span><span class="n">tsfel_entropy</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Kesesuaian Eksak         : </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="mf">0.655328</span><span class="p">,</span><span class="w"> </span><span class="n">tsfel_entropy</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hasil Perhitungan Manual : 0.655328
+Hasil Fungsi TSFEL       : 0.655328
+Kesesuaian Eksak         : True
 </pre></div>
 </div>
 </div>
@@ -696,7 +703,7 @@ Dihitung variansi spektral <span class="math notranslate nohighlight">\(\sigma_f
 $<span class="math notranslate nohighlight">\(\text{SK} = \frac{0{,}003607}{0{,}001501} = \mathbf{2{,}402571}\)</span>$</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Verifikasi Fitur 2 menggunakan pustaka TSFEL</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Verifikasi Fitur 2 menggunakan pustaka TSFEL</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.features</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
 
@@ -707,6 +714,13 @@ $<span class="math notranslate nohighlight">\(\text{SK} = \frac{0{,}003607}{0{,}
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Hasil Perhitungan Manual : 2.402571"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Hasil Fungsi TSFEL       : </span><span class="si">{</span><span class="n">tsfel_kurtosis</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Kesesuaian Eksak         : </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="mf">2.402571</span><span class="p">,</span><span class="w"> </span><span class="n">tsfel_kurtosis</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hasil Perhitungan Manual : 2.402571
+Hasil Fungsi TSFEL       : 2.402571
+Kesesuaian Eksak         : True
 </pre></div>
 </div>
 </div>
@@ -761,7 +775,7 @@ untuk lokasi pengamatan <strong>Sreseh, Sampang</strong> (M. Hendrik Purwanto):<
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pengecekan nilai aktual langsung dari dataset proyek</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pengecekan nilai aktual langsung dari dataset proyek</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="n">files</span> <span class="o">=</span> <span class="p">{</span>
@@ -789,6 +803,64 @@ untuk lokasi pengamatan <strong>Sreseh, Sampang</strong> (M. Hendrik Purwanto):<
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Polutan</th>
+      <th>ID</th>
+      <th>Nama</th>
+      <th>Lokasi</th>
+      <th>spectral_entropy</th>
+      <th>spectral_kurtosis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NO2</td>
+      <td>33</td>
+      <td>M. Hendrik Purwanto</td>
+      <td>Sreseh, Sampang</td>
+      <td>0.750765</td>
+      <td>2.216742</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>CO</td>
+      <td>7</td>
+      <td>M. Hendrik Purwanto</td>
+      <td>Sreseh, Sampang</td>
+      <td>0.792770</td>
+      <td>4.919090</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>SO2</td>
+      <td>6</td>
+      <td>M. Hendrik Purwanto</td>
+      <td>Sreseh, Sampang</td>
+      <td>0.872564</td>
+      <td>1.866887</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </section>
 </section>
