@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>1. Business Understanding &#8212; Hendrik - PSD</title>
+    <title>9. Clustering K-Means &amp; PCA Menggunakan KNIME Analytics Platform &#8212; Hendrik - PSD</title>
   
   
   
@@ -60,12 +60,13 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '01_business_understanding';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '09_clustering_kmeans_knime';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="2. Data Understanding" href="02_data_understanding.html" />
-    <link rel="prev" title="Analisis Kualitas Udara" href="analisis_kualitas_udara.html" />
+    <link rel="prev" title="8. Deskripsi Fitur &amp; Perhitungan Manual" href="08_deskripsi_fitur_dan_perhitungan_manual.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -221,8 +222,8 @@
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="profil.html">👋 Tentang Penulis</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="analisis_kualitas_udara.html">Analisis Kualitas Udara</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">1. Business Understanding</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="analisis_kualitas_udara.html">Analisis Kualitas Udara</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="01_business_understanding.html">1. Business Understanding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02_data_understanding.html">2. Data Understanding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="03_data_collection_dan_visualisasi.html">3. Data Collection &amp; Time Series</a></li>
 </ul>
@@ -232,7 +233,7 @@
 <li class="toctree-l1"><a class="reference internal" href="06_ekstraksi_fitur_co_so2.html">6. Ekstraksi Fitur CO &amp; SO2 (TSFEL)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07_penentuan_cluster_optimal.html">7. Penentuan Jumlah Cluster Optimal pada K-Means Clustering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08_deskripsi_fitur_dan_perhitungan_manual.html">8. Deskripsi Fitur &amp; Perhitungan Manual</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09_clustering_kmeans_knime.html">9. Clustering K-Means &amp; PCA Menggunakan KNIME Analytics Platform</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">9. Clustering K-Means &amp; PCA Menggunakan KNIME Analytics Platform</a></li>
 </ul>
 
     </div>
@@ -309,7 +310,7 @@
       
       
       
-      <li><a href="https://github.com/hendprw/psd/issues/new?title=Issue%20on%20page%20%2F01_business_understanding.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hendprw/psd/issues/new?title=Issue%20on%20page%20%2F09_clustering_kmeans_knime.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -339,7 +340,7 @@
       
       
       
-      <li><a href="_sources/01_business_understanding.md" target="_blank"
+      <li><a href="_sources/09_clustering_kmeans_knime.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -415,7 +416,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>1. Business Understanding</h1>
+    <h1>9. Clustering K-Means & PCA Menggunakan KNIME Analytics Platform</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -425,16 +426,18 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang-konteks-wilayah">1.1 Latar Belakang &amp; Konteks Wilayah</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan-proyek">1.2 Tujuan Proyek</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan-bisnis-business-objectives">Tujuan Bisnis (Business Objectives)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan-teknis-technical-data-science-objectives">Tujuan Teknis (Technical/Data Science Objectives)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perancangan-workflow-di-knime">9.1 Perancangan Workflow di KNIME</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-node-yang-digunakan">Penjelasan Node yang Digunakan:</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manfaat">1.3 Manfaat</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rencana-proyek">1.4 Rencana Proyek</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batasan-proyek-scope-limitations">1.5 Batasan Proyek (Scope &amp; Limitations)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kriteria-keberhasilan">1.6 Kriteria Keberhasilan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementasi-hasil-per-polutan">9.2 Implementasi &amp; Hasil per Polutan</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polutan-karbon-monoksida-co">1. Polutan Karbon Monoksida (CO)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polutan-nitrogen-dioksida-no2">2. Polutan Nitrogen Dioksida (NO2)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polutan-sulfur-dioksida-so2">3. Polutan Sulfur Dioksida (SO2)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-perbandingan-branch-pca-vs-fitur-penuh">9.3 Evaluasi: Perbandingan Branch PCA vs Fitur Penuh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan">9.4 Kesimpulan</a></li>
 </ul>
             </nav>
         </div>
@@ -446,162 +449,134 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="business-understanding">
-<h1>1. Business Understanding<a class="headerlink" href="#business-understanding" title="Link to this heading">#</a></h1>
-<section id="latar-belakang-konteks-wilayah">
-<h2>1.1 Latar Belakang &amp; Konteks Wilayah<a class="headerlink" href="#latar-belakang-konteks-wilayah" title="Link to this heading">#</a></h2>
-<p><strong>Desa Bundah</strong> adalah salah satu dari 12 desa di <strong>Kecamatan Sreseh,
-Kabupaten Sampang</strong>, Pulau Madura, Provinsi Jawa Timur. Kecamatan ini
-terletak sekitar 43 km dari pusat Kabupaten Sampang, dengan karakteristik
-wilayah pedesaan-pesisir: mata pencaharian dominan nelayan dan petani,
-akses jalan kabupaten yang relatif sepi dibanding kota besar, serta belum
-adanya infrastruktur pemantauan lingkungan modern.</p>
-<p>Beberapa fakta konteks yang relevan untuk proyek ini:</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="clustering-k-means-pca-menggunakan-knime-analytics-platform">
+<h1>9. Clustering K-Means &amp; PCA Menggunakan KNIME Analytics Platform<a class="headerlink" href="#clustering-k-means-pca-menggunakan-knime-analytics-platform" title="Link to this heading">#</a></h1>
+<p>Pada bab ini, analisis pengelompokan (<em>clustering</em>) data fitur kualitas udara hasil ekstraksi TSFEL diimplementasikan menggunakan perangkat lunak <strong>KNIME Analytics Platform</strong>. Pendekatan visual berbasis <em>workflow</em> ini mempermudah pemetaan alur komparasi antara <strong>K-Means dengan reduksi dimensi PCA</strong> dan <strong>K-Means langsung pada seluruh fitur asli</strong>, untuk ketiga polutan: <strong>CO</strong>, <strong>NO2</strong>, dan <strong>SO2</strong>.</p>
+<hr class="docutils" />
+<section id="perancangan-workflow-di-knime">
+<h2>9.1 Perancangan Workflow di KNIME<a class="headerlink" href="#perancangan-workflow-di-knime" title="Link to this heading">#</a></h2>
+<p>Workflow dirancang secara modular dan simetris untuk ketiga dataset polutan (<code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_co.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code>, dan <code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_so2.csv</span></code>). Pada masing-masing polutan, dibuat dua cabang pengujian utama:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                  ┌───► [ PCA ] ───► [ k-Means ] ───► [ Scatter Plot ]
+                                  │                   (k = 2)
+[ CSV Reader ] ───────────────────┤
+(37 lokasi x 68 fitur)            │
+                                  └───► [ k-Means ] ────────────────► [ Scatter Plot ]
+                                        (k = 2, 68 fitur asli)
+</pre></div>
+</div>
+<section id="penjelasan-node-yang-digunakan">
+<h3>Penjelasan Node yang Digunakan:<a class="headerlink" href="#penjelasan-node-yang-digunakan" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">CSV</span> <span class="pre">Reader</span></code></strong></p>
 <ul class="simple">
-<li><p><strong>Tidak ada stasiun pemantau udara resmi</strong> di wilayah ini — baik ISPU
-(Indeks Standar Pencemar Udara) dari KLHK maupun titik komunitas seperti
-OpenAQ. Pemantauan semacam ini umumnya hanya tersedia di kota-kota besar
-seperti Surabaya atau Malang.</p></li>
-<li><p><strong>Sumber emisi lokal tetap ada</strong> meski wilayahnya pedesaan: kendaraan
-bermotor di jalur Sreseh–Blega, mesin diesel kapal nelayan di pesisir,
-pembakaran lahan/jerami sisa panen (terutama menjelang musim kemarau),
-dan dapur rumah tangga berbahan bakar kayu.</p></li>
-<li><p><strong>Karakteristik iklim tropis muson</strong>: musim hujan (± November–April) dan
-musim kemarau (± Mei–Oktober) yang memengaruhi baik pola emisi
-(pembakaran lahan lebih sering di musim kemarau) maupun kualitas data
-satelit (tutupan awan lebih tinggi di musim hujan).</p></li>
-<li><p><strong>Ketiadaan data historis</strong> membuat wilayah ini belum pernah punya
-gambaran kuantitatif tentang kualitas udaranya sendiri — proyek ini jadi
-upaya pertama untuk mengisi kekosongan tersebut, memanfaatkan data
-penginderaan jauh (satelit Sentinel-5P) sebagai pengganti sensor darat
-yang tidak tersedia.</p></li>
+<li><p>Bertugas membaca file hasil ekstraksi TSFEL 37 lokasi pengamatan.</p></li>
+<li><p>Memuat kolom identitas (<code class="docutils literal notranslate"><span class="pre">id</span></code>, <code class="docutils literal notranslate"><span class="pre">nama</span></code>, <code class="docutils literal notranslate"><span class="pre">daerah</span></code>) beserta 68 atribut fitur numerik time series.</p></li>
 </ul>
-</section>
-<section id="tujuan-proyek">
-<h2>1.2 Tujuan Proyek<a class="headerlink" href="#tujuan-proyek" title="Link to this heading">#</a></h2>
-<section id="tujuan-bisnis-business-objectives">
-<h3>Tujuan Bisnis (Business Objectives)<a class="headerlink" href="#tujuan-bisnis-business-objectives" title="Link to this heading">#</a></h3>
-<ol class="arabic simple">
-<li><p>Mengetahui gambaran kualitas udara di Desa Bundah, Kecamatan Sreseh,
-Kabupaten Sampang, yang selama ini tidak pernah terpantau.</p></li>
-<li><p>Mengidentifikasi apakah ada pola musiman atau kejadian tertentu (mis.
-pembakaran lahan) yang memengaruhi kualitas udara desa.</p></li>
-<li><p>Menyediakan bahan/basis data awal yang bisa dipakai pemerintah desa,
-kecamatan, atau warga sebagai referensi jika suatu saat diperlukan
-diskusi terkait lingkungan.</p></li>
-</ol>
-</section>
-<section id="tujuan-teknis-technical-data-science-objectives">
-<h3>Tujuan Teknis (Technical/Data Science Objectives)<a class="headerlink" href="#tujuan-teknis-technical-data-science-objectives" title="Link to this heading">#</a></h3>
-<ol class="arabic simple">
-<li><p>Membangun pipeline crawling data konsentrasi <strong>NO2</strong> dan <strong>CO</strong> dari
-citra satelit Sentinel-5P, dibatasi secara spasial menggunakan polygon
-GeoJSON wilayah Desa Bundah.</p></li>
-<li><p>Mengumpulkan data time series selama minimal <strong>1 tahun</strong>, dari
-<strong>1 September 2025 sampai 31 Agustus 2026</strong>.</p></li>
-<li><p>Menyimpan hasil crawling dalam format <strong>CSV</strong> terstruktur (kolom
-tanggal, NO2, CO) agar mudah diproses ulang.</p></li>
-<li><p>Melakukan eksplorasi data (statistik deskriptif, distribusi, deteksi
-nilai kosong/outlier) untuk memahami kualitas dan keterbatasan data.</p></li>
-<li><p>Memvisualisasikan hasil sebagai <strong>grafik time series</strong> yang mudah
-dibaca.</p></li>
-<li><p>Mempublikasikan seluruh proses dan hasil sebagai laporan web statis
-(Jupyter Book) yang bisa diakses publik lewat GitHub Pages.</p></li>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">PCA</span></code> (Principal Component Analysis)</strong></p>
+<ul class="simple">
+<li><p>Mereduksi dimensi fitur berlebih dan mengeliminasi korelasi antar-fitur (<em>multicollinearity</em>).</p></li>
+<li><p>Menghasilkan variabel baru berupa komponen utama (<em>principal components</em>) yang mempertahankan mayoritas variansi data.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">k-Means</span></code></strong></p>
+<ul class="simple">
+<li><p>Menerapkan algoritma clustering berbasis jarak Euclidean untuk mempartisi 37 lokasi ke dalam kelompok-kelompok homogen.</p></li>
+<li><p>Parameter jumlah cluster diset ke <strong><span class="math notranslate nohighlight">\(k = 2\)</span></strong>, merujuk pada temuan nilai optimal dari <em>Elbow Method</em> dan <em>Silhouette Score</em> pada analisis sebelumnya.</p></li>
+<li><p>Menghasilkan kolom luaran tambahan berlabel <code class="docutils literal notranslate"><span class="pre">Cluster</span></code> pada setiap baris data.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Scatter</span> <span class="pre">Plot</span></code></strong></p>
+<ul class="simple">
+<li><p>Menampilkan visualisasi interaktif dari sebaran observasi dan pemetaan kelompok cluster.</p></li>
+</ul>
+</li>
 </ol>
 </section>
 </section>
-<section id="manfaat">
-<h2>1.3 Manfaat<a class="headerlink" href="#manfaat" title="Link to this heading">#</a></h2>
+<hr class="docutils" />
+<section id="implementasi-hasil-per-polutan">
+<h2>9.2 Implementasi &amp; Hasil per Polutan<a class="headerlink" href="#implementasi-hasil-per-polutan" title="Link to this heading">#</a></h2>
+<section id="polutan-karbon-monoksida-co">
+<h3>1. Polutan Karbon Monoksida (CO)<a class="headerlink" href="#polutan-karbon-monoksida-co" title="Link to this heading">#</a></h3>
+<p>Pengujian pertama dilakukan pada dataset <code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_co.csv</span></code>. Alur data dipisahkan ke dua jalur: jalur atas melewati reduksi dimensi PCA sebelum masuk ke node k-Means, sedangkan jalur bawah langsung di-cluster menggunakan seluruh dimensi fitur asli.</p>
+<p><img alt="Workflow KNIME dan Scatter Plot Polutan CO" src="_images/knime_clustering_co.png" /></p>
+<p><strong>Konfigurasi &amp; Hasil Pengamatan (CO):</strong></p>
 <ul class="simple">
-<li><p><strong>Bagi warga &amp; pemerintah desa/kecamatan</strong>: baseline data kualitas udara
-pertama untuk wilayah ini, sebagai titik awal pemantauan berkelanjutan
-dan bahan diskusi kebijakan (mis. terkait pembakaran lahan terbuka).</p></li>
-<li><p><strong>Bagi edukasi masyarakat</strong>: data yang divisualisasikan dalam grafik
-jauh lebih mudah dipahami dibanding angka mentah, dan bisa jadi materi
-sosialisasi dampak pembakaran biomassa/emisi kendaraan terhadap kualitas
-udara.</p></li>
-<li><p><strong>Bagi pengembangan lanjutan</strong>: pipeline yang dibangun (geojson → openEO
-→ CSV → visualisasi → Jupyter Book) bersifat generik, sehingga mudah
-dipakai ulang untuk desa lain, polutan lain (SO2, O3, CH4, aerosol
-index), atau rentang waktu lain.</p></li>
-<li><p><strong>Bagi pembelajaran teknis (pribadi)</strong>: melatih alur kerja data science
-end-to-end sesuai kerangka CRISP-DM — mulai dari pemahaman masalah,
-pengambilan data dari API/satelit, pembatasan wilayah spasial,
-penyimpanan data terstruktur, eksplorasi data, sampai visualisasi dan
-publikasi laporan.</p></li>
+<li><p>Pada panel konfigurasi <code class="docutils literal notranslate"><span class="pre">Scatter</span> <span class="pre">Plot</span></code> sebelah kanan, pemetaan sumbu horizontal dan vertikal dapat diarahkan untuk memetakan koordinat identitas sampel (<code class="docutils literal notranslate"><span class="pre">id</span></code> dan <code class="docutils literal notranslate"><span class="pre">nama</span></code>) maupun komponen hasil proyeksi.</p></li>
+<li><p>Tampilan grafik titik-titik observasi menunjukkan seluruh 37 sampel berhasil diproses tanpa kendala missing value ataupun pembagian nol.</p></li>
+<li><p>Penggunaan <span class="math notranslate nohighlight">\(k=2\)</span> pada cabang PCA menghasilkan pembagian kelompok yang selaras dengan cabang fitur asli, membuktikan bahwa proyeksi dimensi mempertahankan batas-batas kluster secara konsisten.</p></li>
 </ul>
 </section>
-<section id="rencana-proyek">
-<h2>1.4 Rencana Proyek<a class="headerlink" href="#rencana-proyek" title="Link to this heading">#</a></h2>
-<p>Proyek ini mengikuti alur singkat berbasis CRISP-DM:</p>
+<hr class="docutils" />
+<section id="polutan-nitrogen-dioksida-no2">
+<h3>2. Polutan Nitrogen Dioksida (NO2)<a class="headerlink" href="#polutan-nitrogen-dioksida-no2" title="Link to this heading">#</a></h3>
+<p>Pengujian kedua diterapkan pada dataset <code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_no2.csv</span></code> menggunakan struktur node yang identik.</p>
+<p><img alt="Workflow KNIME dan Scatter Plot Polutan NO2" src="_images/knime_clustering_no2.png" /></p>
+<p><strong>Konfigurasi &amp; Hasil Pengamatan (NO2):</strong></p>
+<ul class="simple">
+<li><p>Seluruh node pada jalur atas (PCA <span class="math notranslate nohighlight">\(\rightarrow\)</span> k-Means <span class="math notranslate nohighlight">\(\rightarrow\)</span> Scatter Plot) dan jalur bawah (k-Means <span class="math notranslate nohighlight">\(\rightarrow\)</span> Scatter Plot) berada dalam status hijau (<em>executed</em>).</p></li>
+<li><p>Pada plot visualisasi, distribusi 37 titik lokasi terpetakan secara berurutan. Karakteristik nilai fitur NO2 yang memiliki sebaran nilai kompak di ruang spektral memudahkan centroid k-Means dalam konvergensi penentuan keanggotaan kluster.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="polutan-sulfur-dioksida-so2">
+<h3>3. Polutan Sulfur Dioksida (SO2)<a class="headerlink" href="#polutan-sulfur-dioksida-so2" title="Link to this heading">#</a></h3>
+<p>Pengujian ketiga dijalankan untuk polutan sulfur dioksida pada file <code class="docutils literal notranslate"><span class="pre">ekstraksi_fitur_so2.csv</span></code>.</p>
+<p><img alt="Workflow KNIME dan Scatter Plot Polutan SO2" src="_images/knime_clustering_so2.png" /></p>
+<p><strong>Konfigurasi &amp; Hasil Pengamatan (SO2):</strong></p>
+<ul class="simple">
+<li><p>Data konsentrasi SO2 yang cenderung memiliki variasi sangat kecil di sebagian besar titik pengamatan berhasil diolah oleh node PCA menjadi komponen ortogonal yang bebas redundansi.</p></li>
+<li><p>Node <code class="docutils literal notranslate"><span class="pre">k-Means</span></code> dengan parameter <span class="math notranslate nohighlight">\(k=2\)</span> mampu memisahkan lokasi dengan anomali/puncak emisi terhadap lokasi-lokasi yang berada pada kondisi latar (<em>baseline</em>) yang tenang.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="evaluasi-perbandingan-branch-pca-vs-fitur-penuh">
+<h2>9.3 Evaluasi: Perbandingan Branch PCA vs Fitur Penuh<a class="headerlink" href="#evaluasi-perbandingan-branch-pca-vs-fitur-penuh" title="Link to this heading">#</a></h2>
+<p>Dari eksekusi workflow KNIME pada ketiga polutan, didapatkan perbandingan karakteristik antara kedua pendekatan:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>Tahap</p></th>
-<th class="head"><p>Kegiatan</p></th>
-<th class="head"><p>Output</p></th>
+<tr class="row-odd"><th class="head"><p>Aspek</p></th>
+<th class="head"><p>Jalur dengan PCA (<code class="docutils literal notranslate"><span class="pre">PCA</span></code> <span class="math notranslate nohighlight">\(\rightarrow\)</span> <code class="docutils literal notranslate"><span class="pre">k-Means</span></code>)</p></th>
+<th class="head"><p>Jalur Fitur Penuh (<code class="docutils literal notranslate"><span class="pre">k-Means</span></code> langsung)</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>1. Business Understanding</p></td>
-<td><p>Menentukan tujuan, manfaat, dan batasan proyek</p></td>
-<td><p>Dokumen ini</p></td>
+<tr class="row-even"><td><p><strong>Jumlah Variabel Input</strong></p></td>
+<td><p>Komponen utama tereduksi</p></td>
+<td><p>68 fitur TSFEL lengkap</p></td>
 </tr>
-<tr class="row-odd"><td><p>2. Data Understanding</p></td>
-<td><p>Mendeskripsikan fitur (NO2, CO), sumber data, eksplorasi awal, identifikasi anomali</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">02_data_understanding.ipynb</span></code></p></td>
+<tr class="row-odd"><td><p><strong>Beban Komputasi Jarak</strong></p></td>
+<td><p>Sangat ringan (dimensi terkompresi)</p></td>
+<td><p>Relatif lebih berat karena menghitung jarak di ruang <span class="math notranslate nohighlight">\(\mathbb{R}^{68}\)</span></p></td>
 </tr>
-<tr class="row-even"><td><p>3. Data Collection</p></td>
-<td><p>Menentukan batas wilayah (GeoJSON), crawling data satelit via openEO/CDSE, menyimpan ke CSV</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">03_data_collection_dan_visualisasi.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">data/*.csv</span></code></p></td>
+<tr class="row-even"><td><p><strong>Pengaruh Multikolinearitas</strong></p></td>
+<td><p>Tereliminasi karena sifat ortogonal PCA</p></td>
+<td><p>Rentan terhadap fitur TSFEL yang saling berkorelasi tinggi</p></td>
 </tr>
-<tr class="row-odd"><td><p>4. Visualisasi &amp; Analisis</p></td>
-<td><p>Membuat grafik time series (harian &amp; agregat mingguan), menandai anomali</p></td>
-<td><p>Grafik di notebook 03</p></td>
+<tr class="row-odd"><td><p><strong>Interpretasi Kluster</strong></p></td>
+<td><p>Berdasarkan komponen variansi dominan</p></td>
+<td><p>Berdasarkan kombinasi langsung nilai fitur fisik</p></td>
 </tr>
-<tr class="row-even"><td><p>5. Deployment</p></td>
-<td><p>Build &amp; publish sebagai Jupyter Book ke GitHub Pages</p></td>
-<td><p>Website <code class="docutils literal notranslate"><span class="pre">https://&lt;username&gt;.github.io/PSD/intro.html</span></code></p></td>
+<tr class="row-even"><td><p><strong>Konsistensi Pengelompokan</strong></p></td>
+<td><p>Stabil dan tahan terhadap noise dimensi kecil</p></td>
+<td><p>Rentan terpengaruh fitur yang variansinya ekstrem</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
-<section id="batasan-proyek-scope-limitations">
-<h2>1.5 Batasan Proyek (Scope &amp; Limitations)<a class="headerlink" href="#batasan-proyek-scope-limitations" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Data berasal dari <strong>satelit (Sentinel-5P/TROPOMI)</strong>, bukan pengukuran
-langsung di permukaan tanah — nilainya mewakili rata-rata kolom udara di
-atas wilayah Desa Bundah (resolusi spasial ± 3.5 × 7 km), bukan titik
-spesifik seperti di depan rumah warga tertentu.</p></li>
-<li><p>Polutan yang dianalisis dibatasi pada <strong>NO2 dan CO</strong> saja, karena
-keduanya paling relevan dengan sumber emisi lokal (transportasi, mesin
-diesel, pembakaran biomassa) dan tersedia harian dari sensor yang sama.
-Polutan lain (SO2, O3, CH4, aerosol index) berada di luar cakupan versi
-ini, meski bisa ditambahkan dengan pipeline yang sama.</p></li>
-<li><p>Rentang waktu dibatasi <strong>1 September 2025 – 31 Agustus 2026</strong> (12 bulan
-terakhir), sesuai ketentuan tugas.</p></li>
-<li><p>Batas wilayah menggunakan <strong>polygon GeoJSON hasil gambar manual</strong> di
-<a class="reference external" href="http://geojson.io">geojson.io</a> (perkiraan area Desa Bundah), bukan data batas administratif
-resmi presisi tinggi dari BIG/BPS.</p></li>
-<li><p>Akan ada <strong>hari-hari tanpa data</strong> akibat tutupan awan tebal, karena
-sensor optik TROPOMI tidak bisa menembus awan — ini keterbatasan
-inheren dari data satelit optik, bukan kegagalan proses crawling.</p></li>
-<li><p>Proyek ini bersifat <strong>deskriptif</strong> (menggambarkan kondisi &amp; tren), belum
-masuk ke tahap pemodelan prediktif atau analisis kausal formal.</p></li>
-</ul>
-</section>
-<section id="kriteria-keberhasilan">
-<h2>1.6 Kriteria Keberhasilan<a class="headerlink" href="#kriteria-keberhasilan" title="Link to this heading">#</a></h2>
-<p>Proyek dianggap berhasil jika:</p>
+<hr class="docutils" />
+<section id="kesimpulan">
+<h2>9.4 Kesimpulan<a class="headerlink" href="#kesimpulan" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Data NO2 dan CO berhasil diambil dan tersimpan sebagai CSV time series
-dengan cakupan minimal 1 tahun (1 Sep 2025 – 31 Agu 2026).</p></li>
-<li><p>Eksplorasi data understanding berhasil mengidentifikasi karakteristik
-dan anomali data secara wajar (bukan asal-asalan).</p></li>
-<li><p>Grafik time series (harian dan/atau agregat mingguan) berhasil dibuat
-dan merepresentasikan tren dengan jelas.</p></li>
-<li><p>Seluruh proses terdokumentasi dan dipublikasikan sebagai web statis
-(Jupyter Book) yang bisa diakses lewat GitHub Pages.</p></li>
+<li><p><strong>Integrasi Workflow Visual</strong>:
+Platform KNIME berhasil memvisualisasikan seluruh alur pemrosesan clustering K-Means mulai dari ingest data CSV, reduksi dimensi dengan PCA, eksekusi partisi cluster (<span class="math notranslate nohighlight">\(k=2\)</span>), hingga inspeksi grafis lewat node Scatter Plot.</p></li>
+<li><p><strong>Kesesuaian dengan Eksperimen Scripting</strong>:
+Hasil pengelompokan di KNIME menunjukkan konvergensi yang konsisten dengan hasil komputasi Python (Tugas 7), di mana pembagian menjadi 2 cluster utama adalah konfigurasi yang paling solid dan alami untuk dataset kualitas udara 37 lokasi pengamatan.</p></li>
+<li><p><strong>Efisiensi Reduksi Dimensi</strong>:
+Penerapan node PCA sebelum k-Means terbukti menyederhanakan ruang fitur tanpa mengorbankan separabilitas antarkelompok data polutan CO, NO2, dan SO2.</p></li>
 </ol>
 </section>
 </section>
@@ -637,22 +612,13 @@ dan merepresentasikan tren dengan jelas.</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="analisis_kualitas_udara.html"
+       href="08_deskripsi_fitur_dan_perhitungan_manual.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Analisis Kualitas Udara</p>
+        <p class="prev-next-title">8. Deskripsi Fitur &amp; Perhitungan Manual</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="02_data_understanding.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">2. Data Understanding</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -672,16 +638,18 @@ dan merepresentasikan tren dengan jelas.</p></li>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang-konteks-wilayah">1.1 Latar Belakang &amp; Konteks Wilayah</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan-proyek">1.2 Tujuan Proyek</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan-bisnis-business-objectives">Tujuan Bisnis (Business Objectives)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan-teknis-technical-data-science-objectives">Tujuan Teknis (Technical/Data Science Objectives)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perancangan-workflow-di-knime">9.1 Perancangan Workflow di KNIME</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-node-yang-digunakan">Penjelasan Node yang Digunakan:</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manfaat">1.3 Manfaat</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rencana-proyek">1.4 Rencana Proyek</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batasan-proyek-scope-limitations">1.5 Batasan Proyek (Scope &amp; Limitations)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kriteria-keberhasilan">1.6 Kriteria Keberhasilan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementasi-hasil-per-polutan">9.2 Implementasi &amp; Hasil per Polutan</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polutan-karbon-monoksida-co">1. Polutan Karbon Monoksida (CO)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polutan-nitrogen-dioksida-no2">2. Polutan Nitrogen Dioksida (NO2)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polutan-sulfur-dioksida-so2">3. Polutan Sulfur Dioksida (SO2)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-perbandingan-branch-pca-vs-fitur-penuh">9.3 Evaluasi: Perbandingan Branch PCA vs Fitur Penuh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan">9.4 Kesimpulan</a></li>
 </ul>
   </nav></div>
 
