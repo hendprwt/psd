@@ -1,0 +1,924 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>8. Deskripsi Fitur &amp; Perhitungan Manual &#8212; Hendrik - PSD</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '08_deskripsi_fitur_dan_perhitungan_manual';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="7. Penentuan Jumlah Cluster Optimal pada K-Means Clustering" href="07_penentuan_cluster_optimal.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/avatar.jpeg" class="logo__image only-light" alt="Hendrik - PSD - Home"/>
+    <img src="_static/avatar.jpeg" class="logo__image only-dark pst-js-only" alt="Hendrik - PSD - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Kualitas Udara Desa Bundah, Kecamatan Sreseh, Kabupaten Sampang
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="profil.html">👋 Tentang Penulis</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="analisis_kualitas_udara.html">Analisis Kualitas Udara</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="01_business_understanding.html">1. Business Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_data_understanding.html">2. Data Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_data_collection_dan_visualisasi.html">3. Data Collection &amp; Time Series</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="04_migrasi_dan_statistik_knime.html">4. Migrasi Data ke Cloud (Aiven) &amp; Statistik di KNIME</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_preprocessing_dan_ekstraksi_fitur.html">5. Preprocessing &amp; Ekstraksi Fitur (TSFEL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ekstraksi_fitur_co_so2.html">6. Ekstraksi Fitur CO &amp; SO2 (TSFEL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_penentuan_cluster_optimal.html">7. Penentuan Jumlah Cluster Optimal pada K-Means Clustering</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">8. Deskripsi Fitur &amp; Perhitungan Manual</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hendprw/psd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hendprw/psd/issues/new?title=Issue%20on%20page%20%2F08_deskripsi_fitur_dan_perhitungan_manual.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/08_deskripsi_fitur_dan_perhitungan_manual.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>8. Deskripsi Fitur & Perhitungan Manual</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-1-spectral-entropy-signal-fs">8.1 Fitur 1: <code class="docutils literal notranslate"><span class="pre">spectral_entropy(signal,</span> <span class="pre">fs)</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-dan-definisi">Konsep dan Definisi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulasi-matematis-sesuai-implementasi-tsfel">Formulasi Matematis (Sesuai Implementasi TSFEL)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-manual-langkah-demi-langkah">Perhitungan Manual Langkah demi Langkah</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-2-spectral-kurtosis-signal-fs">8.2 Fitur 2: <code class="docutils literal notranslate"><span class="pre">spectral_kurtosis(signal,</span> <span class="pre">fs)</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Konsep dan Definisi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Formulasi Matematis (Sesuai Implementasi TSFEL)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Perhitungan Manual Langkah demi Langkah</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rekapitulasi-dan-perbandingan-dengan-dataset-riil">8.3 Rekapitulasi dan Perbandingan dengan Dataset Riil</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pembahasan-hasil-aktual">Pembahasan Hasil Aktual:</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="deskripsi-fitur-perhitungan-manual">
+<h1>8. Deskripsi Fitur &amp; Perhitungan Manual<a class="headerlink" href="#deskripsi-fitur-perhitungan-manual" title="Link to this heading">#</a></h1>
+<p>Bab ini menyajikan rincian teknis, formulasi matematis, serta pembuktian perhitungan manual
+untuk <strong>dua fitur domain frekuensi (spektral)</strong> yang diekstraksi menggunakan pustaka
+<a class="reference external" href="https://tsfel.readthedocs.io/">TSFEL</a>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fitur</p></th>
+<th class="head"><p>Fungsi TSFEL</p></th>
+<th class="head text-center"><p>Domain</p></th>
+<th class="head"><p>Karakteristik yang Diukur</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Fitur 1</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">spectral_entropy(signal,</span> <span class="pre">fs)</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td><p>Tingkat kerataan/kompleksitas distribusi daya spektrum frekuensi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Fitur 2</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">spectral_kurtosis(signal,</span> <span class="pre">fs)</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td><p>Ketajaman atau kelandaian puncak spektrum terhadap centroidnya</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Sinyal contoh untuk verifikasi:</strong></p>
+<ul class="simple">
+<li><p>Sinyal: <span class="math notranslate nohighlight">\(x = [2, 4, 3, 6, 5, 7, 4, 8]\)</span></p></li>
+<li><p>Frekuensi sampling: <span class="math notranslate nohighlight">\(f_s = 1\text{ Hz}\)</span> (merepresentasikan data harian, 1 observasi per hari)</p></li>
+<li><p>Panjang data: <span class="math notranslate nohighlight">\(N = 8\)</span></p></li>
+</ul>
+<blockquote>
+<div><p><strong>Catatan metodologis:</strong> Perhitungan langkah demi langkah pada sinyal 8 titik di bawah ini
+bertujuan memvalidasi kebenaran alur algoritma dan rumus TSFEL secara eksak.
+Pada bagian akhir, hasil verifikasi juga disandingkan dengan nilai riil yang diperoleh
+pada dataset pengamatan wilayah <strong>Sreseh, Sampang</strong> (M. Hendrik Purwanto).</p>
+</div></blockquote>
+<hr class="docutils" />
+<section id="fitur-1-spectral-entropy-signal-fs">
+<h2>8.1 Fitur 1: <code class="docutils literal notranslate"><span class="pre">spectral_entropy(signal,</span> <span class="pre">fs)</span></code><a class="headerlink" href="#fitur-1-spectral-entropy-signal-fs" title="Link to this heading">#</a></h2>
+<section id="konsep-dan-definisi">
+<h3>Konsep dan Definisi<a class="headerlink" href="#konsep-dan-definisi" title="Link to this heading">#</a></h3>
+<p><strong>Spectral Entropy</strong> mengukur ketidakteraturan (kerandoman) sebaran energi sinyal pada domain frekuensi.
+Konsep ini merupakan adaptasi dari <em>Shannon Entropy</em> yang diterapkan pada spektrum daya (<em>power spectrum</em>).</p>
+<ul class="simple">
+<li><p>Jika sinyal berupa <strong>gelombang murni</strong> (daya terpusat pada satu frekuensi saja), maka distribusinya sangat teratur sehingga nilai entropinya mendekati <strong>0</strong>.</p></li>
+<li><p>Jika sinyal bersifat <strong>acak/noise putih</strong> (daya tersebar merata di seluruh pita frekuensi), maka entropinya bernilai tinggi mendekati <strong>1</strong> (setelah normalisasi).</p></li>
+</ul>
+<p>Dalam konteks pemantauan polusi atmosfer, entropi spektral yang tinggi mengindikasikan bahwa fluktuasi konsentrasi polutan sangat bervariasi dan dipengaruhi oleh banyak komponen siklus yang acak.</p>
+</section>
+<section id="formulasi-matematis-sesuai-implementasi-tsfel">
+<h3>Formulasi Matematis (Sesuai Implementasi TSFEL)<a class="headerlink" href="#formulasi-matematis-sesuai-implementasi-tsfel" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Pembersihan Komponen DC</strong>:
+$<span class="math notranslate nohighlight">\(x_{\text{detrend}} = x - \bar{x}\)</span>$</p></li>
+<li><p><strong>Transformasi Fourier Cepat (Real FFT)</strong>:
+$<span class="math notranslate nohighlight">\(X(f_k) = \text{rfft}(x_{\text{detrend}}), \quad f_k = \frac{k \cdot f_s}{N}\)</span>$</p></li>
+<li><p><strong>Spektrum Daya (Power Spectrum)</strong>:
+$<span class="math notranslate nohighlight">\(P(f_k) = |X(f_k)|^2\)</span>$</p></li>
+<li><p><strong>Distribusi Probabilitas Spektral</strong>:
+$<span class="math notranslate nohighlight">\(p_k = \frac{P(f_k)}{\sum_j P(f_j)}\)</span>$</p></li>
+<li><p><strong>Entropi Spektral Ternormalisasi</strong>:
+$<span class="math notranslate nohighlight">\(H = - \frac{\sum_{k, p_k &gt; 0} p_k \log_2(p_k)}{\log_2(K)}\)</span><span class="math notranslate nohighlight">\(
+dengan \)</span>K<span class="math notranslate nohighlight">\( adalah banyaknya komponen frekuensi yang memiliki daya non-nol (\)</span>p_k &gt; 0$).</p></li>
+</ol>
+</section>
+<section id="perhitungan-manual-langkah-demi-langkah">
+<h3>Perhitungan Manual Langkah demi Langkah<a class="headerlink" href="#perhitungan-manual-langkah-demi-langkah" title="Link to this heading">#</a></h3>
+<p>Diketahui: <span class="math notranslate nohighlight">\(x = [2, 4, 3, 6, 5, 7, 4, 8]\)</span>, <span class="math notranslate nohighlight">\(f_s = 1\)</span>, <span class="math notranslate nohighlight">\(N = 8\)</span>.</p>
+<p><strong>Langkah 1: Menghitung rata-rata dan eliminasi DC</strong>
+$<span class="math notranslate nohighlight">\(\bar{x} = \frac{2+4+3+6+5+7+4+8}{8} = \frac{39}{8} = 4{,}875\)</span>$</p>
+<div class="math notranslate nohighlight">
+\[x_{\text{detrend}} = [-2{,}875,\ -0{,}875,\ -1{,}875,\ 1{,}125,\ 0{,}125,\ 2{,}125,\ -0{,}875,\ 3{,}125]\]</div>
+<p><strong>Langkah 2 &amp; 3: Magnitudo FFT dan Daya <span class="math notranslate nohighlight">\(P(f_k)\)</span></strong></p>
+<p>Frekuensi evaluasi <span class="math notranslate nohighlight">\(f_k = [0{,}0,\ 0{,}125,\ 0{,}250,\ 0{,}375,\ 0{,}500]\)</span>:</p>
+<p>| <span class="math notranslate nohighlight">\(k\)</span> | Frekuensi (<span class="math notranslate nohighlight">\(f_k\)</span>) | Nilai Kompleks <span class="math notranslate nohighlight">\(X(f_k)\)</span> | Magnitudo <span class="math notranslate nohighlight">\(|X(f_k)|\)</span> | Daya <span class="math notranslate nohighlight">\(P(f_k) = |X|^2\)</span> |
+|:—:|:—:|:—:|:—:|:—:|
+| 0 | 0,000 | <span class="math notranslate nohighlight">\(0{,}000 + 0{,}000j\)</span> | 0,0000 | 0,0000 |
+| 1 | 0,125 | <span class="math notranslate nohighlight">\(-3{,}707 - 4{,}536j\)</span> | 5,8578 | 34,3137 |
+| 2 | 0,250 | <span class="math notranslate nohighlight">\(-1{,}000 - 2{,}828j\)</span> | 3,0000 | 9,0000 |
+| 3 | 0,375 | <span class="math notranslate nohighlight">\(-2{,}293 + 2{,}536j\)</span> | 3,4185 | 11,6863 |
+| 4 | 0,500 | <span class="math notranslate nohighlight">\(-11{,}000 + 0{,}000j\)</span> | 11,0000 | 121,0000 |
+| <strong>Total</strong> | | | | <strong>176,0000</strong> |</p>
+<p>Total daya spektral <span class="math notranslate nohighlight">\(\sum P(f_k) = 0 + 34{,}3137 + 9 + 11{,}6863 + 121 = 176{,}0000\)</span>.</p>
+<p><strong>Langkah 4: Normalisasi Probabilitas <span class="math notranslate nohighlight">\(p_k\)</span></strong></p>
+<ul class="simple">
+<li><p>Komponen DC (<span class="math notranslate nohighlight">\(k=0\)</span>) memiliki daya 0 sehingga diabaikan (<span class="math notranslate nohighlight">\(K = 4\)</span> komponen aktif tersisa).</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_1 = 34{,}3137 / 176 = 0{,}194964\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_2 = 9{,}0000 / 176 = 0{,}051136\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_3 = 11{,}6863 / 176 = 0{,}066399\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_4 = 121{,}0000 / 176 = 0{,}687500\)</span></p></li>
+</ul>
+<p><strong>Langkah 5: Evaluasi Entropi</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(-p_1 \log_2(p_1) = -0{,}194964 \times (-2{,}3587) = 0{,}459866\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(-p_2 \log_2(p_2) = -0{,}051136 \times (-4{,}2896) = 0{,}219350\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(-p_3 \log_2(p_3) = -0{,}066399 \times (-3{,}9127) = 0{,}259800\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(-p_4 \log_2(p_4) = -0{,}687500 \times (-0{,}5406) = 0{,}371641\)</span></p></li>
+</ul>
+<p>Jumlah entropi mentah:
+$<span class="math notranslate nohighlight">\(H_{\text{raw}} = 0{,}459866 + 0{,}219350 + 0{,}259800 + 0{,}371641 = 1{,}310656\)</span>$</p>
+<p>Faktor pembagi normalisasi (<span class="math notranslate nohighlight">\(K = 4\)</span> komponen aktif):
+$<span class="math notranslate nohighlight">\(\log_2(K) = \log_2(4) = 2{,}000000\)</span>$</p>
+<p>Hasil akhir:
+$<span class="math notranslate nohighlight">\(H = \frac{1{,}310656}{2{,}000000} = \mathbf{0{,}655328}\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Verifikasi Fitur 1 menggunakan pustaka TSFEL</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.features</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+
+<span class="n">signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">tsfel_entropy</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">spectral_entropy</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Hasil Perhitungan Manual : 0.655328"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Hasil Fungsi TSFEL       : </span><span class="si">{</span><span class="n">tsfel_entropy</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Kesesuaian Eksak         : </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="mf">0.655328</span><span class="p">,</span><span class="w"> </span><span class="n">tsfel_entropy</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="fitur-2-spectral-kurtosis-signal-fs">
+<h2>8.2 Fitur 2: <code class="docutils literal notranslate"><span class="pre">spectral_kurtosis(signal,</span> <span class="pre">fs)</span></code><a class="headerlink" href="#fitur-2-spectral-kurtosis-signal-fs" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3>Konsep dan Definisi<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p><strong>Spectral Kurtosis</strong> mengukur derajat keruncingan (derajat ketajaman puncak) dari bentuk spektrum frekuensi sinyal relatif terhadap distribusi normal. Fitur ini diadopsi dari pustaka <em>The Timbre Toolbox</em> (Peeters et al.):</p>
+<ul class="simple">
+<li><p>Nilai kurtosis yang <strong>tinggi</strong> menunjukkan bahwa spektrum memiliki puncak tajam dominan di sekitar frekuensi tertentu (misalnya adanya lonjakan polutan berkala yang sangat konsisten).</p></li>
+<li><p>Nilai kurtosis yang <strong>rendah</strong> menunjukkan spektrum yang datar dan tersebar merata tanpa frekuensi dominan yang menonjol.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Formulasi Matematis (Sesuai Implementasi TSFEL)<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Transformasi Fourier Sinyal Asli</strong> (tanpa eliminasi DC):
+$<span class="math notranslate nohighlight">\(f_k, |X(f_k)| = \text{calc\_fft}(x, f_s)\)</span>$</p></li>
+<li><p><strong>Bobot Magnitudo Ternormalisasi</strong>:
+$<span class="math notranslate nohighlight">\(w_k = \frac{|X(f_k)|}{\sum_j |X(f_j)|}\)</span>$</p></li>
+<li><p><strong>Pusat Spektrum (Spectral Centroid)</strong>:
+$<span class="math notranslate nohighlight">\(\mu_f = \sum_k f_k \cdot w_k\)</span>$</p></li>
+<li><p><strong>Penyebaran Spektrum (Spectral Spread / Deviasi Standar Spektral)</strong>:
+$<span class="math notranslate nohighlight">\(\sigma_f = \sqrt{\sum_k (f_k - \mu_f)^2 \cdot w_k}\)</span>$</p></li>
+<li><p><strong>Spectral Kurtosis</strong>:
+$<span class="math notranslate nohighlight">\(\text{SK} = \frac{\sum_k (f_k - \mu_f)^4 \cdot w_k}{\sigma_f^4}\)</span>$</p></li>
+</ol>
+</section>
+<section id="id3">
+<h3>Perhitungan Manual Langkah demi Langkah<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>Diketahui sinyal asli: <span class="math notranslate nohighlight">\(x = [2, 4, 3, 6, 5, 7, 4, 8]\)</span>, <span class="math notranslate nohighlight">\(f_s = 1\)</span>, <span class="math notranslate nohighlight">\(N = 8\)</span>.</p>
+<p><strong>Langkah 1: Magnitudo Spektrum Fourier (Sinyal Asli)</strong></p>
+<p>| <span class="math notranslate nohighlight">\(k\)</span> | Frekuensi (<span class="math notranslate nohighlight">\(f_k\)</span>) | Magnitudo <span class="math notranslate nohighlight">\(|X(f_k)|\)</span> | Bobot <span class="math notranslate nohighlight">\(w_k = \frac{|X|}{\sum |X|}\)</span> |
+|:—:|:—:|:—:|:—:|
+| 0 | 0,000 | 39,0000 | 0,626241 |
+| 1 | 0,125 | 5,8578 | 0,094061 |
+| 2 | 0,250 | 3,0000 | 0,048172 |
+| 3 | 0,375 | 3,4185 | 0,054893 |
+| 4 | 0,500 | 11,0000 | 0,176632 |
+| <strong>Total</strong> | | <strong>62,2763</strong> | <strong>1,000000</strong> |</p>
+<p><strong>Langkah 2: Menghitung Spectral Centroid (<span class="math notranslate nohighlight">\(\mu_f\)</span>)</strong>
+$<span class="math notranslate nohighlight">\(\mu_f = (0 \times 0{,}626241) + (0{,}125 \times 0{,}094061) + (0{,}25 \times 0{,}048172) + (0{,}375 \times 0{,}054893) + (0{,}5 \times 0{,}176632)\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(\mu_f = 0 + 0{,}011758 + 0{,}012043 + 0{,}020585 + 0{,}088316 = \mathbf{0{,}132702}\)</span>$</p>
+<p><strong>Langkah 3: Menghitung Spectral Spread (<span class="math notranslate nohighlight">\(\sigma_f\)</span>)</strong>
+Dihitung variansi spektral <span class="math notranslate nohighlight">\(\sigma_f^2 = \sum_k (f_k - \mu_f)^2 \cdot w_k\)</span>:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(k=0\)</span>: <span class="math notranslate nohighlight">\((0 - 0{,}132702)^2 \times 0{,}626241 = 0{,}017610 \times 0{,}626241 = 0{,}011028\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k=1\)</span>: <span class="math notranslate nohighlight">\((0{,}125 - 0{,}132702)^2 \times 0{,}094061 = 0{,}000059 \times 0{,}094061 = 0{,}000006\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k=2\)</span>: <span class="math notranslate nohighlight">\((0{,}250 - 0{,}132702)^2 \times 0{,}048172 = 0{,}013759 \times 0{,}048172 = 0{,}000663\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k=3\)</span>: <span class="math notranslate nohighlight">\((0{,}375 - 0{,}132702)^2 \times 0{,}054893 = 0{,}058708 \times 0{,}054893 = 0{,}003223\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k=4\)</span>: <span class="math notranslate nohighlight">\((0{,}500 - 0{,}132702)^2 \times 0{,}176632 = 0{,}134908 \times 0{,}176632 = 0{,}023829\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\sigma_f^2 = 0{,}011028 + 0{,}000006 + 0{,}000663 + 0{,}003223 + 0{,}023829 = 0{,}038748\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma_f = \sqrt{0{,}038748} = 0{,}196845\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma_f^4 = (0{,}038748)^2 = \mathbf{0{,}001501}\]</div>
+<p><strong>Langkah 4: Menghitung Momen Keempat dan Spectral Kurtosis</strong></p>
+<p>Tabel evaluasi pembilang <span class="math notranslate nohighlight">\(\sum_k (f_k - \mu_f)^4 \cdot w_k\)</span>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p><span class="math notranslate nohighlight">\(k\)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(f_k\)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\((f_k - \mu_f)\)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\((f_k - \mu_f)^4\)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(w_k\)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\((f_k - \mu_f)^4 \cdot w_k\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>0</p></td>
+<td class="text-center"><p>0,000</p></td>
+<td class="text-center"><p>-0,132702</p></td>
+<td class="text-center"><p>0,000310</p></td>
+<td class="text-center"><p>0,626241</p></td>
+<td class="text-center"><p>0,000194</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>1</p></td>
+<td class="text-center"><p>0,125</p></td>
+<td class="text-center"><p>-0,007702</p></td>
+<td class="text-center"><p>0,000000</p></td>
+<td class="text-center"><p>0,094061</p></td>
+<td class="text-center"><p>0,000000</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>2</p></td>
+<td class="text-center"><p>0,250</p></td>
+<td class="text-center"><p>+0,117298</p></td>
+<td class="text-center"><p>0,000189</p></td>
+<td class="text-center"><p>0,048172</p></td>
+<td class="text-center"><p>0,000009</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>3</p></td>
+<td class="text-center"><p>0,375</p></td>
+<td class="text-center"><p>+0,242298</p></td>
+<td class="text-center"><p>0,003447</p></td>
+<td class="text-center"><p>0,054893</p></td>
+<td class="text-center"><p>0,000189</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>4</p></td>
+<td class="text-center"><p>0,500</p></td>
+<td class="text-center"><p>+0,367298</p></td>
+<td class="text-center"><p>0,018200</p></td>
+<td class="text-center"><p>0,176632</p></td>
+<td class="text-center"><p>0,003215</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong>Total</strong></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p><strong>0,003607</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Menghitung rasio kurtosis:
+$<span class="math notranslate nohighlight">\(\text{SK} = \frac{0{,}003607}{0{,}001501} = \mathbf{2{,}402571}\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Verifikasi Fitur 2 menggunakan pustaka TSFEL</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.features</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+
+<span class="n">signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">tsfel_kurtosis</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">spectral_kurtosis</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Hasil Perhitungan Manual : 2.402571"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Hasil Fungsi TSFEL       : </span><span class="si">{</span><span class="n">tsfel_kurtosis</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Kesesuaian Eksak         : </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="mf">2.402571</span><span class="p">,</span><span class="w"> </span><span class="n">tsfel_kurtosis</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="rekapitulasi-dan-perbandingan-dengan-dataset-riil">
+<h2>8.3 Rekapitulasi dan Perbandingan dengan Dataset Riil<a class="headerlink" href="#rekapitulasi-dan-perbandingan-dengan-dataset-riil" title="Link to this heading">#</a></h2>
+<p>Tabel berikut merangkum hasil verifikasi pada sinyal uji (8 titik sampel)
+serta menampilkan <strong>nilai aktual</strong> yang tercatat pada dataset hasil ekstraksi sekelas
+untuk lokasi pengamatan <strong>Sreseh, Sampang</strong> (M. Hendrik Purwanto):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fitur</p></th>
+<th class="head"><p>Formulasi Pokok</p></th>
+<th class="head text-center"><p>Sinyal Uji (Manual)</p></th>
+<th class="head text-center"><p>Sinyal Uji (TSFEL)</p></th>
+<th class="head text-center"><p>Status</p></th>
+<th class="head text-center"><p>Nilai Aktual (NO2, id=33)</p></th>
+<th class="head text-center"><p>Nilai Aktual (CO, id=7)</p></th>
+<th class="head text-center"><p>Nilai Aktual (SO2, id=6)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">spectral_entropy</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\frac{\sum p_k \log_2 p_k}{\log_2 K}\)</span></p></td>
+<td class="text-center"><p><strong>0,655328</strong></p></td>
+<td class="text-center"><p><strong>0,655328</strong></p></td>
+<td class="text-center"><p>Valid <span class="math notranslate nohighlight">\(\checkmark\)</span></p></td>
+<td class="text-center"><p><strong>0,750765</strong></p></td>
+<td class="text-center"><p><strong>0,792770</strong></p></td>
+<td class="text-center"><p><strong>0,872564</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">spectral_kurtosis</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{\sum (f_k - \mu_f)^4 w_k}{\sigma_f^4}\)</span></p></td>
+<td class="text-center"><p><strong>2,402571</strong></p></td>
+<td class="text-center"><p><strong>2,402571</strong></p></td>
+<td class="text-center"><p>Valid <span class="math notranslate nohighlight">\(\checkmark\)</span></p></td>
+<td class="text-center"><p><strong>2,216742</strong></p></td>
+<td class="text-center"><p><strong>4,919090</strong></p></td>
+<td class="text-center"><p><strong>1,866887</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="pembahasan-hasil-aktual">
+<h3>Pembahasan Hasil Aktual:<a class="headerlink" href="#pembahasan-hasil-aktual" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Spectral Entropy</strong> pada ketiga polutan berada di kisaran <span class="math notranslate nohighlight">\(0{,}75 - 0{,}87\)</span>. Nilai yang relatif tinggi mendekati 1 ini menandakan bahwa spektrum variasi konsentrasi polutan di wilayah Sreseh memiliki spektrum frekuensi yang tersebar luas (tidak terkonsentrasi hanya pada satu siklus musiman saja).</p></li>
+<li><p><strong>Spectral Kurtosis</strong> pada polutan CO mencapai <span class="math notranslate nohighlight">\(4{,}919\)</span>, jauh lebih tinggi dibanding NO2 (<span class="math notranslate nohighlight">\(2{,}217\)</span>) dan SO2 (<span class="math notranslate nohighlight">\(1{,}867\)</span>). Hal ini menunjukkan bahwa sinyal CO memiliki beberapa periode fluktuasi tajam yang menghasilkan puncak-puncak spektral yang lebih tajam dibandingkan sebarannya.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pengecekan nilai aktual langsung dari dataset proyek</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">files</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'NO2'</span><span class="p">:</span> <span class="s1">'../data/ekstraksi_fitur_no2.csv'</span><span class="p">,</span>
+    <span class="s1">'CO'</span><span class="p">:</span>  <span class="s1">'../data/ekstraksi_fitur_co.csv'</span><span class="p">,</span>
+    <span class="s1">'SO2'</span><span class="p">:</span> <span class="s1">'../data/ekstraksi_fitur_so2.csv'</span>
+<span class="p">}</span>
+
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">pollutant</span><span class="p">,</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">files</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">sub</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'daerah'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'Sreseh|Sampang'</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">na</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sub</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">'Polutan'</span><span class="p">:</span> <span class="n">pollutant</span><span class="p">,</span>
+            <span class="s1">'ID'</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">'id'</span><span class="p">],</span>
+            <span class="s1">'Nama'</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">'nama'</span><span class="p">],</span>
+            <span class="s1">'Lokasi'</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">'daerah'</span><span class="p">],</span>
+            <span class="s1">'spectral_entropy'</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'spectral_entropy'</span><span class="p">],</span> <span class="mi">6</span><span class="p">),</span>
+            <span class="s1">'spectral_kurtosis'</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'spectral_kurtosis'</span><span class="p">],</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="p">})</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="07_penentuan_cluster_optimal.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">7. Penentuan Jumlah Cluster Optimal pada K-Means Clustering</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-1-spectral-entropy-signal-fs">8.1 Fitur 1: <code class="docutils literal notranslate"><span class="pre">spectral_entropy(signal,</span> <span class="pre">fs)</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-dan-definisi">Konsep dan Definisi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulasi-matematis-sesuai-implementasi-tsfel">Formulasi Matematis (Sesuai Implementasi TSFEL)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-manual-langkah-demi-langkah">Perhitungan Manual Langkah demi Langkah</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-2-spectral-kurtosis-signal-fs">8.2 Fitur 2: <code class="docutils literal notranslate"><span class="pre">spectral_kurtosis(signal,</span> <span class="pre">fs)</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Konsep dan Definisi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Formulasi Matematis (Sesuai Implementasi TSFEL)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Perhitungan Manual Langkah demi Langkah</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rekapitulasi-dan-perbandingan-dengan-dataset-riil">8.3 Rekapitulasi dan Perbandingan dengan Dataset Riil</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pembahasan-hasil-aktual">Pembahasan Hasil Aktual:</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By M. Hendrik Purwanto (240411100118)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
