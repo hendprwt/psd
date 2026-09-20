@@ -10,3 +10,5 @@ chapters:
 - file: 04_migrasi_dan_statistik_knime
 - file: 05_preprocessing_dan_ekstraksi_fitur
 - file: 06_ekstraksi_fitur_co_so2
+- file: 07_penentuan_cluster_optimal
+- file: 08_deskripsi_fitur_dan_perhitungan_manual
