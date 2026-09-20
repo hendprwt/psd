@@ -12,3 +12,4 @@ chapters:
 - file: 06_ekstraksi_fitur_co_so2
 - file: 07_penentuan_cluster_optimal
 - file: 08_deskripsi_fitur_dan_perhitungan_manual
+- file: 09_clustering_kmeans_knime
