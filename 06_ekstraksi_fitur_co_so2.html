@@ -235,6 +235,13 @@
 <li class="toctree-l1"><a class="reference internal" href="07_penentuan_cluster_optimal.html">7. Penentuan Jumlah Cluster Optimal pada K-Means Clustering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08_deskripsi_fitur_dan_perhitungan_manual.html">8. Deskripsi Fitur &amp; Perhitungan Manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09_clustering_kmeans_knime.html">9. Clustering K-Means &amp; PCA Menggunakan KNIME Analytics Platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_ekstraksi_fitur_gabungan_204.html">10. Ekstraksi Fitur Gabungan (204 Fitur) — Pendekatan Linier &amp; Polynomial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="11_tahap1_eda_pengambilan_data.html">Tahap 1: Akuisisi Data dan Analisis Data Eksploratif (EDA)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="12_tahap2_reduksi_dimensi.html">Fase 2: Penyusutan Dimensi Data (204 → 203 → 74 → 37)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_tahap3_eksperimen_clustering.html">Fase 3: Uji Coba K-Means &amp; Evaluasi Metrik Silhouette</a></li>
+<li class="toctree-l2"><a class="reference internal" href="14_tahap4_visualisasi_peta.html">Fase 4: Pemetaan Spasial &amp; Kesimpulan Akhir</a></li>
+</ul>
+</details></li>
 </ul>
 
     </div>
@@ -549,19 +556,22 @@ Jumlah outliers yang terdeteksi dan dikosongkan (CO): 1
 <h3>Tahap 3: Imputasi Missing Value - CO<a class="headerlink" href="#tahap-3-imputasi-missing-value-co" title="Link to this heading">#</a></h3>
 <p>Data rekaman satelit Sentinel-5P sering memiliki kekosongan nilai akibat tutupan awan.
 Sebelum imputasi, terdapat total <strong>191 nilai kosong</strong> (190 missing value awal + 1 outlier yang dikosongkan).</p>
-<p>Imputasi dilakukan menggunakan <strong>interpolasi berbasis waktu</strong> (<code class="docutils literal notranslate"><span class="pre">interpolate(method='time')</span></code>)
-yang menghubungkan titik sebelum dan sesudah data kosong secara linear berdasarkan jarak tanggal.
-Selanjutnya diterapkan <code class="docutils literal notranslate"><span class="pre">ffill()</span></code> dan <code class="docutils literal notranslate"><span class="pre">bfill()</span></code> untuk memastikan tidak ada celah di ujung deret.</p>
+<p>Imputasi dilakukan menggunakan <strong>interpolasi polinomial (orde 2)</strong> (<code class="docutils literal notranslate"><span class="pre">interpolate(method='polynomial',</span> <span class="pre">order=2)</span></code>)
+yang memodelkan kelengkungan tren deret waktu secara kuadratik sehingga transisi data menjadi lebih halus.
+Selanjutnya diterapkan <code class="docutils literal notranslate"><span class="pre">ffill()</span></code> dan <code class="docutils literal notranslate"><span class="pre">bfill()</span></code> untuk memastikan tidak ada celah di ujung awal maupun akhir deret.</p>
 <p>Hasil akhirnya: <strong>sisa missing value = 0</strong> (data 100% terisi penuh, memenuhi syarat batas maksimal missing value).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ---------- 3. Imputasi Missing Value - CO ----------</span>
 <span class="c1"># Jadikan kolom tanggal sebagai index sementara untuk interpolasi</span>
-<span class="n">df_co_clean</span> <span class="o">=</span> <span class="n">df_co</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span>
-<span class="c1"># Melakukan interpolasi berbasis waktu</span>
-<span class="n">df_co_clean</span> <span class="o">=</span> <span class="n">df_co_clean</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'time'</span><span class="p">)</span>
+<span class="n">df_co_clean</span> <span class="o">=</span> <span class="n">df_co_clean</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span>
+
+<span class="c1"># Melakukan interpolasi polinomial (orde 2)</span>
+<span class="n">df_co_clean</span> <span class="o">=</span> <span class="n">df_co_clean</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'polynomial'</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
 <span class="c1"># Menambal celah di awal atau akhir data jika interpolasi tidak menjangkau</span>
 <span class="n">df_co_clean</span> <span class="o">=</span> <span class="n">df_co_clean</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sisa missing value setelah proses imputasi (CO): </span><span class="si">{</span><span class="n">df_co_clean</span><span class="p">[</span><span class="n">target_co</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -842,18 +852,21 @@ Jumlah outliers yang terdeteksi dan dikosongkan (SO2): 11
 <section id="tahap-3-imputasi-missing-value-so2">
 <h3>Tahap 3: Imputasi Missing Value - SO2<a class="headerlink" href="#tahap-3-imputasi-missing-value-so2" title="Link to this heading">#</a></h3>
 <p>Pada data SO2, terdapat <strong>124 nilai kosong awal</strong> dan <strong>11 outlier</strong>, menghasilkan total <strong>135 NaN</strong> yang harus diisi.</p>
-<p>Menggunakan metode interpolasi waktu (<code class="docutils literal notranslate"><span class="pre">interpolate(method='time')</span></code>) beserta <code class="docutils literal notranslate"><span class="pre">ffill()</span></code> dan <code class="docutils literal notranslate"><span class="pre">bfill()</span></code>,
-seluruh data berhasil diisi sehingga <strong>sisa missing value = 0</strong>.
-Data kini siap diekstraksi tanpa kendala celah kosong.</p>
+<p>Sama seperti CO, imputasi dilakukan dengan <strong>interpolasi polinomial (orde 2)</strong> (<code class="docutils literal notranslate"><span class="pre">interpolate(method='polynomial',</span> <span class="pre">order=2)</span></code>)
+yang dilanjutkan dengan <code class="docutils literal notranslate"><span class="pre">ffill()</span></code> dan <code class="docutils literal notranslate"><span class="pre">bfill()</span></code> sebagai pengaman untuk celah di batas ujung deret waktu.
+Setelah proses imputasi selesai, <strong>tidak ada nilai NaN yang tersisa (0%)</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ---------- 3. Imputasi Missing Value - SO2 ----------</span>
 <span class="c1"># Jadikan kolom tanggal sebagai index sementara untuk interpolasi</span>
-<span class="n">df_so2_clean</span> <span class="o">=</span> <span class="n">df_so2</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span>
-<span class="c1"># Melakukan interpolasi berbasis waktu</span>
-<span class="n">df_so2_clean</span> <span class="o">=</span> <span class="n">df_so2_clean</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'time'</span><span class="p">)</span>
+<span class="n">df_so2_clean</span> <span class="o">=</span> <span class="n">df_so2_clean</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span>
+
+<span class="c1"># Melakukan interpolasi polinomial (orde 2)</span>
+<span class="n">df_so2_clean</span> <span class="o">=</span> <span class="n">df_so2_clean</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'polynomial'</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
 <span class="c1"># Menambal celah di awal atau akhir data jika interpolasi tidak menjangkau</span>
 <span class="n">df_so2_clean</span> <span class="o">=</span> <span class="n">df_so2_clean</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sisa missing value setelah proses imputasi (SO2): </span><span class="si">{</span><span class="n">df_so2_clean</span><span class="p">[</span><span class="n">target_so2</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1020,7 +1033,7 @@ Name: count, dtype: int64
 <ul class="simple">
 <li><p>Sinyal CO memiliki 1 outlier (batas normal [0,0180; 0,0389]) dan total 191 data kosong sebelum imputasi.</p></li>
 <li><p>Sinyal SO2 memiliki 11 outlier (batas normal [-0,0003; 0,0003]) dan total 135 data kosong sebelum imputasi.</p></li>
-<li><p>Metode interpolasi waktu berhasil mengisi seluruh data kosong sehingga <strong>sisa missing value = 0</strong> (0%), memenuhi batas toleransi kualitas data.</p></li>
+<li><p>Metode interpolasi polinomial (orde 2) berhasil mengisi seluruh data kosong sehingga <strong>sisa missing value = 0</strong> (0%), memenuhi batas toleransi kualitas data.</p></li>
 </ul>
 </li>
 <li><p><strong>Ekstraksi Fitur TSFEL</strong>:</p>
