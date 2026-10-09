@@ -1,0 +1,9 @@
+,Entitas_Data,Nilai_K,Skor_Silhouette,Skor_Inertia
+1,Polinom_Fase1_203,2,0.53755,5450.817
+2,Polinom_Asli_204,2,0.53755,5450.817
+3,Linier_Asli_204,2,0.49086,5442.27
+4,Linier_Fase1_203,2,0.49086,5442.27
+5,Polinom_Fase2_74,3,0.45432,1968.616
+6,Polinom_Fase3_37,3,0.45432,1968.616
+7,Linier_Fase3_37,2,0.40214,2226.972
+8,Linier_Fase2_74,2,0.40214,2226.972

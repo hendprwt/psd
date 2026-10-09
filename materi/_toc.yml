@@ -13,3 +13,9 @@ chapters:
 - file: 07_penentuan_cluster_optimal
 - file: 08_deskripsi_fitur_dan_perhitungan_manual
 - file: 09_clustering_kmeans_knime
+- file: 10_ekstraksi_fitur_gabungan_204
+- file: 11_tahap1_eda_pengambilan_data
+  sections:
+  - file: 12_tahap2_reduksi_dimensi
+  - file: 13_tahap3_eksperimen_clustering
+  - file: 14_tahap4_visualisasi_peta
