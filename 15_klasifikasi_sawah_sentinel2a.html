@@ -520,8 +520,8 @@
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Jika belum terinstall, silakan uncomment dan jalankan
-# %pip install requests rasterio scikit-learn numpy matplotlib geopandas shapely
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Jika belum terinstall, silakan uncomment dan jalankan</span>
+<span class="c1"># %pip install requests rasterio scikit-learn numpy matplotlib geopandas shapely</span>
 </pre></div>
 </div>
 </div>
@@ -532,77 +532,77 @@
 <p>Pada tahap ini, kita memuat semua alat bantu komputasi dan mengatur variabel-variabel krusial. Pemusatan konfigurasi di satu blok kode akan memudahkan kita jika ingin bereksperimen dengan tanggal atau koordinat yang berbeda.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import os
-import math
-import getpass
-import datetime as dt
-from pathlib import Path
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">getpass</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
-import geopandas as gpd
-from shapely.geometry import mapping, shape, box as shp_box
-import rasterio
-from rasterio import features
-from rasterio.warp import transform_bounds, transform_geom
-import requests
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListedColormap</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">box</span> <span class="k">as</span> <span class="n">shp_box</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rasterio</span><span class="w"> </span><span class="kn">import</span> <span class="n">features</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.warp</span><span class="w"> </span><span class="kn">import</span> <span class="n">transform_bounds</span><span class="p">,</span> <span class="n">transform_geom</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, cohen_kappa_score, precision_recall_fscore_support
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">cohen_kappa_score</span><span class="p">,</span> <span class="n">precision_recall_fscore_support</span>
 
-DIR_SAAT_INI = Path.cwd()
+<span class="n">DIR_SAAT_INI</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># ==========================================
-# KONFIGURASI PENCARIAN &amp; FILTER CITRA
-# ==========================================
-TANGGAL_MULAI = "2026-06-01"
-TANGGAL_AKHIR = "2026-09-30"
-KODE_SATELIT = "S2A"
-MAKS_AWAN_PERSEN = 30
-MAKS_PERCOBAAN_SCENE = 5
-AMBANG_VALID = 0.90
-MASKING_AWAN = True
-MARGIN_METER = 1500
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ==========================================</span>
+<span class="c1"># KONFIGURASI PENCARIAN &amp; FILTER CITRA</span>
+<span class="c1"># ==========================================</span>
+<span class="n">TANGGAL_MULAI</span> <span class="o">=</span> <span class="s2">"2026-06-01"</span>
+<span class="n">TANGGAL_AKHIR</span> <span class="o">=</span> <span class="s2">"2026-09-30"</span>
+<span class="n">KODE_SATELIT</span> <span class="o">=</span> <span class="s2">"S2A"</span>
+<span class="n">MAKS_AWAN_PERSEN</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">MAKS_PERCOBAAN_SCENE</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">AMBANG_VALID</span> <span class="o">=</span> <span class="mf">0.90</span>
+<span class="n">MASKING_AWAN</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">MARGIN_METER</span> <span class="o">=</span> <span class="mi">1500</span>
 
-# ==========================================
-# KONFIGURASI SAMPEL &amp; RANDOM FOREST
-# ==========================================
-JUMLAH_SAMPEL_PER_KELAS = 50
-# Path relatif mengarah ke ../data/ (satu level di luar folder materi)
-PATH_SAWAH = DIR_SAAT_INI.parent / "data" / "sawah" / "input.shp"
-PATH_NON_SAWAH = DIR_SAAT_INI.parent / "data" / "bukansawah" / "input.shp"
+<span class="c1"># ==========================================</span>
+<span class="c1"># KONFIGURASI SAMPEL &amp; RANDOM FOREST</span>
+<span class="c1"># ==========================================</span>
+<span class="n">JUMLAH_SAMPEL_PER_KELAS</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="c1"># Path relatif mengarah ke ../data/ (satu level di luar folder materi)</span>
+<span class="n">PATH_SAWAH</span> <span class="o">=</span> <span class="n">DIR_SAAT_INI</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"sawah"</span> <span class="o">/</span> <span class="s2">"input.shp"</span>
+<span class="n">PATH_NON_SAWAH</span> <span class="o">=</span> <span class="n">DIR_SAAT_INI</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"bukansawah"</span> <span class="o">/</span> <span class="s2">"input.shp"</span>
 
-RASIO_LATIH = 0.70
-JUMLAH_POHON = 200
-ANGKA_RANDOM = 42
+<span class="n">RASIO_LATIH</span> <span class="o">=</span> <span class="mf">0.70</span>
+<span class="n">JUMLAH_POHON</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">ANGKA_RANDOM</span> <span class="o">=</span> <span class="mi">42</span>
 
-# ==========================================
-# KONFIGURASI FILE OUTPUT &amp; API
-# ==========================================
-CITRA_MENTAH_TIF = DIR_SAAT_INI / "sentinel2_mentah.tif"
-INFO_CITRA_TXT = DIR_SAAT_INI / "info_sentinel.txt"
+<span class="c1"># ==========================================</span>
+<span class="c1"># KONFIGURASI FILE OUTPUT &amp; API</span>
+<span class="c1"># ==========================================</span>
+<span class="n">CITRA_MENTAH_TIF</span> <span class="o">=</span> <span class="n">DIR_SAAT_INI</span> <span class="o">/</span> <span class="s2">"sentinel2_mentah.tif"</span>
+<span class="n">INFO_CITRA_TXT</span> <span class="o">=</span> <span class="n">DIR_SAAT_INI</span> <span class="o">/</span> <span class="s2">"info_sentinel.txt"</span>
 
-HASIL_TIF = DIR_SAAT_INI / "hasil_klasifikasi_sawah.tif"
-HASIL_GAMBAR = DIR_SAAT_INI / "peta_klasifikasi_sawah.png"
-HASIL_TEKS = DIR_SAAT_INI / "laporan_evaluasi.txt"
+<span class="n">HASIL_TIF</span> <span class="o">=</span> <span class="n">DIR_SAAT_INI</span> <span class="o">/</span> <span class="s2">"hasil_klasifikasi_sawah.tif"</span>
+<span class="n">HASIL_GAMBAR</span> <span class="o">=</span> <span class="n">DIR_SAAT_INI</span> <span class="o">/</span> <span class="s2">"peta_klasifikasi_sawah.png"</span>
+<span class="n">HASIL_TEKS</span> <span class="o">=</span> <span class="n">DIR_SAAT_INI</span> <span class="o">/</span> <span class="s2">"laporan_evaluasi.txt"</span>
 
-NAMA_BAND = ["B02", "B03", "B04", "B08", "B11", "B12"]
+<span class="n">NAMA_BAND</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"B02"</span><span class="p">,</span> <span class="s2">"B03"</span><span class="p">,</span> <span class="s2">"B04"</span><span class="p">,</span> <span class="s2">"B08"</span><span class="p">,</span> <span class="s2">"B11"</span><span class="p">,</span> <span class="s2">"B12"</span><span class="p">]</span>
 
-URL_OAUTH = "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
-URL_PENCARIAN = "https://sh.dataspace.copernicus.eu/api/v1/catalog/1.0.0/search"
-URL_PROSES = "https://sh.dataspace.copernicus.eu/api/v1/process"
+<span class="n">URL_OAUTH</span> <span class="o">=</span> <span class="s2">"https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"</span>
+<span class="n">URL_PENCARIAN</span> <span class="o">=</span> <span class="s2">"https://sh.dataspace.copernicus.eu/api/v1/catalog/1.0.0/search"</span>
+<span class="n">URL_PROSES</span> <span class="o">=</span> <span class="s2">"https://sh.dataspace.copernicus.eu/api/v1/process"</span>
 
-REKAMAN_LOG = []
-def catat_log(*pesan):
-    teks = " ".join(str(p) for p in pesan)
-    print(teks)
-    REKAMAN_LOG.append(teks)
+<span class="n">REKAMAN_LOG</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">catat_log</span><span class="p">(</span><span class="o">*</span><span class="n">pesan</span><span class="p">):</span>
+    <span class="n">teks</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pesan</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">teks</span><span class="p">)</span>
+    <span class="n">REKAMAN_LOG</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">teks</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -614,52 +614,59 @@ def catat_log(*pesan):
 <p>Sembari mengekstrak koordinat, kita juga akan menghitung batas terluar (<em>Bounding Box</em>) dengan kelonggaran margin sebesar <code class="docutils literal notranslate"><span class="pre">MARGIN_METER</span></code> (1500 meter). Bounding Box ini mencegah kita mengunduh seluruh <em>scene</em> citra yang berat, cukup area studi ini saja.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>def muat_geometri_sampel(jalur_file, target_n):
-    data_shp = gpd.read_file(jalur_file)
-    total_awal = len(data_shp)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">muat_geometri_sampel</span><span class="p">(</span><span class="n">jalur_file</span><span class="p">,</span> <span class="n">target_n</span><span class="p">):</span>
+    <span class="n">data_shp</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">jalur_file</span><span class="p">)</span>
+    <span class="n">total_awal</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_shp</span><span class="p">)</span>
     
-    # Singkirkan data kosong
-    data_shp = data_shp[data_shp.geometry.notna()].copy()
+    <span class="c1"># Singkirkan data kosong</span>
+    <span class="n">data_shp</span> <span class="o">=</span> <span class="n">data_shp</span><span class="p">[</span><span class="n">data_shp</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     
-    # Penyeragaman CRS ke EPSG:4326
-    if data_shp.crs is None:
-        catat_log(f"INFO: {Path(jalur_file).name} CRS tidak ditemukan. Menggunakan fallback EPSG:4326.")
-    elif data_shp.crs.to_epsg() != 4326:
-        data_shp = data_shp.to_crs(epsg=4326)
+    <span class="c1"># Penyeragaman CRS ke EPSG:4326</span>
+    <span class="k">if</span> <span class="n">data_shp</span><span class="o">.</span><span class="n">crs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"INFO: </span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">jalur_file</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> CRS tidak ditemukan. Menggunakan fallback EPSG:4326."</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">data_shp</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">to_epsg</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">4326</span><span class="p">:</span>
+        <span class="n">data_shp</span> <span class="o">=</span> <span class="n">data_shp</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="o">=</span><span class="mi">4326</span><span class="p">)</span>
         
-    # Sampling acak jika over-target
-    if len(data_shp) &gt; target_n:
-        generator = np.random.default_rng(ANGKA_RANDOM)
-        index_acak = generator.choice(len(data_shp), target_n, replace=False)
-        data_shp = data_shp.iloc[sorted(index_acak)].copy()
+    <span class="c1"># Sampling acak jika over-target</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_shp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">target_n</span><span class="p">:</span>
+        <span class="n">generator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">ANGKA_RANDOM</span><span class="p">)</span>
+        <span class="n">index_acak</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_shp</span><span class="p">),</span> <span class="n">target_n</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">data_shp</span> <span class="o">=</span> <span class="n">data_shp</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">sorted</span><span class="p">(</span><span class="n">index_acak</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     
-    catat_log(f"[{Path(jalur_file).name}] Total asli: {total_awal} poligon | Dipilih: {len(data_shp)} poligon")
-    return [mapping(geo) for geo in data_shp.geometry]
+    <span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">jalur_file</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">] Total asli: </span><span class="si">{</span><span class="n">total_awal</span><span class="si">}</span><span class="s2"> poligon | Dipilih: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data_shp</span><span class="p">)</span><span class="si">}</span><span class="s2"> poligon"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">mapping</span><span class="p">(</span><span class="n">geo</span><span class="p">)</span> <span class="k">for</span> <span class="n">geo</span> <span class="ow">in</span> <span class="n">data_shp</span><span class="o">.</span><span class="n">geometry</span><span class="p">]</span>
 
-def ektrak_titik(struktur_koordinat):
-    if isinstance(struktur_koordinat[0], (int, float)):
-        yield struktur_koordinat[0], struktur_koordinat[1]
-    else:
-        for elemen in struktur_koordinat:
-            yield from ektrak_titik(elemen)
+<span class="k">def</span><span class="w"> </span><span class="nf">ektrak_titik</span><span class="p">(</span><span class="n">struktur_koordinat</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">struktur_koordinat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+        <span class="k">yield</span> <span class="n">struktur_koordinat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">struktur_koordinat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">elemen</span> <span class="ow">in</span> <span class="n">struktur_koordinat</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="n">ektrak_titik</span><span class="p">(</span><span class="n">elemen</span><span class="p">)</span>
 
-geo_sawah = muat_geometri_sampel(PATH_SAWAH, JUMLAH_SAMPEL_PER_KELAS)
-geo_bukan = muat_geometri_sampel(PATH_NON_SAWAH, JUMLAH_SAMPEL_PER_KELAS)
+<span class="n">geo_sawah</span> <span class="o">=</span> <span class="n">muat_geometri_sampel</span><span class="p">(</span><span class="n">PATH_SAWAH</span><span class="p">,</span> <span class="n">JUMLAH_SAMPEL_PER_KELAS</span><span class="p">)</span>
+<span class="n">geo_bukan</span> <span class="o">=</span> <span class="n">muat_geometri_sampel</span><span class="p">(</span><span class="n">PATH_NON_SAWAH</span><span class="p">,</span> <span class="n">JUMLAH_SAMPEL_PER_KELAS</span><span class="p">)</span>
 
-semua_titik = [titik for geometri in geo_sawah + geo_bukan for titik in ektrak_titik(geometri["coordinates"])]
+<span class="n">semua_titik</span> <span class="o">=</span> <span class="p">[</span><span class="n">titik</span> <span class="k">for</span> <span class="n">geometri</span> <span class="ow">in</span> <span class="n">geo_sawah</span> <span class="o">+</span> <span class="n">geo_bukan</span> <span class="k">for</span> <span class="n">titik</span> <span class="ow">in</span> <span class="n">ektrak_titik</span><span class="p">(</span><span class="n">geometri</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">])]</span>
 
-# Hitung padding derajat (1 derajat ~ 111 km)
-konversi_padding = MARGIN_METER / 111000.0
+<span class="c1"># Hitung padding derajat (1 derajat ~ 111 km)</span>
+<span class="n">konversi_padding</span> <span class="o">=</span> <span class="n">MARGIN_METER</span> <span class="o">/</span> <span class="mf">111000.0</span>
 
-# Bounding box [min_lon, min_lat, max_lon, max_lat]
-BATAS_AREA = (
-    min(lon for lon, _ in semua_titik) - konversi_padding,
-    min(lat for _, lat in semua_titik) - konversi_padding,
-    max(lon for lon, _ in semua_titik) + konversi_padding,
-    max(lat for _, lat in semua_titik) + konversi_padding
-)
+<span class="c1"># Bounding box [min_lon, min_lat, max_lon, max_lat]</span>
+<span class="n">BATAS_AREA</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="nb">min</span><span class="p">(</span><span class="n">lon</span> <span class="k">for</span> <span class="n">lon</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">semua_titik</span><span class="p">)</span> <span class="o">-</span> <span class="n">konversi_padding</span><span class="p">,</span>
+    <span class="nb">min</span><span class="p">(</span><span class="n">lat</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">lat</span> <span class="ow">in</span> <span class="n">semua_titik</span><span class="p">)</span> <span class="o">-</span> <span class="n">konversi_padding</span><span class="p">,</span>
+    <span class="nb">max</span><span class="p">(</span><span class="n">lon</span> <span class="k">for</span> <span class="n">lon</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">semua_titik</span><span class="p">)</span> <span class="o">+</span> <span class="n">konversi_padding</span><span class="p">,</span>
+    <span class="nb">max</span><span class="p">(</span><span class="n">lat</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">lat</span> <span class="ow">in</span> <span class="n">semua_titik</span><span class="p">)</span> <span class="o">+</span> <span class="n">konversi_padding</span>
+<span class="p">)</span>
 
-catat_log(f"Batas Bounding Box (Lon, Lat): {tuple(round(val, 5) for val in BATAS_AREA)}")
+<span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Batas Bounding Box (Lon, Lat): </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">BATAS_AREA</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[input.shp] Total asli: 50 poligon | Dipilih: 46 poligon
+[input.shp] Total asli: 50 poligon | Dipilih: 50 poligon
+Batas Bounding Box (Lon, Lat): (113.10647, -7.23792, 113.15149, -7.20381)
 </pre></div>
 </div>
 </div>
@@ -669,33 +676,36 @@ catat_log(f"Batas Bounding Box (Lon, Lat): {tuple(round(val, 5) for val in BATAS
 <p>Visualisasi ini memastikan letak titik sampel secara geografis. Poligon sawah digambarkan dengan warna hijau dan non-sawah berwarna merah. Garis hitam putus-putus adalah <em>Bounding Box</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>fig, ax = plt.subplots(figsize=(9, 7))
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 
-# Plot non-sawah
-gpd.GeoSeries([shape(g) for g in geo_bukan]).plot(
-    ax=ax, facecolor="red", edgecolor="darkred", alpha=0.6, linewidth=0.8
-)
-# Plot sawah
-gpd.GeoSeries([shape(g) for g in geo_sawah]).plot(
-    ax=ax, facecolor="green", edgecolor="darkgreen", alpha=0.6, linewidth=0.8
-)
-# Plot bbox
-gpd.GeoSeries([shp_box(*BATAS_AREA)]).boundary.plot(
-    ax=ax, color="black", linestyle="--", linewidth=1.2
-)
+<span class="c1"># Plot non-sawah</span>
+<span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">([</span><span class="n">shape</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">geo_bukan</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"darkred"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span>
+<span class="p">)</span>
+<span class="c1"># Plot sawah</span>
+<span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">([</span><span class="n">shape</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">geo_sawah</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"green"</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"darkgreen"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span>
+<span class="p">)</span>
+<span class="c1"># Plot bbox</span>
+<span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">([</span><span class="n">shp_box</span><span class="p">(</span><span class="o">*</span><span class="n">BATAS_AREA</span><span class="p">)])</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span>
+<span class="p">)</span>
 
-ax.legend(handles=[
-    plt.Rectangle((0, 0), 1, 1, fc="green", alpha=0.6, label=f"Sawah (1) - {len(geo_sawah)}"),
-    plt.Rectangle((0, 0), 1, 1, fc="red", alpha=0.6, label=f"Bukan Sawah (0) - {len(geo_bukan)}")
-], loc="best", fontsize=10)
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s2">"green"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Sawah (1) - </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">geo_sawah</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">),</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Bukan Sawah (0) - </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">geo_bukan</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"best"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
-ax.set_title("Sebaran Sampel Latih &amp; Batas Area Unduhan")
-ax.set_xlabel("Longitude")
-ax.set_ylabel("Latitude")
-plt.tight_layout()
-plt.show()
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Sebaran Sampel Latih &amp; Batas Area Unduhan"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Longitude"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Latitude"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/13decd970d5f8b157a60107c2eb23332119c2cec707cb33e0d7987a672692f1b.png" src="_images/13decd970d5f8b157a60107c2eb23332119c2cec707cb33e0d7987a672692f1b.png" />
 </div>
 </div>
 </section>
@@ -711,169 +721,176 @@ plt.show()
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if CITRA_MENTAH_TIF.exists():
-    ID_KLIEN = RAHASIA_KLIEN = None
-else:
-    ID_KLIEN = os.environ.get("CDSE_CLIENT_ID") or input("Masukkan CDSE Client ID Anda: ").strip()
-    RAHASIA_KLIEN = os.environ.get("CDSE_CLIENT_SECRET") or getpass.getpass("Masukkan CDSE Client Secret Anda: ").strip()
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">CITRA_MENTAH_TIF</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">ID_KLIEN</span> <span class="o">=</span> <span class="n">RAHASIA_KLIEN</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">ID_KLIEN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"CDSE_CLIENT_ID"</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">input</span><span class="p">(</span><span class="s2">"Masukkan CDSE Client ID Anda: "</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">RAHASIA_KLIEN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"CDSE_CLIENT_SECRET"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s2">"Masukkan CDSE Client Secret Anda: "</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
-def ambil_token_auth():
-    respon = requests.post(URL_OAUTH, data={
-        "grant_type": "client_credentials",
-        "client_id": ID_KLIEN,
-        "client_secret": RAHASIA_KLIEN,
-    }, timeout=60)
+<span class="k">def</span><span class="w"> </span><span class="nf">ambil_token_auth</span><span class="p">():</span>
+    <span class="n">respon</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">URL_OAUTH</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"grant_type"</span><span class="p">:</span> <span class="s2">"client_credentials"</span><span class="p">,</span>
+        <span class="s2">"client_id"</span><span class="p">:</span> <span class="n">ID_KLIEN</span><span class="p">,</span>
+        <span class="s2">"client_secret"</span><span class="p">:</span> <span class="n">RAHASIA_KLIEN</span><span class="p">,</span>
+    <span class="p">},</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
     
-    if respon.status_code != 200:
-        raise Exception(f"Gagal otentikasi token! Kode: {respon.status_code}. Pastikan Kredensial Valid.")
-    return respon.json()["access_token"]
+    <span class="k">if</span> <span class="n">respon</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Gagal otentikasi token! Kode: </span><span class="si">{</span><span class="n">respon</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">. Pastikan Kredensial Valid."</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">respon</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"access_token"</span><span class="p">]</span>
 
-def cari_katalog_citra(token):
-    payload = {
-        "collections": ["sentinel-2-l2a"],
-        "datetime": f"{TANGGAL_MULAI}T00:00:00Z/{TANGGAL_AKHIR}T23:59:59Z",
-        "bbox": list(BATAS_AREA),
-        "limit": 100,
-    }
-    header_auth = {"Authorization": f"Bearer {token}"}
-    kandidat_scene = []
+<span class="k">def</span><span class="w"> </span><span class="nf">cari_katalog_citra</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"collections"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"sentinel-2-l2a"</span><span class="p">],</span>
+        <span class="s2">"datetime"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">TANGGAL_MULAI</span><span class="si">}</span><span class="s2">T00:00:00Z/</span><span class="si">{</span><span class="n">TANGGAL_AKHIR</span><span class="si">}</span><span class="s2">T23:59:59Z"</span><span class="p">,</span>
+        <span class="s2">"bbox"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">BATAS_AREA</span><span class="p">),</span>
+        <span class="s2">"limit"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">header_auth</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Authorization"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Bearer </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">"</span><span class="p">}</span>
+    <span class="n">kandidat_scene</span> <span class="o">=</span> <span class="p">[]</span>
     
-    while True:
-        resp = requests.post(URL_PENCARIAN, json=payload, headers=header_auth, timeout=100)
-        if resp.status_code != 200:
-            raise Exception("Gagal mencari data di katalog satelit!")
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">URL_PENCARIAN</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">header_auth</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Gagal mencari data di katalog satelit!"</span><span class="p">)</span>
             
-        data_json = resp.json()
-        hasil_fitur = data_json.get("features", [])
+        <span class="n">data_json</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">hasil_fitur</span> <span class="o">=</span> <span class="n">data_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"features"</span><span class="p">,</span> <span class="p">[])</span>
         
-        url_lanjut = data_json.get("context", {}).get("next")
+        <span class="n">url_lanjut</span> <span class="o">=</span> <span class="n">data_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"context"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"next"</span><span class="p">)</span>
         
-        for item in hasil_fitur:
-            prop = item.get("properties", {})
-            tutupan_awan = prop.get("eo:cloud_cover")
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">hasil_fitur</span><span class="p">:</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"properties"</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="n">tutupan_awan</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"eo:cloud_cover"</span><span class="p">)</span>
             
-            if tutupan_awan is None or tutupan_awan &gt; MAKS_AWAN_PERSEN:
-                continue
-            if KODE_SATELIT and not item["id"].upper().startswith(KODE_SATELIT):
-                continue
+            <span class="k">if</span> <span class="n">tutupan_awan</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">tutupan_awan</span> <span class="o">&gt;</span> <span class="n">MAKS_AWAN_PERSEN</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">KODE_SATELIT</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">item</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">KODE_SATELIT</span><span class="p">):</span>
+                <span class="k">continue</span>
                 
-            kandidat_scene.append((tutupan_awan, prop["datetime"], item["id"]))
+            <span class="n">kandidat_scene</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">tutupan_awan</span><span class="p">,</span> <span class="n">prop</span><span class="p">[</span><span class="s2">"datetime"</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]))</span>
             
-        if not url_lanjut:
-            break
-        payload["next"] = url_lanjut
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">url_lanjut</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s2">"next"</span><span class="p">]</span> <span class="o">=</span> <span class="n">url_lanjut</span>
         
-    kandidat_scene.sort() # Sortir dari yang awannya paling tipis
-    catat_log(f"Ditemukan {len(kandidat_scene)} scene potensial dengan awan &lt;= {MAKS_AWAN_PERSEN}%")
-    return kandidat_scene
+    <span class="n">kandidat_scene</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span> <span class="c1"># Sortir dari yang awannya paling tipis</span>
+    <span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Ditemukan </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">kandidat_scene</span><span class="p">)</span><span class="si">}</span><span class="s2"> scene potensial dengan awan &lt;= </span><span class="si">{</span><span class="n">MAKS_AWAN_PERSEN</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">kandidat_scene</span>
 
-def tentukan_zona_utm(lon, lat):
-    # Penentuan Zona EPSG UTM otomatis berdasarkan koordinat
-    return (32700 if lat &lt; 0 else 32600) + int((lon + 180) // 6) + 1
+<span class="k">def</span><span class="w"> </span><span class="nf">tentukan_zona_utm</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">):</span>
+    <span class="c1"># Penentuan Zona EPSG UTM otomatis berdasarkan koordinat</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">32700</span> <span class="k">if</span> <span class="n">lat</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">32600</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">((</span><span class="n">lon</span> <span class="o">+</span> <span class="mi">180</span><span class="p">)</span> <span class="o">//</span> <span class="mi">6</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
-def script_evaluasi_server():
-    # Perintah JavaScript untuk Copernicus memproses band spesifik
-    masking = " || [0,1,3,8,9,10,11].indexOf(s.SCL) &gt;= 0" if MASKING_AWAN else ""
-    return (
-        '//VERSION=3\n'
-        'function setup() {\n'
-        '  return {\n'
-        '    input: [{bands: ["B02","B03","B04","B08","B11","B12","SCL","dataMask"]}],\n'
-        '    output: {bands: 6, sampleType: "FLOAT32"}\n'
-        '  };\n'
-        '}\n'
-        'function evaluatePixel(s) {\n'
-        f'  var kotor = (s.dataMask == 0){masking};\n'
-        '  if (kotor) return [0,0,0,0,0,0];\n'
-        '  return [s.B02, s.B03, s.B04, s.B08, s.B11, s.B12];\n'
-        '}\n'
-    )
+<span class="k">def</span><span class="w"> </span><span class="nf">script_evaluasi_server</span><span class="p">():</span>
+    <span class="c1"># Perintah JavaScript untuk Copernicus memproses band spesifik</span>
+    <span class="n">masking</span> <span class="o">=</span> <span class="s2">" || [0,1,3,8,9,10,11].indexOf(s.SCL) &gt;= 0"</span> <span class="k">if</span> <span class="n">MASKING_AWAN</span> <span class="k">else</span> <span class="s2">""</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="s1">'//VERSION=3</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="s1">'function setup() {</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="s1">'  return {</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="s1">'    input: [{bands: ["B02","B03","B04","B08","B11","B12","SCL","dataMask"]}],</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="s1">'    output: {bands: 6, sampleType: "FLOAT32"}</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="s1">'  };</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="s1">'}</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="s1">'function evaluatePixel(s) {</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="sa">f</span><span class="s1">'  var kotor = (s.dataMask == 0)</span><span class="si">{</span><span class="n">masking</span><span class="si">}</span><span class="s1">;</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="s1">'  if (kotor) return [0,0,0,0,0,0];</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="s1">'  return [s.B02, s.B03, s.B04, s.B08, s.B11, s.B12];</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="s1">'}</span><span class="se">\n</span><span class="s1">'</span>
+    <span class="p">)</span>
 
-def tarik_data_spasial(token, waktu_akuisisi):
-    kode_epsg = tentukan_zona_utm((BATAS_AREA[0]+BATAS_AREA[2])/2, (BATAS_AREA[1]+BATAS_AREA[3])/2)
-    x_min, y_min, x_max, y_max = transform_bounds("EPSG:4326", f"EPSG:{kode_epsg}", *BATAS_AREA)
+<span class="k">def</span><span class="w"> </span><span class="nf">tarik_data_spasial</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">waktu_akuisisi</span><span class="p">):</span>
+    <span class="n">kode_epsg</span> <span class="o">=</span> <span class="n">tentukan_zona_utm</span><span class="p">((</span><span class="n">BATAS_AREA</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">BATAS_AREA</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">BATAS_AREA</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">BATAS_AREA</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="n">transform_bounds</span><span class="p">(</span><span class="s2">"EPSG:4326"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"EPSG:</span><span class="si">{</span><span class="n">kode_epsg</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="o">*</span><span class="n">BATAS_AREA</span><span class="p">)</span>
     
-    # Grid 10x10 meter per piksel
-    x_min, y_min = math.floor(x_min / 10) * 10, math.floor(y_min / 10) * 10
-    x_max, y_max = math.ceil(x_max / 10) * 10, math.ceil(y_max / 10) * 10
+    <span class="c1"># Grid 10x10 meter per piksel</span>
+    <span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">x_min</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">y_min</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span>
+    <span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">x_max</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">y_max</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span>
     
-    dt_zona = dt.datetime.fromisoformat(waktu_akuisisi.replace("Z", "+00:00")).astimezone(dt.timezone.utc)
-    format_waktu = "%Y-%m-%dT%H:%M:%SZ"
+    <span class="n">dt_zona</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">waktu_akuisisi</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"Z"</span><span class="p">,</span> <span class="s2">"+00:00"</span><span class="p">))</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="n">format_waktu</span> <span class="o">=</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%SZ"</span>
     
-    skema = {
-        "input": {
-            "bounds": {
-                "bbox": [x_min, y_min, x_max, y_max],
-                "properties": {"crs": f"http://www.opengis.net/def/crs/EPSG/0/{kode_epsg}"}
-            },
-            "data": [{
-                "type": "sentinel-2-l2a",
-                "dataFilter": {
-                    "timeRange": {
-                        "from": (dt_zona - dt.timedelta(minutes=1)).strftime(format_waktu),
-                        "to": (dt_zona + dt.timedelta(minutes=1)).strftime(format_waktu)
-                    },
-                    "mosaickingOrder": "leastCC"
-                }
-            }]
-        },
-        "output": {
-            "resx": 10, "resy": 10,
-            "responses": [{"identifier": "default", "format": {"type": "image/tiff"}}]
-        },
-        "evalscript": script_evaluasi_server()
-    }
+    <span class="n">skema</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"input"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"bounds"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"bbox"</span><span class="p">:</span> <span class="p">[</span><span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span><span class="p">],</span>
+                <span class="s2">"properties"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"crs"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"http://www.opengis.net/def/crs/EPSG/0/</span><span class="si">{</span><span class="n">kode_epsg</span><span class="si">}</span><span class="s2">"</span><span class="p">}</span>
+            <span class="p">},</span>
+            <span class="s2">"data"</span><span class="p">:</span> <span class="p">[{</span>
+                <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"sentinel-2-l2a"</span><span class="p">,</span>
+                <span class="s2">"dataFilter"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"timeRange"</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">"from"</span><span class="p">:</span> <span class="p">(</span><span class="n">dt_zona</span> <span class="o">-</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format_waktu</span><span class="p">),</span>
+                        <span class="s2">"to"</span><span class="p">:</span> <span class="p">(</span><span class="n">dt_zona</span> <span class="o">+</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format_waktu</span><span class="p">)</span>
+                    <span class="p">},</span>
+                    <span class="s2">"mosaickingOrder"</span><span class="p">:</span> <span class="s2">"leastCC"</span>
+                <span class="p">}</span>
+            <span class="p">}]</span>
+        <span class="p">},</span>
+        <span class="s2">"output"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"resx"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">"resy"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s2">"responses"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"identifier"</span><span class="p">:</span> <span class="s2">"default"</span><span class="p">,</span> <span class="s2">"format"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"image/tiff"</span><span class="p">}}]</span>
+        <span class="p">},</span>
+        <span class="s2">"evalscript"</span><span class="p">:</span> <span class="n">script_evaluasi_server</span><span class="p">()</span>
+    <span class="p">}</span>
     
-    req = requests.post(URL_PROSES, json=skema, timeout=300, headers={"Authorization": f"Bearer {token}", "Accept": "image/tiff"})
-    if req.status_code != 200:
-        raise Exception(f"Gagal unduh dari server proses: {req.text[:200]}")
-    return req.content, kode_epsg
+    <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">URL_PROSES</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">skema</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"Authorization"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Bearer </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"Accept"</span><span class="p">:</span> <span class="s2">"image/tiff"</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Gagal unduh dari server proses: </span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">200</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">req</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">kode_epsg</span>
 
-def cek_rasio_pixel_bersih(bytes_tif):
-    from rasterio.io import MemoryFile
-    with MemoryFile(bytes_tif) as mem, mem.open() as dt_src:
-        matriks = dt_src.read()
-        return float((np.any(matriks != 0, axis=0) &amp; np.isfinite(matriks).all(axis=0)).mean())
+<span class="k">def</span><span class="w"> </span><span class="nf">cek_rasio_pixel_bersih</span><span class="p">(</span><span class="n">bytes_tif</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">MemoryFile</span>
+    <span class="k">with</span> <span class="n">MemoryFile</span><span class="p">(</span><span class="n">bytes_tif</span><span class="p">)</span> <span class="k">as</span> <span class="n">mem</span><span class="p">,</span> <span class="n">mem</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">dt_src</span><span class="p">:</span>
+        <span class="n">matriks</span> <span class="o">=</span> <span class="n">dt_src</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">matriks</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">matriks</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 
-def mulai_rutinitas_unduh():
-    if CITRA_MENTAH_TIF.exists():
-        catat_log("INFO: TIF sudah eksis di penyimpanan. Mengabaikan proses download.")
-        return
+<span class="k">def</span><span class="w"> </span><span class="nf">mulai_rutinitas_unduh</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">CITRA_MENTAH_TIF</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">catat_log</span><span class="p">(</span><span class="s2">"INFO: TIF sudah eksis di penyimpanan. Mengabaikan proses download."</span><span class="p">)</span>
+        <span class="k">return</span>
         
-    token_aktif = ambil_token_auth()
-    daftar_scene = cari_katalog_citra(token_aktif)
+    <span class="n">token_aktif</span> <span class="o">=</span> <span class="n">ambil_token_auth</span><span class="p">()</span>
+    <span class="n">daftar_scene</span> <span class="o">=</span> <span class="n">cari_katalog_citra</span><span class="p">(</span><span class="n">token_aktif</span><span class="p">)</span>
     
-    if not daftar_scene:
-        raise Exception("Tidak ada scene satelit yang memenuhi syarat di rentang waktu tersebut.")
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">daftar_scene</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Tidak ada scene satelit yang memenuhi syarat di rentang waktu tersebut."</span><span class="p">)</span>
         
-    scene_pemenang = None
+    <span class="n">scene_pemenang</span> <span class="o">=</span> <span class="kc">None</span>
     
-    for awan, waktu_rekam, id_scene in daftar_scene[:MAKS_PERCOBAAN_SCENE]:
-        binary_tif, kode_crs = tarik_data_spasial(token_aktif, waktu_rekam)
-        kualitas_piksel = cek_rasio_pixel_bersih(binary_tif)
+    <span class="k">for</span> <span class="n">awan</span><span class="p">,</span> <span class="n">waktu_rekam</span><span class="p">,</span> <span class="n">id_scene</span> <span class="ow">in</span> <span class="n">daftar_scene</span><span class="p">[:</span><span class="n">MAKS_PERCOBAAN_SCENE</span><span class="p">]:</span>
+        <span class="n">binary_tif</span><span class="p">,</span> <span class="n">kode_crs</span> <span class="o">=</span> <span class="n">tarik_data_spasial</span><span class="p">(</span><span class="n">token_aktif</span><span class="p">,</span> <span class="n">waktu_rekam</span><span class="p">)</span>
+        <span class="n">kualitas_piksel</span> <span class="o">=</span> <span class="n">cek_rasio_pixel_bersih</span><span class="p">(</span><span class="n">binary_tif</span><span class="p">)</span>
         
-        catat_log(f"&gt; Evaluasi: {id_scene[:30]}... | {waktu_rekam} | Awan {awan:.1f}% | Kualitas Area {kualitas_piksel:.1%}")
+        <span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"&gt; Evaluasi: </span><span class="si">{</span><span class="n">id_scene</span><span class="p">[:</span><span class="mi">30</span><span class="p">]</span><span class="si">}</span><span class="s2">... | </span><span class="si">{</span><span class="n">waktu_rekam</span><span class="si">}</span><span class="s2"> | Awan </span><span class="si">{</span><span class="n">awan</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">% | Kualitas Area </span><span class="si">{</span><span class="n">kualitas_piksel</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         
-        if scene_pemenang is None or kualitas_piksel &gt; scene_pemenang["skor"]:
-            scene_pemenang = dict(skor=kualitas_piksel, file=binary_tif, waktu=waktu_rekam, identitas=id_scene, awan=awan, crs=kode_crs)
+        <span class="k">if</span> <span class="n">scene_pemenang</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">kualitas_piksel</span> <span class="o">&gt;</span> <span class="n">scene_pemenang</span><span class="p">[</span><span class="s2">"skor"</span><span class="p">]:</span>
+            <span class="n">scene_pemenang</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">skor</span><span class="o">=</span><span class="n">kualitas_piksel</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">binary_tif</span><span class="p">,</span> <span class="n">waktu</span><span class="o">=</span><span class="n">waktu_rekam</span><span class="p">,</span> <span class="n">identitas</span><span class="o">=</span><span class="n">id_scene</span><span class="p">,</span> <span class="n">awan</span><span class="o">=</span><span class="n">awan</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">kode_crs</span><span class="p">)</span>
             
-        if kualitas_piksel &gt;= AMBANG_VALID:
-            break
+        <span class="k">if</span> <span class="n">kualitas_piksel</span> <span class="o">&gt;=</span> <span class="n">AMBANG_VALID</span><span class="p">:</span>
+            <span class="k">break</span>
             
-    # Simpan hasil terbaik
-    CITRA_MENTAH_TIF.write_bytes(scene_pemenang["file"])
-    teks_laporan = (
-        f"ID Scene Terpilih : {scene_pemenang['identitas']}\n"
-        f"Tanggal Akuisisi : {scene_pemenang['waktu']}\n"
-        f"Tutupan Awan Map : {scene_pemenang['awan']:.1f}%\n"
-        f"Pixel Bersih : {scene_pemenang['skor']:.1%}\n"
-        f"Sistem Koordinat : EPSG:{scene_pemenang['crs']}\n"
-        f"Masking SCL Aktif : {MASKING_AWAN}\n"
-    )
-    INFO_CITRA_TXT.write_text(teks_laporan, encoding="utf-8")
-    catat_log(f"SUKSES: Menyimpan {CITRA_MENTAH_TIF.name} dari scene {scene_pemenang['identitas']}.")
+    <span class="c1"># Simpan hasil terbaik</span>
+    <span class="n">CITRA_MENTAH_TIF</span><span class="o">.</span><span class="n">write_bytes</span><span class="p">(</span><span class="n">scene_pemenang</span><span class="p">[</span><span class="s2">"file"</span><span class="p">])</span>
+    <span class="n">teks_laporan</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"ID Scene Terpilih : </span><span class="si">{</span><span class="n">scene_pemenang</span><span class="p">[</span><span class="s1">'identitas'</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"Tanggal Akuisisi : </span><span class="si">{</span><span class="n">scene_pemenang</span><span class="p">[</span><span class="s1">'waktu'</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"Tutupan Awan Map : </span><span class="si">{</span><span class="n">scene_pemenang</span><span class="p">[</span><span class="s1">'awan'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"Pixel Bersih : </span><span class="si">{</span><span class="n">scene_pemenang</span><span class="p">[</span><span class="s1">'skor'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"Sistem Koordinat : EPSG:</span><span class="si">{</span><span class="n">scene_pemenang</span><span class="p">[</span><span class="s1">'crs'</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"Masking SCL Aktif : </span><span class="si">{</span><span class="n">MASKING_AWAN</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="p">)</span>
+    <span class="n">INFO_CITRA_TXT</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">teks_laporan</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+    <span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SUKSES: Menyimpan </span><span class="si">{</span><span class="n">CITRA_MENTAH_TIF</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> dari scene </span><span class="si">{</span><span class="n">scene_pemenang</span><span class="p">[</span><span class="s1">'identitas'</span><span class="p">]</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
-mulai_rutinitas_unduh()
+<span class="n">mulai_rutinitas_unduh</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ditemukan 11 scene potensial dengan awan &lt;= 30%
+&gt; Evaluasi: S2A_MSIL2A_20260720T023141_N05... | 2026-07-20T02:50:04.854Z | Awan 4.6% | Kualitas Area 100.0%
+SUKSES: Menyimpan sentinel2_mentah.tif dari scene S2A_MSIL2A_20260720T023141_N0512_R046_T49MGN_20260720T083516.SAFE.
 </pre></div>
 </div>
 </div>
@@ -883,10 +900,20 @@ mulai_rutinitas_unduh()
 <p>Rekapan singkat citra satelit yang berhasil dipinang oleh sistem:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if INFO_CITRA_TXT.exists():
-    print(INFO_CITRA_TXT.read_text(encoding="utf-8"))
-else:
-    print("Metadata belum tersedia (mungkin Anda menggunakan TIF eksternal).")
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">INFO_CITRA_TXT</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">INFO_CITRA_TXT</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Metadata belum tersedia (mungkin Anda menggunakan TIF eksternal)."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ID Scene Terpilih : S2A_MSIL2A_20260720T023141_N0512_R046_T49MGN_20260720T083516.SAFE
+Tanggal Akuisisi : 2026-07-20T02:50:04.854Z
+Tutupan Awan Map : 4.6%
+Pixel Bersih : 100.0%
+Sistem Koordinat : EPSG:32749
+Masking SCL Aktif : True
 </pre></div>
 </div>
 </div>
@@ -898,19 +925,24 @@ else:
 <p>Pada langkah ini, <code class="docutils literal notranslate"><span class="pre">rasterio</span></code> digunakan untuk membuka format citra raster <code class="docutils literal notranslate"><span class="pre">.tif</span></code>. Nilai-nilai invalid dan piksel kosong (yang terhapus akibat <em>masking</em> awan) dialihfungsikan menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code> agar nantinya tidak mengotori kalkulasi matematika indeks.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>with rasterio.open(CITRA_MENTAH_TIF) as reader:
-    matriks_awal = reader.read().astype("float32")
-    crs_citra = reader.crs
-    transformasi_citra = reader.transform
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">CITRA_MENTAH_TIF</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="n">matriks_awal</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"float32"</span><span class="p">)</span>
+    <span class="n">crs_citra</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">crs</span>
+    <span class="n">transformasi_citra</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">transform</span>
     
-    area_korup = np.all(matriks_awal == 0, axis=0) | ~np.isfinite(matriks_awal).all(axis=0)
-    matriks_awal[:, area_korup] = np.nan
+    <span class="n">area_korup</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">matriks_awal</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">matriks_awal</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">matriks_awal</span><span class="p">[:,</span> <span class="n">area_korup</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     
-    BANYAK_BARIS, BANYAK_KOLOM = matriks_awal.shape[1:]
-    catat_log(f"Dimensi Raster: {BANYAK_KOLOM} x {BANYAK_BARIS} | CRS: {crs_citra} | Pixel NaN: {area_korup.mean():.2%}")
+    <span class="n">BANYAK_BARIS</span><span class="p">,</span> <span class="n">BANYAK_KOLOM</span> <span class="o">=</span> <span class="n">matriks_awal</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dimensi Raster: </span><span class="si">{</span><span class="n">BANYAK_KOLOM</span><span class="si">}</span><span class="s2"> x </span><span class="si">{</span><span class="n">BANYAK_BARIS</span><span class="si">}</span><span class="s2"> | CRS: </span><span class="si">{</span><span class="n">crs_citra</span><span class="si">}</span><span class="s2"> | Pixel NaN: </span><span class="si">{</span><span class="n">area_korup</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     
-    # Dictionary mapping band untuk kemudahan akses indeks
-    dict_band = dict(zip(NAMA_BAND, matriks_awal))
+    <span class="c1"># Dictionary mapping band untuk kemudahan akses indeks</span>
+    <span class="n">dict_band</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">NAMA_BAND</span><span class="p">,</span> <span class="n">matriks_awal</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dimensi Raster: 500 x 381 | CRS: EPSG:32749 | Pixel NaN: 0.01%
 </pre></div>
 </div>
 </div>
@@ -927,18 +959,18 @@ else:
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>def kalkulasi_nd(b1, b2):
-    return (b1 - b2) / (b1 + b2 + 1e-10)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">kalkulasi_nd</span><span class="p">(</span><span class="n">b1</span><span class="p">,</span> <span class="n">b2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">b1</span> <span class="o">-</span> <span class="n">b2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b1</span> <span class="o">+</span> <span class="n">b2</span> <span class="o">+</span> <span class="mf">1e-10</span><span class="p">)</span>
 
-matriks_ndvi = kalkulasi_nd(dict_band["B08"], dict_band["B04"])
-matriks_ndwi = kalkulasi_nd(dict_band["B03"], dict_band["B08"])
-matriks_ndbi = kalkulasi_nd(dict_band["B11"], dict_band["B08"])
-matriks_evi = 2.5 * (dict_band["B08"] - dict_band["B04"]) / (dict_band["B08"] + 6 * dict_band["B04"] - 7.5 * dict_band["B02"] + 1)
+<span class="n">matriks_ndvi</span> <span class="o">=</span> <span class="n">kalkulasi_nd</span><span class="p">(</span><span class="n">dict_band</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">],</span> <span class="n">dict_band</span><span class="p">[</span><span class="s2">"B04"</span><span class="p">])</span>
+<span class="n">matriks_ndwi</span> <span class="o">=</span> <span class="n">kalkulasi_nd</span><span class="p">(</span><span class="n">dict_band</span><span class="p">[</span><span class="s2">"B03"</span><span class="p">],</span> <span class="n">dict_band</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">])</span>
+<span class="n">matriks_ndbi</span> <span class="o">=</span> <span class="n">kalkulasi_nd</span><span class="p">(</span><span class="n">dict_band</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">],</span> <span class="n">dict_band</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">])</span>
+<span class="n">matriks_evi</span> <span class="o">=</span> <span class="mf">2.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">dict_band</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">-</span> <span class="n">dict_band</span><span class="p">[</span><span class="s2">"B04"</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">dict_band</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">+</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">dict_band</span><span class="p">[</span><span class="s2">"B04"</span><span class="p">]</span> <span class="o">-</span> <span class="mf">7.5</span> <span class="o">*</span> <span class="n">dict_band</span><span class="p">[</span><span class="s2">"B02"</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
-# Menggabungkan 6 band mentah + 4 indeks = 10 dimensi variabel
-kumpulan_fitur = np.concatenate([matriks_awal, np.stack([matriks_ndvi, matriks_ndwi, matriks_ndbi, matriks_evi])]).astype("float32")
-KOLOM_FITUR = NAMA_BAND + ["NDVI", "NDWI", "NDBI", "EVI"]
-DIMENSI_F = kumpulan_fitur.shape[0]
+<span class="c1"># Menggabungkan 6 band mentah + 4 indeks = 10 dimensi variabel</span>
+<span class="n">kumpulan_fitur</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">matriks_awal</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">matriks_ndvi</span><span class="p">,</span> <span class="n">matriks_ndwi</span><span class="p">,</span> <span class="n">matriks_ndbi</span><span class="p">,</span> <span class="n">matriks_evi</span><span class="p">])])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"float32"</span><span class="p">)</span>
+<span class="n">KOLOM_FITUR</span> <span class="o">=</span> <span class="n">NAMA_BAND</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"NDVI"</span><span class="p">,</span> <span class="s2">"NDWI"</span><span class="p">,</span> <span class="s2">"NDBI"</span><span class="p">,</span> <span class="s2">"EVI"</span><span class="p">]</span>
+<span class="n">DIMENSI_F</span> <span class="o">=</span> <span class="n">kumpulan_fitur</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -949,32 +981,38 @@ DIMENSI_F = kumpulan_fitur.shape[0]
 <p>Metode pelatihan mesin memerlukan format piksel 2 dimensi. Jadi, poligon berformat vektor yang kita baca di awal tadi akan “dibakar” di atas grid raster. Piksel yang tumpang tindih dengan poligon akan mewarisi <em>ID</em> dan <em>Label Kelas</em>-nya.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>peta_id_ke_label = {}
-koleksi_shape_piksel = []
-pencacah_id = 0
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">peta_id_ke_label</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">koleksi_shape_piksel</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">pencacah_id</span> <span class="o">=</span> <span class="mi">0</span>
 
-for list_geo, kode_kelas in ((geo_bukan, 0), (geo_sawah, 1)):
-    for poligon in list_geo:
-        pencacah_id += 1
-        peta_id_ke_label[pencacah_id] = kode_kelas
+<span class="k">for</span> <span class="n">list_geo</span><span class="p">,</span> <span class="n">kode_kelas</span> <span class="ow">in</span> <span class="p">((</span><span class="n">geo_bukan</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">geo_sawah</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">poligon</span> <span class="ow">in</span> <span class="n">list_geo</span><span class="p">:</span>
+        <span class="n">pencacah_id</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">peta_id_ke_label</span><span class="p">[</span><span class="n">pencacah_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">kode_kelas</span>
         
-        # Transformasi ulang dari EPSG:4326 ke CRS citra UTM
-        geo_transform = transform_geom("EPSG:4326", crs_citra, poligon)
-        koleksi_shape_piksel.append((geo_transform, pencacah_id))
+        <span class="c1"># Transformasi ulang dari EPSG:4326 ke CRS citra UTM</span>
+        <span class="n">geo_transform</span> <span class="o">=</span> <span class="n">transform_geom</span><span class="p">(</span><span class="s2">"EPSG:4326"</span><span class="p">,</span> <span class="n">crs_citra</span><span class="p">,</span> <span class="n">poligon</span><span class="p">)</span>
+        <span class="n">koleksi_shape_piksel</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">geo_transform</span><span class="p">,</span> <span class="n">pencacah_id</span><span class="p">))</span>
         
-# Proses burning poligon
-masking_poligon = features.rasterize(koleksi_shape_piksel, out_shape=(BANYAK_BARIS, BANYAK_KOLOM), 
-                                     transform=transformasi_citra, fill=0, dtype="int32")
+<span class="c1"># Proses burning poligon</span>
+<span class="n">masking_poligon</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">rasterize</span><span class="p">(</span><span class="n">koleksi_shape_piksel</span><span class="p">,</span> <span class="n">out_shape</span><span class="o">=</span><span class="p">(</span><span class="n">BANYAK_BARIS</span><span class="p">,</span> <span class="n">BANYAK_KOLOM</span><span class="p">),</span> 
+                                     <span class="n">transform</span><span class="o">=</span><span class="n">transformasi_citra</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"int32"</span><span class="p">)</span>
 
-# Seleksi piksel yang berada di dalam area polygon DAN bebas dari halangan awan
-filter_valid_area = (masking_poligon &gt; 0) &amp; np.isfinite(kumpulan_fitur).all(axis=0)
+<span class="c1"># Seleksi piksel yang berada di dalam area polygon DAN bebas dari halangan awan</span>
+<span class="n">filter_valid_area</span> <span class="o">=</span> <span class="p">(</span><span class="n">masking_poligon</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">kumpulan_fitur</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-daftar_id_hadir = np.unique(masking_poligon[filter_valid_area])
+<span class="n">daftar_id_hadir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">masking_poligon</span><span class="p">[</span><span class="n">filter_valid_area</span><span class="p">])</span>
 
-for kode, julukan in ((0, "Bukan Sawah"), (1, "Sawah")):
-    himpunan_id = [x for x in daftar_id_hadir if peta_id_ke_label[x] == kode]
-    jumlah_px_aktif = int(np.isin(masking_poligon, himpunan_id).sum())
-    catat_log(f"Status Kelas {kode} ({julukan}): {len(himpunan_id)} poligon solid -&gt; menghasilkan {jumlah_px_aktif} piksel siap olah.")
+<span class="k">for</span> <span class="n">kode</span><span class="p">,</span> <span class="n">julukan</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="s2">"Bukan Sawah"</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"Sawah"</span><span class="p">)):</span>
+    <span class="n">himpunan_id</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">daftar_id_hadir</span> <span class="k">if</span> <span class="n">peta_id_ke_label</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="n">kode</span><span class="p">]</span>
+    <span class="n">jumlah_px_aktif</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">masking_poligon</span><span class="p">,</span> <span class="n">himpunan_id</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Status Kelas </span><span class="si">{</span><span class="n">kode</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">julukan</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">himpunan_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> poligon solid -&gt; menghasilkan </span><span class="si">{</span><span class="n">jumlah_px_aktif</span><span class="si">}</span><span class="s2"> piksel siap olah."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Status Kelas 0 (Bukan Sawah): 46 poligon solid -&gt; menghasilkan 108 piksel siap olah.
+Status Kelas 1 (Sawah): 46 poligon solid -&gt; menghasilkan 563 piksel siap olah.
 </pre></div>
 </div>
 </div>
@@ -986,28 +1024,33 @@ for kode, julukan in ((0, "Bukan Sawah"), (1, "Sawah")):
 Proporsi kita: 70% Poligon Latih, 30% Poligon Uji.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>generator_acak = np.random.default_rng(ANGKA_RANDOM)
-keranjang_id_latih = []
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">generator_acak</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">ANGKA_RANDOM</span><span class="p">)</span>
+<span class="n">keranjang_id_latih</span> <span class="o">=</span> <span class="p">[]</span>
 
-for jenis_kelas in (0, 1):
-    identitas = [k for k in daftar_id_hadir if peta_id_ke_label[k] == jenis_kelas]
-    generator_acak.shuffle(identitas)
+<span class="k">for</span> <span class="n">jenis_kelas</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">identitas</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">daftar_id_hadir</span> <span class="k">if</span> <span class="n">peta_id_ke_label</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">==</span> <span class="n">jenis_kelas</span><span class="p">]</span>
+    <span class="n">generator_acak</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">identitas</span><span class="p">)</span>
     
-    titik_potong = max(1, int(round(len(identitas) * RASIO_LATIH)))
-    keranjang_id_latih.extend(identitas[:titik_potong])
+    <span class="n">titik_potong</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">identitas</span><span class="p">)</span> <span class="o">*</span> <span class="n">RASIO_LATIH</span><span class="p">)))</span>
+    <span class="n">keranjang_id_latih</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">identitas</span><span class="p">[:</span><span class="n">titik_potong</span><span class="p">])</span>
     
-mask_training = filter_valid_area &amp; np.isin(masking_poligon, keranjang_id_latih)
-mask_testing = filter_valid_area &amp; ~mask_training
+<span class="n">mask_training</span> <span class="o">=</span> <span class="n">filter_valid_area</span> <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">masking_poligon</span><span class="p">,</span> <span class="n">keranjang_id_latih</span><span class="p">)</span>
+<span class="n">mask_testing</span> <span class="o">=</span> <span class="n">filter_valid_area</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">mask_training</span>
 
-pemetaan_label_citra = np.zeros(masking_poligon.max() + 1, dtype="uint8")
-for param_id, param_kls in peta_id_ke_label.items():
-    pemetaan_label_citra[param_id] = param_kls
+<span class="n">pemetaan_label_citra</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">masking_poligon</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"uint8"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">param_id</span><span class="p">,</span> <span class="n">param_kls</span> <span class="ow">in</span> <span class="n">peta_id_ke_label</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">pemetaan_label_citra</span><span class="p">[</span><span class="n">param_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_kls</span>
     
-# Menyiapkan matrix prediktor (X) dan target (y)
-Matriks_X_Train, Matriks_y_Train = kumpulan_fitur[:, mask_training].T, pemetaan_label_citra[masking_poligon[mask_training]]
-Matriks_X_Test, Matriks_y_Test = kumpulan_fitur[:, mask_testing].T, pemetaan_label_citra[masking_poligon[mask_testing]]
+<span class="c1"># Menyiapkan matrix prediktor (X) dan target (y)</span>
+<span class="n">Matriks_X_Train</span><span class="p">,</span> <span class="n">Matriks_y_Train</span> <span class="o">=</span> <span class="n">kumpulan_fitur</span><span class="p">[:,</span> <span class="n">mask_training</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">pemetaan_label_citra</span><span class="p">[</span><span class="n">masking_poligon</span><span class="p">[</span><span class="n">mask_training</span><span class="p">]]</span>
+<span class="n">Matriks_X_Test</span><span class="p">,</span> <span class="n">Matriks_y_Test</span> <span class="o">=</span> <span class="n">kumpulan_fitur</span><span class="p">[:,</span> <span class="n">mask_testing</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">pemetaan_label_citra</span><span class="p">[</span><span class="n">masking_poligon</span><span class="p">[</span><span class="n">mask_testing</span><span class="p">]]</span>
 
-catat_log(f"Distribusi Piksel -&gt; Training Set: {len(Matriks_y_Train)} | Testing Set: {len(Matriks_y_Test)}")
+<span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Distribusi Piksel -&gt; Training Set: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">Matriks_y_Train</span><span class="p">)</span><span class="si">}</span><span class="s2"> | Testing Set: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">Matriks_y_Test</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Distribusi Piksel -&gt; Training Set: 464 | Testing Set: 207
 </pre></div>
 </div>
 </div>
@@ -1018,25 +1061,56 @@ catat_log(f"Distribusi Piksel -&gt; Training Set: {len(Matriks_y_Train)} | Testi
 <p><code class="docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code> akan diinstruksikan membangun ratusan (N=200) skenario pohon klasifikasi menggunakan <code class="docutils literal notranslate"><span class="pre">class_weight='balanced'</span></code>. Penggunaan pembobot sangat penting di sini, menimbang piksel area non-sawah jauh lebih dominan dibanding area sawah meskipun jumlah poligon sama (ukuran persawahan sempit).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Pembangunan struktur model
-model_rf_awal = RandomForestClassifier(n_estimators=JUMLAH_POHON, random_state=ANGKA_RANDOM, class_weight="balanced", n_jobs=-1)
-model_rf_awal.fit(Matriks_X_Train, Matriks_y_Train)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pembangunan struktur model</span>
+<span class="n">model_rf_awal</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="n">JUMLAH_POHON</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">ANGKA_RANDOM</span><span class="p">,</span> <span class="n">class_weight</span><span class="o">=</span><span class="s2">"balanced"</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">model_rf_awal</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Matriks_X_Train</span><span class="p">,</span> <span class="n">Matriks_y_Train</span><span class="p">)</span>
 
-# Evaluasi buta menggunakan set data pengujian
-prediksi_ujian = model_rf_awal.predict(Matriks_X_Test)
+<span class="c1"># Evaluasi buta menggunakan set data pengujian</span>
+<span class="n">prediksi_ujian</span> <span class="o">=</span> <span class="n">model_rf_awal</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Matriks_X_Test</span><span class="p">)</span>
 
-catat_log("&gt;&gt;&gt; MATRIKS KEBINGUNGAN (Confusion Matrix):")
-catat_log(confusion_matrix(Matriks_y_Test, prediksi_ujian, labels=[0, 1]))
-catat_log(f"Akurasi Keseluruhan : {accuracy_score(Matriks_y_Test, prediksi_ujian):.3f}")
-catat_log(f"Indeks Kesepakatan (Kappa) : {cohen_kappa_score(Matriks_y_Test, prediksi_ujian):.3f}")
+<span class="n">catat_log</span><span class="p">(</span><span class="s2">"&gt;&gt;&gt; MATRIKS KEBINGUNGAN (Confusion Matrix):"</span><span class="p">)</span>
+<span class="n">catat_log</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">Matriks_y_Test</span><span class="p">,</span> <span class="n">prediksi_ujian</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+<span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Akurasi Keseluruhan : </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">Matriks_y_Test</span><span class="p">,</span><span class="w"> </span><span class="n">prediksi_ujian</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Indeks Kesepakatan (Kappa) : </span><span class="si">{</span><span class="n">cohen_kappa_score</span><span class="p">(</span><span class="n">Matriks_y_Test</span><span class="p">,</span><span class="w"> </span><span class="n">prediksi_ujian</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-catat_log("\n&gt;&gt;&gt; TABEL LAPORAN KLASIFIKASI:")
-catat_log(classification_report(Matriks_y_Test, prediksi_ujian, target_names=["Bukan Sawah", "Sawah"], digits=3))
+<span class="n">catat_log</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">&gt;&gt;&gt; TABEL LAPORAN KLASIFIKASI:"</span><span class="p">)</span>
+<span class="n">catat_log</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">Matriks_y_Test</span><span class="p">,</span> <span class="n">prediksi_ujian</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="p">[</span><span class="s2">"Bukan Sawah"</span><span class="p">,</span> <span class="s2">"Sawah"</span><span class="p">],</span> <span class="n">digits</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
 
-catat_log("&gt;&gt;&gt; KEKUATAN INDIKATOR (Feature Importances):")
-deret_kekuatan = np.argsort(model_rf_awal.feature_importances_)[::-1]
-for index_feat in deret_kekuatan:
-    catat_log(f"  {KOLOM_FITUR[index_feat]:&lt;6s}: {model_rf_awal.feature_importances_[index_feat]:.4f}")
+<span class="n">catat_log</span><span class="p">(</span><span class="s2">"&gt;&gt;&gt; KEKUATAN INDIKATOR (Feature Importances):"</span><span class="p">)</span>
+<span class="n">deret_kekuatan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">model_rf_awal</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">index_feat</span> <span class="ow">in</span> <span class="n">deret_kekuatan</span><span class="p">:</span>
+    <span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">KOLOM_FITUR</span><span class="p">[</span><span class="n">index_feat</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;6s</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">model_rf_awal</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">[</span><span class="n">index_feat</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; MATRIKS KEBINGUNGAN (Confusion Matrix):
+[[ 32   3]
+ [  0 172]]
+Akurasi Keseluruhan : 0.986
+Indeks Kesepakatan (Kappa) : 0.947
+
+&gt;&gt;&gt; TABEL LAPORAN KLASIFIKASI:
+              precision    recall  f1-score   support
+
+ Bukan Sawah      1.000     0.914     0.955        35
+       Sawah      0.983     1.000     0.991       172
+
+    accuracy                          0.986       207
+   macro avg      0.991     0.957     0.973       207
+weighted avg      0.986     0.986     0.985       207
+
+&gt;&gt;&gt; KEKUATAN INDIKATOR (Feature Importances):
+  B04   : 0.3099
+  B12   : 0.2225
+  NDVI  : 0.1781
+  EVI   : 0.1071
+  B11   : 0.0562
+  B03   : 0.0418
+  B02   : 0.0303
+  NDWI  : 0.0222
+  B08   : 0.0163
+  NDBI  : 0.0156
 </pre></div>
 </div>
 </div>
@@ -1047,23 +1121,29 @@ for index_feat in deret_kekuatan:
 <p>Setelah metrik di atas dipastikan bagus (Kappa dan F1-Score memadai), model akan dilatih <em>ulang</em> menggunakan <strong>gabungan seluruh dataset</strong> agar memori polanya maksimum. Setelah itu, piksel seluruh area <code class="docutils literal notranslate"><span class="pre">BBOX</span></code> yang berhasil didownload akan ditebak kelasnya. Piksel NaN dicap nilai khusus <code class="docutils literal notranslate"><span class="pre">255</span></code> (nodata).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Fit ulang memakai semua set
-model_rf_final = RandomForestClassifier(n_estimators=JUMLAH_POHON, random_state=ANGKA_RANDOM, class_weight="balanced", n_jobs=-1)
-model_rf_final.fit(kumpulan_fitur[:, filter_valid_area].T, pemetaan_label_citra[masking_poligon[filter_valid_area]])
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit ulang memakai semua set</span>
+<span class="n">model_rf_final</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="n">JUMLAH_POHON</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">ANGKA_RANDOM</span><span class="p">,</span> <span class="n">class_weight</span><span class="o">=</span><span class="s2">"balanced"</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">model_rf_final</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">kumpulan_fitur</span><span class="p">[:,</span> <span class="n">filter_valid_area</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">pemetaan_label_citra</span><span class="p">[</span><span class="n">masking_poligon</span><span class="p">[</span><span class="n">filter_valid_area</span><span class="p">]])</span>
 
-# Flatten grid
-grid_mendatar = kumpulan_fitur.reshape(DIMENSI_F, -1).T
-piksel_berisi = np.isfinite(grid_mendatar).all(axis=1)
+<span class="c1"># Flatten grid</span>
+<span class="n">grid_mendatar</span> <span class="o">=</span> <span class="n">kumpulan_fitur</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">DIMENSI_F</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">piksel_berisi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">grid_mendatar</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-matriks_keputusan = np.full(grid_mendatar.shape[0], 255, dtype="uint8")
-matriks_keputusan[piksel_berisi] = model_rf_final.predict(grid_mendatar[piksel_berisi]).astype("uint8")
+<span class="n">matriks_keputusan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">grid_mendatar</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">255</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"uint8"</span><span class="p">)</span>
+<span class="n">matriks_keputusan</span><span class="p">[</span><span class="n">piksel_berisi</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_rf_final</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">grid_mendatar</span><span class="p">[</span><span class="n">piksel_berisi</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"uint8"</span><span class="p">)</span>
 
-hasil_grid_2d = matriks_keputusan.reshape(BANYAK_BARIS, BANYAK_KOLOM)
+<span class="n">hasil_grid_2d</span> <span class="o">=</span> <span class="n">matriks_keputusan</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">BANYAK_BARIS</span><span class="p">,</span> <span class="n">BANYAK_KOLOM</span><span class="p">)</span>
 
-if crs_citra.is_projected:
-    luas_sepetak = abs(transformasi_citra.a * transformasi_citra.e)
-    catat_log(f"Est. Luas Sawah Ditemukan : {(hasil_grid_2d == 1).sum() * luas_sepetak / 10000:.2f} Hektar")
-    catat_log(f"Est. Luas Area Lainnya    : {(hasil_grid_2d == 0).sum() * luas_sepetak / 10000:.2f} Hektar")
+<span class="k">if</span> <span class="n">crs_citra</span><span class="o">.</span><span class="n">is_projected</span><span class="p">:</span>
+    <span class="n">luas_sepetak</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">transformasi_citra</span><span class="o">.</span><span class="n">a</span> <span class="o">*</span> <span class="n">transformasi_citra</span><span class="o">.</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Est. Luas Sawah Ditemukan : </span><span class="si">{</span><span class="p">(</span><span class="n">hasil_grid_2d</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">luas_sepetak</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10000</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> Hektar"</span><span class="p">)</span>
+    <span class="n">catat_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Est. Luas Area Lainnya    : </span><span class="si">{</span><span class="p">(</span><span class="n">hasil_grid_2d</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">luas_sepetak</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10000</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> Hektar"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Est. Luas Sawah Ditemukan : 1778.57 Hektar
+Est. Luas Area Lainnya    : 126.31 Hektar
 </pre></div>
 </div>
 </div>
@@ -1074,32 +1154,38 @@ if crs_citra.is_projected:
 <p>Sesi pungkasan menyimpan array <code class="docutils literal notranslate"><span class="pre">hasil_grid_2d</span></code> kembali ke format raster TIF. Penyesuaian <code class="docutils literal notranslate"><span class="pre">colormap</span></code> <em>(0: Merah, 1: Hijau)</em> ditanamkan ke metadata file agar warna standar muncul ketika dirender di aplikasi sistem informasi geografi seperti QGIS atau ArcGIS.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>with rasterio.open(HASIL_TIF, "w", driver="GTiff", height=BANYAK_BARIS, width=BANYAK_KOLOM, count=1,
-                   dtype="uint8", crs=crs_citra, transform=transformasi_citra, nodata=255, compress="lzw") as tulis_tif:
-    tulis_tif.write(hasil_grid_2d, 1)
-    tulis_tif.set_band_description(1, "Segmentasi [0: Non-sawah, 1: Sawah]")
-    tulis_tif.write_colormap(1, {0: (220, 38, 38, 255), 1: (22, 163, 74, 255), 255: (0, 0, 0, 0)})
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">HASIL_TIF</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s2">"GTiff"</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">BANYAK_BARIS</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">BANYAK_KOLOM</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                   <span class="n">dtype</span><span class="o">=</span><span class="s2">"uint8"</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs_citra</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transformasi_citra</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="s2">"lzw"</span><span class="p">)</span> <span class="k">as</span> <span class="n">tulis_tif</span><span class="p">:</span>
+    <span class="n">tulis_tif</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">hasil_grid_2d</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">tulis_tif</span><span class="o">.</span><span class="n">set_band_description</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"Segmentasi [0: Non-sawah, 1: Sawah]"</span><span class="p">)</span>
+    <span class="n">tulis_tif</span><span class="o">.</span><span class="n">write_colormap</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="p">(</span><span class="mi">220</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">1</span><span class="p">:</span> <span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">163</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">255</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)})</span>
 
-# Merender tampilan asli satelit B04-B03-B02
-spektrum_rgb = np.dstack([dict_band["B04"], dict_band["B03"], dict_band["B02"]])
-ambang_bawah, ambang_atas = np.nanpercentile(spektrum_rgb, 2), np.nanpercentile(spektrum_rgb, 98)
-spektrum_rgb = np.nan_to_num(np.clip((spektrum_rgb - ambang_bawah) / (ambang_atas - ambang_bawah + 1e-10), 0, 1))
+<span class="c1"># Merender tampilan asli satelit B04-B03-B02</span>
+<span class="n">spektrum_rgb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([</span><span class="n">dict_band</span><span class="p">[</span><span class="s2">"B04"</span><span class="p">],</span> <span class="n">dict_band</span><span class="p">[</span><span class="s2">"B03"</span><span class="p">],</span> <span class="n">dict_band</span><span class="p">[</span><span class="s2">"B02"</span><span class="p">]])</span>
+<span class="n">ambang_bawah</span><span class="p">,</span> <span class="n">ambang_atas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">spektrum_rgb</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">spektrum_rgb</span><span class="p">,</span> <span class="mi">98</span><span class="p">)</span>
+<span class="n">spektrum_rgb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">((</span><span class="n">spektrum_rgb</span> <span class="o">-</span> <span class="n">ambang_bawah</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ambang_atas</span> <span class="o">-</span> <span class="n">ambang_bawah</span> <span class="o">+</span> <span class="mf">1e-10</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
-fig, kol = plt.subplots(1, 2, figsize=(14, 6))
-kol[0].imshow(spektrum_rgb)
-kol[0].set_title("Visual Natural Satelit (RGB)")
-kol[0].axis("off")
+<span class="n">fig</span><span class="p">,</span> <span class="n">kol</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">kol</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">spektrum_rgb</span><span class="p">)</span>
+<span class="n">kol</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Visual Natural Satelit (RGB)"</span><span class="p">)</span>
+<span class="n">kol</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
 
-kol[1].imshow(np.ma.masked_equal(hasil_grid_2d, 255), cmap=ListedColormap(["#dc2626", "#16a34a"]), vmin=0, vmax=1, interpolation="nearest")
-kol[1].set_title("Prediksi (Merah=Bukan Sawah, Hijau=Sawah)")
-kol[1].axis("off")
+<span class="n">kol</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_equal</span><span class="p">(</span><span class="n">hasil_grid_2d</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">ListedColormap</span><span class="p">([</span><span class="s2">"#dc2626"</span><span class="p">,</span> <span class="s2">"#16a34a"</span><span class="p">]),</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">"nearest"</span><span class="p">)</span>
+<span class="n">kol</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Prediksi (Merah=Bukan Sawah, Hijau=Sawah)"</span><span class="p">)</span>
+<span class="n">kol</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
 
-plt.tight_layout()
-plt.savefig(HASIL_GAMBAR, dpi=180)
-plt.show()
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">HASIL_GAMBAR</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-HASIL_TEKS.write_text("\n".join(REKAMAN_LOG), encoding="utf-8")
-catat_log("Misi rampung!")
+<span class="n">HASIL_TEKS</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">REKAMAN_LOG</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+<span class="n">catat_log</span><span class="p">(</span><span class="s2">"Misi rampung!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6a6d6ef9fbdd67d67f4ffbd9e000b88948da41cce9564844d6831fc1fa0b2a74.png" src="_images/6a6d6ef9fbdd67d67f4ffbd9e000b88948da41cce9564844d6831fc1fa0b2a74.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Misi rampung!
 </pre></div>
 </div>
 </div>
