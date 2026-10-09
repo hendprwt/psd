@@ -19,3 +19,4 @@ chapters:
   - file: 12_tahap2_reduksi_dimensi
   - file: 13_tahap3_eksperimen_clustering
   - file: 14_tahap4_visualisasi_peta
+- file: 15_klasifikasi_sawah_sentinel2a

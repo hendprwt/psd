@@ -1,0 +1,40 @@
+[input.shp] Total asli: 50 poligon | Dipilih: 46 poligon
+[input.shp] Total asli: 50 poligon | Dipilih: 50 poligon
+Batas Bounding Box (Lon, Lat): (113.10647, -7.23792, 113.15149, -7.20381)
+Ditemukan 11 scene potensial dengan awan <= 30%
+> Evaluasi: S2A_MSIL2A_20260720T023141_N05... | 2026-07-20T02:50:04.854Z | Awan 4.6% | Kualitas Area 100.0%
+SUKSES: Menyimpan sentinel2_mentah.tif dari scene S2A_MSIL2A_20260720T023141_N0512_R046_T49MGN_20260720T083516.SAFE.
+Dimensi Raster: 500 x 381 | CRS: EPSG:32749 | Pixel NaN: 0.01%
+Status Kelas 0 (Bukan Sawah): 46 poligon solid -> menghasilkan 108 piksel siap olah.
+Status Kelas 1 (Sawah): 46 poligon solid -> menghasilkan 563 piksel siap olah.
+Distribusi Piksel -> Training Set: 464 | Testing Set: 207
+Distribusi Piksel -> Training Set: 464 | Testing Set: 207
+>>> MATRIKS KEBINGUNGAN (Confusion Matrix):
+[[ 32   3]
+ [  0 172]]
+Akurasi Keseluruhan : 0.986
+Indeks Kesepakatan (Kappa) : 0.947
+
+>>> TABEL LAPORAN KLASIFIKASI:
+              precision    recall  f1-score   support
+
+ Bukan Sawah      1.000     0.914     0.955        35
+       Sawah      0.983     1.000     0.991       172
+
+    accuracy                          0.986       207
+   macro avg      0.991     0.957     0.973       207
+weighted avg      0.986     0.986     0.985       207
+
+>>> KEKUATAN INDIKATOR (Feature Importances):
+  B04   : 0.3099
+  B12   : 0.2225
+  NDVI  : 0.1781
+  EVI   : 0.1071
+  B11   : 0.0562
+  B03   : 0.0418
+  B02   : 0.0303
+  NDWI  : 0.0222
+  B08   : 0.0163
+  NDBI  : 0.0156
+Est. Luas Sawah Ditemukan : 1778.57 Hektar
+Est. Luas Area Lainnya    : 126.31 Hektar

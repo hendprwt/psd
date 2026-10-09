@@ -1,0 +1,6 @@
+ID Scene Terpilih : S2A_MSIL2A_20260720T023141_N0512_R046_T49MGN_20260720T083516.SAFE
+Tanggal Akuisisi : 2026-07-20T02:50:04.854Z
+Tutupan Awan Map : 4.6%
+Pixel Bersih : 100.0%
+Sistem Koordinat : EPSG:32749
+Masking SCL Aktif : True
